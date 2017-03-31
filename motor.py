@@ -11,6 +11,8 @@ import pygame
 pygame.init()
 
 
+
+
 class Aux:
     """Classes com funções auxiliares para mexer com listas etc..."""
     @staticmethod
@@ -26,6 +28,13 @@ class Aux:
         for tupla in lista:
             if tupla[0] == elem:
                 return True
+    
+    
+    @staticmethod
+    def coordsInscrito(angulo, Cx, Cy, largura, altura):
+        """Retorna as coordenadas de um ponto (Cx, Cy) dentro de um retângulo 
+        rotacionado em relação a um retangulo horizontal que o circunscreve"""
+        return (0, 0)
 
 
 
@@ -36,44 +45,44 @@ class Evento:
     _disparados = []  #É uma lista de tuplas (stringsEventos, objeto_do_evento) LANÇADOS
     
     
-    def adicionaEscutavel(this, string_evento, callback):
-        this._escutaveis.append((string_evento, callback))
+    def adicionaEscutavel(self, string_evento, callback):
+        self._escutaveis.append((string_evento, callback))
     
     
-    def removeEscutavel(this, string_evento, callback = None):
+    def removeEscutavel(self, string_evento, callback = None):
         if callback is None:
-            Aux.removeTuplas1Elem(this._escutaveis, string_evento)
+            Aux.removeTuplas1Elem(self._escutaveis, string_evento)
         else:
-            this._escutaveis.remove((string_evento, callback))
+            self._escutaveis.remove((string_evento, callback))
     
     
-    def adicionaDisparo(this, string_evento, objeto_do_evento):
-        if Aux.existeTupla1Elem(this._escutaveis, string_evento):
-            this._disparados.append((string_evento, objeto_do_evento))
+    def adicionaDisparo(self, string_evento, objeto_do_evento):
+        if Aux.existeTupla1Elem(self._escutaveis, string_evento):
+            self._disparados.append((string_evento, objeto_do_evento))
     
     
-    def removeDisparo(this, string_evento, objeto_do_evento = None):
+    def removeDisparo(self, string_evento, objeto_do_evento = None):
         if objeto_do_evento is None:
-            Aux.removeTuplas1Elem(this._disparados, string_evento)
+            Aux.removeTuplas1Elem(self._disparados, string_evento)
         else:
-            this._disparados.remove((string_evento, objeto_do_evento))
+            self._disparados.remove((string_evento, objeto_do_evento))
     
     
-    def removeTodosDisparos(this):
-        del this._disparados[:]
+    def removeTodosDisparos(self):
+        del self._disparados[:]
     
     
-    def escuta(this, evento):
+    def escuta(self, evento):
         """Executa as funções de escuta dado os disparos de outro evento"""
-        for escutavel, callback in this._escutaveis:
+        for escutavel, callback in self._escutaveis:
             for disparo, objeto_do_evento in evento._disparados: 
                 if escutavel == disparo:
                     callback(objeto_do_evento)
     
-    def fala(this, evento):
+    def fala(self, evento):
         """Fala para outro evento o que você disparou, e se ele não souber responder,
         ele pega para ele o que você falou"""
-        for disparo, objeto_do_evento in this._disparados:
+        for disparo, objeto_do_evento in self._disparados:
             escutou = False
             for escutavel, callback in evento._escutaveis:
                 if escutavel == disparo:
@@ -81,69 +90,67 @@ class Evento:
                     escutou = True
             if not escutou:
                 evento.adicionaDisparo(disparo, objeto_do_evento)
-            this.removeDisparo((disparo, objeto_do_evento))
+            self.removeDisparo((disparo, objeto_do_evento))
+
 
 
 
 # Devaneios geométricos
 class Ponto:
     """Classe que representa um ponto 2d do tipo (x, y)"""
-    def __init__ (this, x, y):
-        this._x = x
-        this._y = y
+    def __init__ (self, x = 0, y = 0):
+        self._x = x
+        self._y = y
     
     
-    def setXY(this, x, y):
-        this._x = x
-        this._y = y
+    def setXY(self, x, y):
+        self._x = x
+        self._y = y
     
     
-    def setX(this, x):
-        this._x = x
+    def setX(self, x):
+        self._x = x
     
     
-    def setY(this, y):
-        this._y = y
+    def setY(self, y):
+        self._y = y
     
     
-    def getX(this):
-        return this._x
+    def getX(self):
+        return self._x
     
     
-    def getY(this):
-        return this._y
+    def getY(self):
+        return self._y
     
     
-    def getXY(this):
-        return (this._x, this._y)
+    def getXY(self):
+        return (self._x, self._y)
     
     
-    def distancia2(this, ponto):
-        return (this._x-ponto._x)*(this._x-ponto._x) + (this._y-ponto._y)*(this._y-ponto._y)
+    def distancia2(self, ponto):
+        return (self._x-ponto._x)*(self._x-ponto._x) + (self._y-ponto._y)*(self._y-ponto._y)
     
     
-    def distancia(this, ponto):
+    def distancia(self, ponto):
         from math import sqrt
-        return sqrt(this.distancia2(ponto))
-    
+        return sqrt(self.distancia2(ponto))
+
+
 
 
 class Retangulo:
-    def __init__(this, x, y, largura, altura):
-        this._p1 = Ponto(x, y)
-        this._p2 = Ponto(x + largura, y + altura)
+    """Classe que representa um retângulo horizontal"""
+    def __init__(self, x, y, largura, altura):
+        self._p1 = Ponto(x, y)
+        self._p2 = Ponto(x + largura, y + altura)
+    """"Precisa implementar mais métodos"""
+
 
 
 
 class Angulo:
-    """Classe que cuida dos ângulos, que devem estar entre pi e -pi"""
-    def __init__ (this, angulo, estaEmRadianos = True):
-        if estaEmRadianos:
-            this._angulo =  angulo
-        else: #Suponho que esteja em graus
-            this._angulo = Angulo.grausParaRadianos(angulo)
-        this._validaAngulo()
-    
+    """Classe que cuida dos ângulos, que devem estar entre 180 (inclusive) e -180"""
     
     @staticmethod
     def grausParaRadianos(angulo):
@@ -157,102 +164,255 @@ class Angulo:
         return degrees(angulo)
     
     
-    def _validaAngulo(this):
-        from math import pi
-        while this._angulo <= -pi:
-            this._angulo += 2*pi
-        while this._angulo > pi:
-            this.angulo -= 2*pi
+    def _validaAngulo(self):
+        while self._angulo <= -180:
+            self._angulo += 360
+        while self._angulo > 180:
+            self.angulo -= 360
     
     
-    def getAngulo(this):
-        return this._angulo
+    def __init__ (self, angulo, estaEmGraus = True):
+        if estaEmGraus:
+            self._angulo =  angulo
+        else: #Suponho que esteja em radianos
+            self._angulo = Angulo.RadianosParaGraus
+        self._validaAngulo()
     
     
-    def setAngulo(this, angulo):
-        this._angulo = angulo
-        this._validaAngulo()
+    def getAngulo(self):
+        return self._angulo
+    
+    
+    def setAngulo(self, angulo):
+        self._angulo = angulo
+        self._validaAngulo()
+    
+    
+    def getQuadrante(self):
+        return 1
+
+
+
+
+class Cor:
+    """Classe que representa a opacidade e a tintura aplicada a um renderizável"""
+    
+    def _validaAlpha(self, alpha):
+        if alpha > 1:
+            alpha = 1
+        elif alpha < 0:
+            alpha = 0
+        return alpha
+    
+            
+    def _validaRGB(self, RGB):
+        RGB = int(RGB)
+        if RGB > 255:
+            RGB = 255
+        elif RGB < 0:
+            RGB = 0
+        return RGB
+    
+    
+    def __init__(self, opacidade, R, G, B, A):
+        self.opacidade = self._validaAlpha(opacidade)
+        self.R = self._validaRGB(R)
+        self.G = self._validaRGB(G)
+        self.B = self._validaRGB(B)
+        self.A = self._validaAlpha(A)
+    
+    
+    def setRGBA(self, R, G, B, A):
+        self.R = self._validaRGB(R)
+        self.G = self._validaRGB(G)
+        self.B = self._validaRGB(B)
+        self.A = self._validaAlpha(A)
+    
+    
+    def setOpacidade(self, opacidade):
+        self.opacidade = self._validaAlpha(opacidade)
+
+
+
+
+class Renderizador:
+    _listaImagens = []
+    
+    def __init__(self, largura, altura, corFundo = (0, 0, 0)):
+        self.tela = pygame.display.set_mode((largura, altura))
+        self.corFundo = corFundo
+    
+    
+    def iniciaQuadro(self):
+        self.tela.fill(self.corFundo)
+    
+    
+    def finalizaQuadro(self):
+        pygame.display.flip()
+    
+    
+    def desenhaImagem(self, string_imagem, posXY):
+        self.tela.blit(self._bancoImagens(string_imagem), posXY)
+        
+    
+    def desenhaTexto(self, string_texto, posXY, tuplaFonte = (None, 12)):
+        texto = pygame.font.Font(tuplaFonte[0], tuplaFonte[12])
+        self.tela.blit(texto, posXY)
+    
+    
+    def _bancoImagens(self, string_imagem):
+        imagem = self._listaImagens.get(string_imagem)
+        if imagem == None:
+            import os
+            caminho = string_imagem.replace('/', os.sep).replace('\\', os.sep)
+            imagem = pygame.image.load(caminho)
+            self._listaImagens[string_imagem] = imagem
+        return imagem
+
+
+
+
+
+class Entrada:
+    """Classe que faz interface com o pygames e registra todos os eventos de entrada"""
+    even = Evento()
+    
+    def __init__(self):
+        pass
+    
+    
+    def atualiza(self):
+        """Atualiza os seus eventos"""
+        self.verTeclado()
+        self.verMouse()
+    
+    
+    def verTeclado(self):
+        """Observa quais teclas estão pressionadas e se está focado"""
+        vazio = True
+        for ide, val in enumerate(pygame.key.get_pressed()):
+            if val == True:
+                vazio = False
+                self.even.adicionaRegistro("K_"+pygame.key.name(ide), None)
+        if vazio:
+            self.even.adicionaRegistro("K_vazio", None)
+        if not pygame.key.get_focused():
+            self.even.adicionaRegistro("K_desfocado", None)
+    
+    
+    def verMouse(self):
+        """Observa a posição do ponteiro e se clica"""
+        pass
+
+
+
+
+class Audio:
+    """Faz a interface com o audio do pygames"""
+    pass
 
 
 
 
 class Renderizavel:
-    even = Evento()
-    pos = Ponto(0, 0)
-    centro = Ponto(0, 0)
-    escala = Ponto(1, 1)
-    retang = Retangulo(0, 0, 0, 0)
-    rot = Angulo(0)
-    opacidade = 1
-    cor = (255, 255, 255)
+    """Classe abstrata que contém os atributos básicos de um objeto renderizável"""
     
-    def atualiza(this, dt):
+    def __init__(self, pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1),
+                 retang = Retangulo(0, 0, 0, 0), rot = Angulo(0), cor = (1, 0, 0, 0, 0)):
+        self.even = Evento()
+        self.pos = pos
+        self.centro = centro
+        self.escala = escala
+        self.retang = retang
+        self.rot = rot
+        self.cor = cor
+    
+    
+    def atualiza(self, dt):
         pass
 
 
 
 
 class Figura(Renderizavel):
+    """Representa uma imagem na árvore de renderização"""
     
-    def __init__(this, string_imagem):
-        this.string_imagem = string_imagem
+    def __init__(self, string_imagem, pos = Ponto(0, 0), centro = Ponto(0, 0), escala = Ponto(1, 1),
+                 retang = Retangulo(0, 0, 0, 0), rot = Angulo(0), cor = (1, 0, 0, 0, 0)):
+        super().__init__(pos, centro, escala, retang, rot, cor)
+        self.string_imagem = string_imagem
 
 
 
 
 class Texto(Renderizavel):
+    """Representa um texto na aŕvore de renderização"""
     
-    def __init__(this, string_texto, tupla_fonte):
-        this.string_texto = string_texto
-        this.tupla_fonte = tupla_fonte
+    def __init__(self, string_texto, tupla_fonte, pos = Ponto(0, 0), centro = Ponto(0, 0), escala = Ponto(1, 1),
+                 retang = Retangulo(0, 0, 0, 0), rot = Angulo(0), cor = (1, 0, 0, 0, 0)):
+        super().__init__(pos, centro, escala, retang, rot, cor)
+        self.string_texto = string_texto
+        self.tupla_fonte = tupla_fonte
 
 
 
 
 class Camada(Renderizavel):
-    filhos = []
+    """Representa uma camada na árvore renderização"""
+    
+    def __init__(self, pos = Ponto(0, 0), centro = Ponto(0, 0), escala = Ponto(1, 1),
+                 retang = Retangulo(0, 0, 0, 0), rot = Angulo(0), cor = (1, 0, 0, 0, 0)):
+        super().__init__(pos, centro, escala, retang, rot, cor)
+        self.filhos = []
     
     
-    def adicionaFilho(this, filho):
-        this.filhos.append(filho)
+    def adicionaFilho(self, filho):
+        self.filhos.append(filho)
     
     
-    def removeFilho(this, filho):
-        this.filhos.remove(filho)
+    def removeFilho(self, filho):
+        self.filhos.remove(filho)
     
     
-    def atualiza(this, dt):
-        for filho in this.filhos:
+    def atualiza(self, dt):
+        for filho in self.filhos:
             filho.atualiza(dt)
 
 
-    def _propagaEventoDeCimaParaBaixo(this, evento):
-        this.even.escuta(evento)
-        for filho in this.filhos:
+    def _propagaEventoDeCimaParaBaixo(self, evento):
+        self.even.escuta(evento)
+        for filho in self.filhos:
             if type(filho) is Camada:
                 filho._propagaEventoDeCimaParaBaixo(evento)
             else:
                 filho.even.escuta(evento)
     
     
-    def _propagaEventoDeBaixoParaCima(this):
-        for filho in this.filhos:
+    def _propagaEventoDeBaixoParaCima(self):
+        for filho in self.filhos:
             if type(filho) is Camada:
                 filho._propagaEventoDeBaixoParaCima()
-            filho.even.fala(this.even)
+            filho.even.fala(self.even)
     
     
-    def _observaFilhos(this, estado, callbacks):
-        for filho in this.filhos:
+    def _observaFilhos(self, estado, callbacks):
+        """Retorna os filhos ordenados que tem, separando imagem de texto.
+        É uma tupla com uma lista de imagem e uma lista de texto, essas listas
+        contém tuplas que definem o estado da figura e texto:
+            (string, posX, posY, rotação, opacidade, R, G, B, A"""
+        figuras = []
+        textos = []
+        for filho in self.filhos:
             if type(filho) is Camada:
                 filho._observaFilhos(filho._transforma(estado), callbacks)
             elif type(filho) is Figura:
-                pass
+                figuras.append((filho.string_imagem, filho.pos.getX()-7, filho.pos.getY()))
             elif type(filho) is Texto:
                 pass
+        return (figuras, textos)
     
     
-    def _transforma(this, estado):
+    def _transforma(self, estado):
         """Converte as coordenadas e transformações de um Renderizável para o seu"""
         pass
 
@@ -264,93 +424,24 @@ class Cena(Camada):
     renderizáveis. Ela é responsável pela propagação de eventos. Se comunica com
     a Entrada, com o Audio e com o Renderizador. """
     
-    def __init__ (this, audio, entrada, renderizador):
+    def __init__ (self, audio, entrada, renderizador):
         """Precisa-se da referência aos objetos de Audio, Entrada e Renderizador"""
-        this.audio = audio
-        this.entrada = entrada
-        this.renderizador = renderizador
+        self.audio = audio
+        self.entrada = entrada
+        self.renderizador = renderizador
     
     
-    def atualiza(this, dt):
+    def atualiza(self, dt):
         """Propaga o loop do jogo, sabendo o intervalo de tempo dt transcorrido"""
-        this.entrada.atualiza()
-        this.even.removeTodosDisparos()
-        this.entrada.even.fala(this.even)
-        this._propagaEventoDeCimaParaBaixo(this.even)
-        this.even.removeTodosDisparos()
-        this._propagaEventoDeBaixoParaCima()
-        this._propagaEventoDeCimaParaBaixo(this.even)
+        self.entrada.atualiza()
+        self.even.removeTodosDisparos()
+        self.entrada.even.fala(self.even)
+        self._propagaEventoDeCimaParaBaixo(self.even)
+        self.even.removeTodosDisparos()
+        self._propagaEventoDeBaixoParaCima()
+        self._propagaEventoDeCimaParaBaixo(self.even)
 
-        this.renderizador.iniciaQuadro()
+        self.renderizador.iniciaQuadro()
         
-        this.renderizador.finalizaQuadro()
+        self.renderizador.finalizaQuadro()
 
-
-
-
-class Entrada:
-    """Classe que faz interface com o pygames e registra todos os eventos de entrada"""
-    even = Evento()
-    
-    def __init__(this):
-        pass
-    
-    
-    def atualiza(this):
-        """Atualiza os seus eventos"""
-        this.verTeclado()
-        this.verMouse()
-    
-    
-    def verTeclado(this):
-        """Observa quais teclas estão pressionadas e se está focado"""
-        vazio = True
-        for ide, val in enumerate(pygame.key.get_pressed()):
-            if val == True:
-                vazio = False
-                this.even.adicionaRegistro("K_"+pygame.key.name(ide), None)
-        if vazio:
-            this.even.adicionaRegistro("K_vazio", None)
-        if not pygame.key.get_focused():
-            this.even.adicionaRegistro("K_desfocado", None)
-    
-    
-    def verMouse(this):
-        """Observa a posição do ponteiro e se clica"""
-        pass
-
-
-
-class Renderizador:
-    _listaImagens = []
-    
-    def __init__(this, largura, altura, corFundo = (0, 0, 0)):
-        this.tela = pygame.display.set_mode((largura, altura))
-        this.corFundo = corFundo
-    
-    
-    def iniciaQuadro(this):
-        this.tela.fill(this.corFundo)
-    
-    
-    def finalizaQuadro(this):
-        pygame.display.flip()
-    
-    
-    def desenhaImagem(this, string_imagem, posXY):
-        this.tela.blit(this._bancoImagens(string_imagem), posXY)
-        
-    
-    def desenhaTexto(this, string_texto, posXY, tuplaFonte = (None, 12)):
-        texto = pygame.font.Font(tuplaFonte[0], tuplaFonte[12])
-        this.tela.blit(texto, posXY)
-    
-    
-    def _bancoImagens(this, string_imagem):
-        imagem = this._listaImagens.get(string_imagem)
-        if imagem == None:
-            import os
-            caminho = string_imagem.replace('/', os.sep).replace('\\', os.sep)
-            imagem = pygame.image.load(caminho)
-            this._listaImagens[string_imagem] = imagem
-        return imagem
