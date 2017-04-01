@@ -44,6 +44,8 @@ class Evento:
     _escutaveis = [] #É uma lista de tuplas (stringEvento, funcao_de_chamada) APARADOS
     _disparados = []  #É uma lista de tuplas (stringsEventos, objeto_do_evento) LANÇADOS
     
+    #__init__
+    
     
     def adicionaEscutavel(self, string_evento, callback):
         self._escutaveis.append((string_evento, callback))
@@ -248,7 +250,7 @@ class Renderizador:
     
     
     def finalizaQuadro(self):
-        pygame.display.flip()
+        pygame.display.flip() #atualiza a tela toda. Talvez seja bom usar .update() para atualizar apenas uma parte da tela
     
     
     def desenhaImagem(self, string_imagem, posXY):
@@ -301,14 +303,51 @@ class Entrada:
     
     
     def verMouse(self):
-        """Observa a posição do ponteiro e se clica"""
+        """Observa a posição do ponteiro e se clica:
+            pygame module to work with the mouse
+            
+            pygame.mouse.get_pressed	—	get the state of the mouse buttons
+                                            return (statebutton1,statebutton2,statebutton3)
+            pygame.mouse.get_pos	—	get the mouse cursor position
+                                        return (MousePosX,MousePosY) relative to screen top-left corner 
+        """
+      # apertado = False
+      #while not apertado:
+          
+      #   for event in pygame.event.get():
+      #     (button1,button2,button3) = pygame.mouse.get_pressed()
+      #     apertado = button1 or button3
+      #     
+      #     if apertado:
+      #        MousePos = pygame.mouse.get_pos
+      #        return MousePos MousePos is a tuple
+        
         pass
 
 
 
 
 class Audio:
-    """Faz a interface com o audio do pygames"""
+    """Faz a interface com o audio do pygames
+    pygame module for controlling streamed audio:
+        
+    pygame.mixer.music.load	—	Load a music file for playback
+    pygame.mixer.music.play	—	Start the playback of the music stream
+    pygame.mixer.music.rewind	—	restart music
+    pygame.mixer.music.stop	—	stop the music playback
+    pygame.mixer.music.pause	—	temporarily stop music playback
+    pygame.mixer.music.unpause	—	resume paused music
+    pygame.mixer.music.fadeout	—	stop music playback after fading out
+    pygame.mixer.music.set_volume	—	set the music volume
+    pygame.mixer.music.get_volume	—	get the music volume
+    pygame.mixer.music.get_busy	—	check if the music stream is playing
+    pygame.mixer.music.set_pos	—	set position to play from
+    pygame.mixer.music.get_pos	—	get the music play time
+    pygame.mixer.music.queue	—	queue a music file to follow the current
+    pygame.mixer.music.set_endevent	—	have the music send an event when playback stops
+    pygame.mixer.music.get_endevent	—	get the event a channel sends when playback stops
+    """
+    
     pass
 
 
@@ -346,6 +385,7 @@ class Figura(Renderizavel):
 
 
 class Texto(Renderizavel):
+    
     """Representa um texto na aŕvore de renderização"""
     
     def __init__(self, string_texto, tupla_fonte, pos = Ponto(0, 0), centro = Ponto(0, 0), escala = Ponto(1, 1),
@@ -353,7 +393,28 @@ class Texto(Renderizavel):
         super().__init__(pos, centro, escala, retang, rot, cor)
         self.string_texto = string_texto
         self.tupla_fonte = tupla_fonte
+        
+        
+    """ 
+    smallfont = 30
+    mediumfont = 50
+    largefont = 120
+    def text_objects(text,color,size):
+       
+        if size == "small":
+            textSurface = smallfont.render(text, True, color)
+        elif size == "medium":
+            textSurface = mediumfont.render(text, True, color)
+        elif size == "large":
+            textSurface = largefont.render(text, True, color)
+        return textSurface, textSurface.get_rect()
 
+       def message_to_screen(msg,color, y_displace = 0, size = "small"): funcao para ficar mais facil colocar texto na tela
+         textSurf , textRect = text_objects(msg,color,size)
+         #gameDisplay.blit(screen_text, [display_width/2, display_height/3]) #colocando msg na tela, (mensagem,posicao)
+         textRect.center = (display_width / 2), (display_height/2) + y_displace
+         gameDisplay.blit(textSurf,textRect)
+    """
 
 
 
