@@ -456,7 +456,8 @@ class Audio:
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
         raise NotImplementedError("Você deveria ter programado aqui!")
-        return object
+        self.musica = pygame.mixer.Sound(string_musica)
+        return self.musica
     
     
     def setMusicaFundo(self, string_musica, volume = 1):
@@ -467,12 +468,15 @@ class Audio:
     def setVolumeMusicaFundo(self, volume):
         """Modifica apenas o volume da música de fundo, sem interferir nela"""
         raise NotImplementedError("Você deveria ter programado aqui!")
-    
+        self.musica.set_volume(volume)
     
     def tocarEfeito(self, string_efeito):
         """Toca um efeito sonoro apenas uma vez"""
         raise NotImplementedError("Você deveria ter programado aqui!")
-
+        self.efeito = pygame.mixer.Sound(string_efeito)
+        self.efeito.play()
+        
+            
 
 
 
