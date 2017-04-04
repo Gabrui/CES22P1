@@ -363,6 +363,7 @@ class Renderizador:
     
     def __init__(self, largura, altura, corFundo = (0, 0, 0)):
         self.tela = pygame.display.set_mode((largura, altura))
+        pygame.display.set_caption('As da Aviacao')
         self.corFundo = corFundo
     
     
@@ -381,16 +382,16 @@ class Renderizador:
         return imagem.get_size()
     
     
-    def _carregaFonte(self, nome_fonte):
+    def _carregaFonte(self, tupla_fonte):
         """Carrega a fonte na memória"""
         raise NotImplementedError("Você deveria ter programado aqui!")
     
     
-    def _bancoFontes(self, nome_fonte):
-        fonte = self._listaFontes.get(nome_fonte)
+    def _bancoFontes(self, tupla_fonte):
+        fonte = self._listaFontes.get(tupla_fonte)
         if fonte is None:
-            self._carregaFonte(nome_fonte)
-            fonte = self._listaFontes.get(nome_fonte)
+            self._carregaFonte(tupla_fonte)
+            fonte = self._listaFontes.get(tupla_fonte)
         return fonte
     
     
@@ -405,8 +406,20 @@ class Renderizador:
         Gabriel: Essas tuplas podem ser melhoradas de acordo com o que vocês 
         acharem conveniente"""
         self.tela.fill(self.corFundo)
-        #CÓDIGO AQUI
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        for i in imagens:
+            imagem = self._bancoImagens(i[0])
+            # nao foi implementado o corte
+            imagemRotate = pygame.transform.rotate(imagem,i[4])
+            imagemRotate.set_alpha(i[5])
+            self.tela.blit(imagemRotate,(i[2],i[3]))       
+            
+        for i in textos:
+            font = self._bancoFontes(i[1])
+            textSurface = font.render(i[0], True, (i[6],i[7],i[8]))
+            textSurface.set_alpha(i[5])
+            textSurfaceRotate = pygame.transform.rotate(textSurface,i[4])
+            self.tela.blit(textSurfaceRotate, ([i[2],i[3]]))
+            
         pygame.display.flip()
         
 
@@ -435,7 +448,7 @@ class Entrada:
     
     def _verMouse(self):
         """Observa a posição do ponteiro e se clica, lancando os eventos"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        
         click = pygame.mouse.get_pressed() 
         mouse = pygame.mouse.get_pos()
         if click[0]:
@@ -475,7 +488,7 @@ class Audio:
     def _bancoAudio(self, string_musica):
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        
         musica = self._arquivos[string_musica]
         if musica is None:
             musica = self._carregarAudio(string_musica)
@@ -484,19 +497,19 @@ class Audio:
     
     def setMusicaFundo(self, string_musica, volume = 0.5):
         """A música de fundo a ser tocada"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        
         self.musicaFundo = self._bancoAudio(string_musica)
         self.musicaFundo.set_volume(volume)
         self.musicaFundo.play(-1)
     
     def setVolumeMusicaFundo(self, volume):
         """Modifica apenas o volume da música de fundo, sem interferir nela"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+       
         self.musicaFundo.set_volume(volume)
     
     def tocarEfeito(self, string_efeito):
         """Toca um efeito sonoro apenas uma vez"""
-       # raise NotImplementedError("Você deveria ter programado aqui!")
+     
         self.efeito = self._bancoAudio(string_efeito)
         self.efeito.play()
     
