@@ -436,7 +436,10 @@ class Entrada:
     def _verMouse(self):
         """Observa a posição do ponteiro e se clica, lancando os eventos"""
         raise NotImplementedError("Você deveria ter programado aqui!")
-    
+        """click = pygame.mouse.get_pressed()
+        mouse = pygame.mouse.get_pos()
+        if click[0]:
+            return mouse"""
     
     def atualiza(self):
         """Atualiza os seus eventos"""
@@ -455,29 +458,35 @@ class Audio:
     def _bancoAudio(self, string_musica):
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        #raise NotImplementedError("Você deveria ter programado aqui!")
         self.musica = pygame.mixer.Sound(string_musica)
         return self.musica
     
     
-    def setMusicaFundo(self, string_musica, volume = 1):
+    def setMusicaFundo(self, string_musica, volume = 0.5):
         """A música de fundo a ser tocada"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-    
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        self.musica = pygame.mixer.Sound(string_musica)
+        self.musica.set_volume(volume)
+        self.musica.play()
     
     def setVolumeMusicaFundo(self, volume):
         """Modifica apenas o volume da música de fundo, sem interferir nela"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        #raise NotImplementedError("Você deveria ter programado aqui!")
         self.musica.set_volume(volume)
     
     def tocarEfeito(self, string_efeito):
         """Toca um efeito sonoro apenas uma vez"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
+       # raise NotImplementedError("Você deveria ter programado aqui!")
         self.efeito = pygame.mixer.Sound(string_efeito)
         self.efeito.play()
+    
+    def parar(self):  
+        self.musica.stop()
         
-            
-
+    def verificar(self):
+        """Retorna verdadeiro se esta tocando."""
+        return self.musica.get_busy()
 
 
 class Renderizavel:
