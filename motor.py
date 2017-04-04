@@ -358,8 +358,8 @@ class Cor:
 
 class Renderizador:
     #Variável de Classe que contém todas as imagem já carregadas pelo pygames
-    _listaImagens = []
-    _listaFontes = []
+    _listaImagens = {}
+    _listaFontes = {}
     
     def __init__(self, largura, altura, corFundo = (0, 0, 0)):
         self.tela = pygame.display.set_mode((largura, altura))
@@ -435,11 +435,15 @@ class Entrada:
     
     def _verMouse(self):
         """Observa a posição do ponteiro e se clica, lancando os eventos"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        """click = pygame.mouse.get_pressed()
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        click = pygame.mouse.get_pressed() 
         mouse = pygame.mouse.get_pos()
         if click[0]:
-            return mouse"""
+            self.even.lancar("M_click", mouse)
+        if click[2]:
+            self.even.lancar("M_click", mouse)
+        self.even.lancar("M_pos", mouse)
+            
     
     def atualiza(self):
         """Atualiza os seus eventos"""
@@ -453,40 +457,55 @@ class Audio:
     """Faz a interface com o audio do pygames"""
     
     #Variável de classe dos arquivos carregados pelo pygames
-    arquivos = []
+    _arquivos = {}
+    
+    def __init__ (self):
+        self.musicaFundo = None
+        
+    
+    def _carregarAudio(self, string_musica):
+        import os
+        # Dependendo do sistema operacional o separador pode ser / ou \\
+        caminho = string_musica.replace('/', os.sep)
+        musica = pygame.mixer.Sound(caminho)
+        self._arquivos[string_musica] = musica
+        return musica
+    
     
     def _bancoAudio(self, string_musica):
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
         #raise NotImplementedError("Você deveria ter programado aqui!")
-        self.musica = pygame.mixer.Sound(string_musica)
-        return self.musica
+        musica = self._arquivos[string_musica]
+        if musica is None:
+            musica = self._carregarAudio(string_musica)
+        return musica
     
     
     def setMusicaFundo(self, string_musica, volume = 0.5):
         """A música de fundo a ser tocada"""
         #raise NotImplementedError("Você deveria ter programado aqui!")
-        self.musica = pygame.mixer.Sound(string_musica)
-        self.musica.set_volume(volume)
-        self.musica.play()
+        self.musicaFundo = self._bancoAudio(string_musica)
+        self.musicaFundo.set_volume(volume)
+        self.musicaFundo.play(-1)
     
     def setVolumeMusicaFundo(self, volume):
         """Modifica apenas o volume da música de fundo, sem interferir nela"""
         #raise NotImplementedError("Você deveria ter programado aqui!")
-        self.musica.set_volume(volume)
+        self.musicaFundo.set_volume(volume)
     
     def tocarEfeito(self, string_efeito):
         """Toca um efeito sonoro apenas uma vez"""
        # raise NotImplementedError("Você deveria ter programado aqui!")
-        self.efeito = pygame.mixer.Sound(string_efeito)
+        self.efeito = self._bancoAudio(string_efeito)
         self.efeito.play()
     
-    def parar(self):  
-        self.musica.stop()
+    def pararMusicaFundo(self):  
+        self.musicaFundo.stop()
         
-    def verificar(self):
+    def verificarMusicaFundo(self):
         """Retorna verdadeiro se esta tocando."""
-        return self.musica.get_busy()
+        return self.musicaFundo.get_busy()
 
 
 class Renderizavel:
