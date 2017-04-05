@@ -452,10 +452,10 @@ class Entrada:
         click = pygame.mouse.get_pressed() 
         mouse = pygame.mouse.get_pos()
         if click[0]:
-            self.even.lancar("M_click", mouse)
+            self.even.lancar("M_click", Ponto(mouse[0],mouse[1]))
         if click[2]:
-            self.even.lancar("M_click", mouse)
-        self.even.lancar("M_pos", mouse)
+            self.even.lancar("M_clickD", Ponto(mouse[0],mouse[1]))
+        self.even.lancar("M_pos", Ponto(mouse[0],mouse[1]))
             
     
     def atualiza(self):
@@ -683,7 +683,29 @@ class Botao(Camada):
                  cor = Cor(1, 0, 0, 0, 0)):
         """Cria"""
         super().__init__(pos, centro, escala, rot, cor)
+        self.even.escutar("M_pos", self._verEmCima)
+        self.even.escutar("M_click", self._verClique)
+        # Implementar o esboço de imagem abaixo
+        self.imagemFundo = Figura(tupla_string_imagem[0]) # Mudar, esboço
+        #esboço, mudar
+        self.texto = Texto(tupla_texto[0], (tupla_texto[1], tupla_texto[2]))
+        self.adicionaFilho(self.imagemFundo)
+        self.adicionaFilho(self.texto)
         raise NotImplementedError("Você deveria ter programado aqui!")
+    
+    
+    def _verEmCima(self, mousePos):
+        """Recebe um objeto mousePos do tipo ponto e verifica se o mousePos 
+        está dentro do seu retângulo de renderização, tomando as ações
+        necessárias, como mudar a cor ou imagem de fundo"""
+        raise NotImplementedError("Você deveria ter programado aqui!")
+    
+    
+    def _verClique(self, mousePos):
+        """Análogo ao _verEmCima, só que é com o clique agora, o bizu é lançar
+        eventos relacionado ao clique, como 'pausar', 'irParaMenuTal' """
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        
     
     """Precisa de outros métodos que ainda não pensei"""
 
@@ -720,7 +742,7 @@ class Cena(Camada):
         self.even.pararTodosLancamentos()
         self.entrada.even.propagaLancamento(self.even)
         self._propagaEventoDeCimaParaBaixo(self.even)
-        self.even.pararTodosLancamentos()
+        #self.even.pararTodosLancamentos()
         self._propagaEventoDeBaixoParaCima()
         self._propagaEventoDeCimaParaBaixo(self.even)
         
@@ -734,5 +756,36 @@ class Cena(Camada):
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
     
+    def __init__(self, fps):
+        """Ainda é só um esboço"""
+        self.audio = Audio()
+        self.renderizador = Renderizador()
+        self.entrada = Entrada()
+        self.even = Evento()
+        self.even.escutar("sair", self.irParaCena)
+        self.continuarLoop = True
+        self.cenaAtual = None
+        
+        
+    """Ainda estou pensando, podemos discutir esses métodos"""
+    def carregaCenas(self, listaCenas):
+        pass
+    
+    
+    def rodarCena(self, cena):
+        pass
+    
+    
+    def irParaCena(self, cena):
+        if cena is None:
+            self.continuarLoop = False
+    
+    
+    def atualizar(self):
+        #Relógio
+        dt = 15 #Time1 - time0
+        if self.continuarLoop:
+            self.CenaAtual.atualiza(dt)
+            self.cenaAtual.even.propagaLancamento(self.even)
     
     
