@@ -439,11 +439,12 @@ class Entrada:
         for ide, val in enumerate(pygame.key.get_pressed()):
             if val == True:
                 vazio = False
-                self.even.lancar("K_"+pygame.key.name(ide), None)
+                self.even.lancar("K_"+pygame.key.name(ide), 
+                                 "K_"+pygame.key.name(ide))
         if vazio:
-            self.even.lancar("K_vazio", None)
+            self.even.lancar("K_vazio", "K_vazio")
         if not pygame.key.get_focused():
-            self.even.lancar("K_desfocado", None)
+            self.even.lancar("K_desfocado", "K_desfocado")
     
     
     def _verMouse(self):
@@ -488,7 +489,6 @@ class Audio:
     def _bancoAudio(self, string_musica):
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
-        
         musica = self._arquivos[string_musica]
         if musica is None:
             musica = self._carregarAudio(string_musica)
@@ -765,8 +765,8 @@ class Jogo():
         self.even.escutar("sair", self.irParaCena)
         self.continuarLoop = True
         self.cenaAtual = None
-        
-        
+    
+    
     """Ainda estou pensando, podemos discutir esses métodos"""
     def carregaCenas(self, listaCenas):
         pass
