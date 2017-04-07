@@ -413,8 +413,21 @@ class Renderizador:
     
     
     def _carregaFonte(self, tupla_fonte):
-        """Carrega a fonte na memória"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        """Carrega a fonte na memória
+            tupla_fonte = (string_fonte,int tamanho
+                           ,bold = True or False,italic = True or False)
+            return int tamanho
+        """
+        
+        # Dependendo do sistema operacional o separador pode ser / ou \\
+        name = tupla_fonte[0]
+        size = tupla_fonte[1]
+        bold = tupla_fonte[2]
+        italic = tupla_fonte[3]
+        fonte = pygame.font.SysFont(name,size,bold,italic)
+        self._listaFontes[name] = fonte
+        return size
+        
     
     
     def _bancoFontes(self, tupla_fonte):
