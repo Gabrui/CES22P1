@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr  6 21:23:16 2017
+
+@author: gabrui
+"""
+
+from motor import Camada
+
+
+class Camera(Camada):
+    
+    def __init__(self):
+        super().__init__()
+    
+    
+    def
