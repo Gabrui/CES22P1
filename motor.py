@@ -425,10 +425,11 @@ class Renderizador:
         bold = tupla_fonte[2]
         italic = tupla_fonte[3]
         fonte = pygame.font.SysFont(name,size,bold,italic)
-        self._listaFontes[name] = fonte
-        return size
+        self._listaFontes[tupla_fonte] = fonte
         
-    
+    def getSizeText(self,string_texto,tupla_fonte):
+        fonte = self._bancoFontes(tupla_fonte)
+        return fonte.size(string_texto)
     
     def _bancoFontes(self, tupla_fonte):
         fonte = self._listaFontes.get(tupla_fonte)
@@ -629,10 +630,16 @@ class Texto(Renderizavel):
                  centro = Ponto(0, 0), escala = Ponto(1, 1), rot = Angulo(0), 
                  cor = Cor(1, 0, 0, 0, 0)):
         super().__init__(pos, centro, escala, rot, cor)
-        self.string_texto = string_texto
         self.tupla_fonte = tupla_fonte
-        
-    
+        self.setString(string_texto)
+        self.size = 0
+    def setString(self, string_texto):
+        """Redefine a string do texto dessa texto"""
+        self._string_texto = string_texto
+        self.even.lancar("texto_novo", self) 
+    def getString(self):
+        """Retorna a string_texto dessa texto"""
+        return self._string_texto
 
 
 
@@ -695,8 +702,17 @@ class Camada(Renderizavel):
         """Converte as coordenadas e transformações de um texti representado
         pela sua tupla (string_texto, posX ....) que está no referencial da
         camadaFilha para o seu próprio referencial, retornando a nova tupla"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return (estado[0], 0, 0, 0, 0)
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        Cx = camadaFilha.centro.getX()
+        Cy = camadaFilha.centro.getY()
+        alfa = math.atan2(Cy - estado[3],Cx - estado[2])
+        hipo = math.sqrt((Cy - estado[3])^2 + (Cx - estado[2])^2 )
+        teta = Angulo.GrausParaRadianos(estado[4])
+        posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
+        posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
+        return (estado[0],estado[1], posX, posY, estado[4], estado[5],
+                estado[6], estado[7],estado[8],estado[9])
+        
     
     
     def _observaFilhos(self):
@@ -732,7 +748,20 @@ class Camada(Renderizavel):
                   x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
                   filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A))
             elif isinstance(filho, Texto):
-                pass #IMPLEMENTAR AQUI
+            #IMPLEMENTAR AQUI
+                """tupla do texto: 
+                (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
+                 R, G, B, A)"""
+                x, y = Aux.coordsInscrito(filho.rot, filho.centro.getX(),
+                                                     filho.centro.getY(),
+                                          filho.size[0], filho.size[1])
+                x = filho.pos.getX() - x
+                y = filho.pos.getY() - y
+                
+                textos.append((filho.getString(), filho.tupla_fonte,
+                              x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
+                              filho.cor.R, filho.cor.G, 
+                              filho.cor.B, filho.cor.A))
         #raise NotImplementedError("Você deveria ter programado aqui!")
         return (figuras, textos)
 
@@ -763,7 +792,7 @@ class Botao(Camada):
         está dentro do seu retângulo de renderização, tomando as ações
         necessárias, como mudar a cor ou imagem de fundo"""
         raise NotImplementedError("Você deveria ter programado aqui!")
-    
+        
     
     def _verClique(self, mousePos):
         """Análogo ao _verEmCima, só que é com o clique agora, o bizu é lançar
@@ -785,6 +814,9 @@ class Cena(Camada):
         lar, alt = self.renderizador.carregaImagem(figura.getString())
         if figura.corte is None:
             figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
+    def inicializaTexto(self, texto):
+        largura,altura = self.renderizador.getSizeTexto(texto.getString(),texto.tupla_fonte)
+        texto.size = (largura,altura)
     
     
     def __init__ (self, audio, entrada, renderizador, str_musica_fundo = None):
@@ -797,6 +829,7 @@ class Cena(Camada):
         self.renderizador = renderizador
         
         self.even.escutar("imagem_nova", self.inicializaImagem)
+        self.even.escutar("texto_novo", self.inicializaTexto)
         self.even.escutar("tocar_efeito", self.audio.tocarEfeito)
     
     
