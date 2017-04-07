@@ -41,6 +41,23 @@ class AuxTeste(unittest.TestCase):
                                2**0.5)
         self.assertAlmostEqual(Aux.coordsInscrito(Angulo(45), 1, 1, 2,2)[1], 
                                2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(135), 1, 1, 2,2)[0], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(135), 1, 1, 2,2)[1], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(225), 1, 1, 2,2)[0], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(225), 1, 1, 2,2)[1], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(315), 1, 1, 2,2)[0], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(315), 1, 1, 2,2)[1], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(-45), 1, 1, 2,2)[0], 
+                               2**0.5)
+        self.assertAlmostEqual(Aux.coordsInscrito(Angulo(-45), 1, 1, 2,2)[1], 
+                               2**0.5)
+        
 
 
 

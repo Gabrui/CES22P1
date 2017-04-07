@@ -7,6 +7,7 @@ Created on Mon Mar 27 08:25:06 2017
 """
 
 import pygame
+import math
 
 pygame.init()
 
@@ -41,8 +42,28 @@ class Aux:
         """Retorna as coordenadas de um ponto (Cx, Cy) dentro de um retângulo 
         rotacionado em relação a um retangulo horizontal que o circunscreve
         OBS: ver a fórmula que eu já deduzi, conforme a imagem rotacoes.svg"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return (0, 0)
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        if angulo.getQuadrante() == 1:
+            return (Cx*math.cos(angulo.getAngulo(False))
+                    + Cy*math.sin(angulo.getAngulo(False)),
+                    Cy*math.cos(angulo.getAngulo(False)) 
+                    + (largura - Cx)*math.sin(angulo.getAngulo(False)))
+        elif angulo.getQuadrante() == 2:
+            return (-(largura - Cx)*math.cos(angulo.getAngulo(False))
+                    + Cy*math.sin(angulo.getAngulo(False)),
+                    -(altura - Cy)*math.cos(angulo.getAngulo(False))
+                    + (largura - Cx)*math.sin(angulo.getAngulo(False)))
+        elif angulo.getQuadrante() == 3:
+            return(-Cx*math.cos(angulo.getAngulo(False))
+                   - (altura - Cy)*math.sin(angulo.getAngulo(False)),
+                   -Cy*math.cos(angulo.getAngulo(False)) 
+                   - Cx*math.sin(angulo.getAngulo(False)))
+        elif angulo.getQuadrante() == 4:
+            return (Cx*math.cos(angulo.getAngulo(False)) 
+                    - (altura - Cy)*math.sin(angulo.getAngulo(False)),
+                      Cy*math.cos(angulo.getAngulo(False)) 
+                      - Cx*math.sin(angulo.getAngulo(False)))
+        
 
 
 
@@ -281,7 +302,7 @@ class Angulo:
         while self._angulo <= -180:
             self._angulo += 360
         while self._angulo > 180:
-            self.angulo -= 360
+            self._angulo -= 360
     
     
     def __init__ (self, angulo, emGraus = True):
@@ -293,9 +314,11 @@ class Angulo:
         self._validaAngulo()
     
     
-    def getAngulo(self):
+    def getAngulo(self, emGraus = True):
         """Retorna o ângulo em graus"""
-        return self._angulo
+        if emGraus:
+            return self._angulo
+        return Angulo.grausParaRadianos(self._angulo)
     
     
     def setAngulo(self, angulo, emGraus = True):
@@ -308,8 +331,15 @@ class Angulo:
     
     def getQuadrante(self):
         """Retorna o quadrante do ângulo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return 1
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        if 0 <= self._angulo < 90:
+            return 1
+        elif 90 <= self._angulo< 180:
+            return 2
+        elif -180 <= self._angulo < -90:
+            return 3
+        elif -90 <= self._angulo < 0:
+            return 4
 
 
 
@@ -632,8 +662,17 @@ class Camada(Renderizavel):
         """Converte as coordenadas e transformações de uma figura representada
         pela sua tupla (string_imagem, posX ....) que está no referencial da
         camadaFilha para o seu próprio referencial, retornando a nova tupla"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return (estado[0], 0, 0, 0, 0)
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        Cx = camadaFilha.centro.getX()
+        Cy = camadaFilha.centro.getY()
+        alfa = math.atan2(Cy - estado[3],Cx - estado[2])
+        hipo = math.sqrt((Cy - estado[3])^2 + (Cx - estado[2])^2 )
+        teta = Angulo.GrausParaRadianos(estado[4])
+        posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
+        posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
+        return (estado[0],estado[1], posX, posY, estado[4], estado[5],
+                estado[6], estado[7],estado[8],estado[9])
+        
     
     
     def _transformaTexto(self, camadaFilha, estado):
@@ -666,10 +705,19 @@ class Camada(Renderizavel):
                 for texto in txts:
                     textos.append(self._transformaTexto(filho, texto))
             elif isinstance(filho, Figura):
-                pass #IMPLEMENTAR AQUI
+                x, y = Aux.coordsInscrito(filho.rot, filho.centro.getX(), 
+                        filho.centro.getY(), filho.corte.getLargura(), 
+                                         filho.corte.getAltura())
+                x = filho.pos.getX() - x
+                y = filho.pos.getY() - y
+                figuras.append((filho.getString(), 
+                 (filho.corte.getTopoEsquerdo(), filho.corte.getTopoDireito(),
+                  filho.cor.getFundoEsquerdo(), filho.corte.getFundoDireito()),
+                  x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
+                  filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A))
             elif isinstance(filho, Texto):
                 pass #IMPLEMENTAR AQUI
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        #raise NotImplementedError("Você deveria ter programado aqui!")
         return (figuras, textos)
 
 
