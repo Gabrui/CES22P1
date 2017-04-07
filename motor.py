@@ -431,6 +431,8 @@ class Renderizador:
              R, G, B, A)
             (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
              R, G, B, A)
+            tupla_corte = (posX, posY, largura, altura) referentes ao retangulo
+                                                          de corte
         Nessa renderização ele desenha todo o quadro de uma só vez, com base na
         lista de imagens e textos recebidos
         Gabriel: Essas tuplas podem ser melhoradas de acordo com o que vocês 
@@ -439,7 +441,8 @@ class Renderizador:
         for i in imagens:
             imagem = self._bancoImagens(i[0])
             # nao foi implementado o corte
-            imagemRotate = pygame.transform.rotate(imagem,i[4])
+            Recorte = imagem.subsurface((i[1]))
+            imagemRotate = pygame.transform.rotate(Recorte,i[4])
             imagemRotate.set_alpha(i[5])
             self.tela.blit(imagemRotate,(i[2],i[3]))       
             
