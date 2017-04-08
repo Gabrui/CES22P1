@@ -694,7 +694,7 @@ class Camada(Renderizavel):
         posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
         posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
         return (estado[0],estado[1], posX, posY, estado[4], estado[5],
-                estado[6], estado[7],estado[8],estado[9])
+                estado[6], estado[7],estado[8],estado[9],estado[10])
         
     
     
@@ -711,7 +711,7 @@ class Camada(Renderizavel):
         posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
         posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
         return (estado[0],estado[1], posX, posY, estado[4], estado[5],
-                estado[6], estado[7],estado[8],estado[9])
+                estado[6], estado[7],estado[8],estado[9],estado[10])
         
     
     
@@ -722,9 +722,9 @@ class Camada(Renderizavel):
         reduzido: atentar que a posX e posY se refere ao ponto superior
         esquerdo do retângulo exterior.
             (string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
-             R, G, B, A)
+             R, G, B, A, self)
             (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
-             R, G, B, A)
+             R, G, B, A, self)
         Gabriel: Essas tuplas podem ser melhoradas de acordo com o que vocês 
         acharem conveniente"""
         figuras = []
@@ -737,6 +737,9 @@ class Camada(Renderizavel):
                 for texto in txts:
                     textos.append(self._transformaTexto(filho, texto))
             elif isinstance(filho, Figura):
+                """(string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
+                   R, G, B, A, self)
+                o self é a referência à própria imagem que gerou a tupla"""
                 x, y = Aux.coordsInscrito(filho.rot, filho.centro.getX(), 
                         filho.centro.getY(), filho.corte.getLargura(), 
                                          filho.corte.getAltura())
@@ -746,12 +749,12 @@ class Camada(Renderizavel):
                  (filho.corte.getTopoEsquerdo(), filho.corte.getTopoDireito(),
                   filho.cor.getFundoEsquerdo(), filho.corte.getFundoDireito()),
                   x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
-                  filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A))
+                  filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A, filho))
             elif isinstance(filho, Texto):
-            #IMPLEMENTAR AQUI
                 """tupla do texto: 
                 (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
-                 R, G, B, A)"""
+                 R, G, B, A, self)
+                o self é a referência à própria imagem que gerou a tupla"""
                 x, y = Aux.coordsInscrito(filho.rot, filho.centro.getX(),
                                                      filho.centro.getY(),
                                           filho.size[0], filho.size[1])
@@ -761,7 +764,7 @@ class Camada(Renderizavel):
                 textos.append((filho.getString(), filho.tupla_fonte,
                               x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
                               filho.cor.R, filho.cor.G, 
-                              filho.cor.B, filho.cor.A))
+                              filho.cor.B, filho.cor.A, filho))
         #raise NotImplementedError("Você deveria ter programado aqui!")
         return (figuras, textos)
 
