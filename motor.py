@@ -190,19 +190,20 @@ class Ponto:
     
     def soma(self, ponto):
         """Soma um outro ponto a si próprio"""
-        self._x = self._x + ponto._x
-        self._y = self._y + ponto._x
+        raise NotImplementedError("Você deveria ter programado aqui!")
     
     
     def retornaSoma(self, ponto):
         """Retorna um novo ponto resultado da soma de si por outro, sem alterar
         o seu próprio valor"""
-        return Ponto((self._x + ponto._x, self._y + ponto._y))     
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return Ponto()
     
     
     def clonar(self):
         """Retorna uma cópia de si mesmo"""
-        return Ponto(self._x, self._y)
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return Ponto()
 
 
 
@@ -226,87 +227,56 @@ class Retangulo:
     def getLargura(self):
         """"Retorna o valor da largura do retângulo, um valor SEMPRE positivo,
         independentemente da posição dos pontos"""
-        larg = self._p1.getX()-self._p2.getX()
-        if larg>0:
-            return larg
-        else:
-            return -larg
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return 1
     
     
     def getAltura(self):
         """Retorna o valor da altura do retângulo, um valor SEMPRE positivo"""
-        alt = self._p1.getY()-self._p2.getY()
-        if alt>0:
-            return alt
-        else:
-            return -alt
-
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return 1
+    
     
     def getTopoEsquerdo(self):
         """Retorna um ponto que representa o ponto superior esquerdo"""
-        if self._p1.getX() < self._p2.getX():
-            if self._p1.getY() < self._p2.getY():
-                return self._p1.clonar()
-            else:
-                return Ponto(self._p1.getX(), self._p2.getY())
-        else:
-            if self._p2.getY() < self._p1.getY():
-                return self._p2.clonar()
-            else:
-                return Ponto(self._p2.getX(), self._p1.getY())
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return Ponto()
     
     
     def getTopoDireito(self):
         """Retorna um ponto que representa o ponto superior direito"""
-        return Ponto(self.getTopoEsquerdo()._x + self.getLargura(), \
-                     self.getTopoEsquerdo()._y)
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return Ponto()
     
     
     def getFundoEsquerdo(self):
         """Retorna um ponto que representa o ponto inferior esquerdo"""
-        return Ponto(self.getTopoEsquerdo()._x, self.getTopoEsquerdo()._y + \
-                     self.getAltura())
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return Ponto()
     
     
     def getFundoDireito(self):
         """Retorna um ponto que representa o ponto inferior direito"""
-        return Ponto(self.getTopoDireito()._x, self.getTopoDireito()._y + \
-                     self.getAltura())
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return Ponto()
     
     
     def setRetangulo(self, ponto1, ponto2):
         """Modifica o retângulo, definindo-o com relação aos pontos"""
-        self._p1 = ponto1
-        self._p2 = ponto2
+        raise NotImplementedError("Você deveria ter programado aqui!")
     
     
     def setRetanguloQueContem(self, lista_retangulos):
         """Modifica o retângulo, definindo-o como o menor retângulo que contém
         todos os outros retângulos da lista de retângulos."""
-        x_esquerda = lista_retangulos[0].getTopoEsquerdo().getX()
-        y_esquerda = lista_retangulos[0].getTopoEsquerdo().getY()
-        x_direita = lista_retangulos[0].getFundoDireito().getX()
-        y_direita = lista_retangulos[0].getTopoDireito().getY()
-        for retangulo in lista_retangulos:
-            if x_esquerda > retangulo.getTopoEsquerdo().getX():
-                x_esquerda = retangulo.getTopoEsquerdo().getX()
-            if y_esquerda > retangulo.getTopoEsquerdo().getY():
-                y_esquerda = retangulo.getTopoEsquerdo().getY()
-            if x_direita < retangulo.getFundoDireito().getX():
-                x_direita = retangulo.getFundoDireito().getX()
-            if y_direita < retangulo.getFundoDireito().getY():
-                y_direita = retangulo.getFundoDireito().getY()
-            
+        raise NotImplementedError("Você deveria ter programado aqui!")
+    
     
     def estaDentro(self, ponto):
         """Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro
         do retângulo"""
-        if ponto._x > self.getTopoEsquerdo()._x and ponto._y > \
-        self.getTopoEsquerdo() and ponto._x < self.getFundoDireito()._x and \
-        ponto._y < self.getFundoDireito()._y:
-            return True
-        else:
-            return False
+        raise NotImplementedError("Você deveria ter programado aqui!")
+        return True
 
 
 
@@ -801,10 +771,14 @@ class Camada(Renderizavel):
 class Botao(Camada):
     """Representa um botão clicável que contém uma imagem de fundo e texto"""
     
-    def __init__(self, tupla_string_imagem, tupla_texto, pos = Ponto(), 
+    def __init__(self,nome_evento, tupla_string_imagem, tupla_texto, pos = Ponto(), 
                  centro = Ponto(), escala = Ponto(1, 1), rot = Angulo(0), 
                  cor = Cor(1, 0, 0, 0, 0)):
-        """Cria"""
+        """
+        Cria.
+        nome_evento: é uma string com o nome do evento que o botao deve gerar
+                     ao ser clicado.
+        """
         super().__init__(pos, centro, escala, rot, cor)
         self.even.escutar("M_pos", self._verEmCima)
         self.even.escutar("M_click", self._verClique)
@@ -814,6 +788,7 @@ class Botao(Camada):
         self.texto = Texto(tupla_texto[0], (tupla_texto[1], tupla_texto[2]))
         self.adicionaFilho(self.imagemFundo)
         self.adicionaFilho(self.texto)
+        self._nome_evento = nome_evento
         raise NotImplementedError("Você deveria ter programado aqui!")
     
     
@@ -821,18 +796,39 @@ class Botao(Camada):
         """Recebe um objeto mousePos do tipo ponto e verifica se o mousePos 
         está dentro do seu retângulo de renderização, tomando as ações
         necessárias, como mudar a cor ou imagem de fundo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        leftcorner = self.imagemFundo.retang.getTopoEsquerdo()
-        
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        if self.imagemFundo.retang.estaDentro(mousePos):
+            """
+            Se está dentro, o botao brilha
+            """
+            R = self.imagemFundo.cor.R
+            G = self.imagemFundo.cor.G
+            B = self.imagemFundo.cor.B
+            alfa = self.imagemFundo.cor.validaalpha(1)
+            self.imagemFundo.cor.setRGBA(R,G,B,alfa)
+        else:
+            """
+            Se não tiver dentro, o botao nao brilha
+            """
+            R = self.imagemFundo.cor.R
+            G = self.imagemFundo.cor.G
+            B = self.imagemFundo.cor.B
+            alfa = self.imagemFundo.cor.validaalpha(0.5)
+            self.imagemFundo.cor.setRGBA(R,G,B,alfa)
     
     def _verClique(self, mousePos):
         """Análogo ao _verEmCima, só que é com o clique agora, o bizu é lançar
         eventos relacionado ao clique, como 'pausar', 'irParaMenuTal' """
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        
+        #raise NotImplementedError("Você deveria ter programado aqui!")
+        if self.imagemFundo.retang.estaDentro(mousePos):
+            """
+            Se está dentro, o botao lança o nome do seu evento. 
+            """
+            self.even.lancar(self._nome_evento,True)
+            
     
     """Precisa de outros métodos que ainda não pensei"""
-
+    
 
 
 
