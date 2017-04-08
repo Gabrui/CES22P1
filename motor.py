@@ -822,6 +822,7 @@ class Botao(Camada):
         está dentro do seu retângulo de renderização, tomando as ações
         necessárias, como mudar a cor ou imagem de fundo"""
         raise NotImplementedError("Você deveria ter programado aqui!")
+        leftcorner = self.imagemFundo.retang.getTopoEsquerdo()
         
     
     def _verClique(self, mousePos):
