@@ -477,23 +477,28 @@ class Renderizador:
     def renderiza(self, imagens, textos):
         """Renderiza tudo, a partir da lista de imagens e de texto: 
             (string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
-             R, G, B, A)
+             R, G, B, A, self)
             (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
-             R, G, B, A)
+             R, G, B, A, self)
             tupla_corte = (posX, posY, largura, altura) referentes ao retangulo
                                                           de corte
         Nessa renderização ele desenha todo o quadro de uma só vez, com base na
         lista de imagens e textos recebidos
         Gabriel: Essas tuplas podem ser melhoradas de acordo com o que vocês 
-        acharem conveniente"""
+        acharem conveniente
+        Ele retorna uma lista de retangulos com as dimensões reais
+        """
         self.tela.fill(self.corFundo)
+        retangs = []
         for i in imagens:
             imagem = self._bancoImagens(i[0])
             # nao foi implementado o corte
-            Recorte = imagem.subsurface((i[1]))
-            imagemRotate = pygame.transform.rotate(Recorte,i[4])
+            recorte = imagem.subsurface((i[1]))
+            imagemRotate = pygame.transform.rotate(recorte,i[4])
             imagemRotate.set_alpha(i[5])
-            self.tela.blit(imagemRotate,(i[2],i[3]))       
+            self.tela.blit(imagemRotate,(i[2], i[3]))
+            larg, alt = imagemRotate.get_size()
+            retangs.append((i[10], i[2], i[3], larg, alt))
             
         for i in textos:
             font = self._bancoFontes(i[1])
@@ -501,9 +506,11 @@ class Renderizador:
             textSurface.set_alpha(i[5])
             textSurfaceRotate = pygame.transform.rotate(textSurface,i[4])
             self.tela.blit(textSurfaceRotate, ([i[2],i[3]]))
+            larg, alt = textSurfaceRotate.get_size()
+            retangs.append((i[10], i[2], i[3], larg, alt))
             
         pygame.display.flip()
-        
+        return retangs
 
 
 
@@ -802,6 +809,17 @@ class Camada(Renderizavel):
                               filho.cor.B, filho.cor.A, filho))
         #raise NotImplementedError("Você deveria ter programado aqui!")
         return (figuras, textos)
+    
+    
+    def _atualizaRetangs(self):
+        """Atualiza os retangs das camadas filhas e depois da sua"""
+        for filho in self.filhos:
+            if isinstance(filho, Camada):
+                filho._atulizaRetangs()
+                
+        retangs = [filho.retang for filho in self.filhos]
+        self.retang.setRetanguloQueContem(retangs)
+            
 
 
 
@@ -912,9 +930,10 @@ class Cena(Camada):
         self._propagaEventoDeCimaParaBaixo(self.even)
         
         imgs, txts = self._observaFilhos()
-        for i in imgs:
-            i[10].retang.setDimensoes(i[2], i[3], i[10])
-        self.renderizador.renderiza(imgs, txts)
+        retangs = self.renderizador.renderiza(imgs, txts)
+        for ret in retangs:
+            ret[0].retang.setDimensoes(ret[1], ret[2], ret[3], ret[4])
+        self._atualizaRetangs()
     
 
 
