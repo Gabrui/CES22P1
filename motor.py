@@ -145,7 +145,6 @@ class Evento:
 
 
 
-# Devaneios geométricos
 class Ponto:
     """Classe que representa um ponto 2d do tipo (x, y)"""
     def __init__ (self, x = 0, y = 0):
@@ -190,20 +189,19 @@ class Ponto:
     
     def soma(self, ponto):
         """Soma um outro ponto a si próprio"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        self._x = self._x + ponto._x
+        self._y = self._y + ponto._x
     
     
     def retornaSoma(self, ponto):
         """Retorna um novo ponto resultado da soma de si por outro, sem alterar
         o seu próprio valor"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return Ponto()
+        return Ponto((self._x + ponto._x, self._y + ponto._y))     
     
     
     def clonar(self):
         """Retorna uma cópia de si mesmo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return Ponto()
+        return Ponto(self._x, self._y)
 
 
 
@@ -227,56 +225,93 @@ class Retangulo:
     def getLargura(self):
         """"Retorna o valor da largura do retângulo, um valor SEMPRE positivo,
         independentemente da posição dos pontos"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return 1
+        larg = self._p1.getX()-self._p2.getX()
+        if larg>0:
+            return larg
+        else:
+            return -larg
     
     
     def getAltura(self):
         """Retorna o valor da altura do retângulo, um valor SEMPRE positivo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return 1
-    
+        alt = self._p1.getY()-self._p2.getY()
+        if alt>0:
+            return alt
+        else:
+            return -alt
+
     
     def getTopoEsquerdo(self):
         """Retorna um ponto que representa o ponto superior esquerdo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return Ponto()
+        if self._p1.getX() < self._p2.getX():
+            if self._p1.getY() < self._p2.getY():
+                return self._p1.clonar()
+            else:
+                return Ponto(self._p1.getX(), self._p2.getY())
+        else:
+            if self._p2.getY() < self._p1.getY():
+                return self._p2.clonar()
+            else:
+                return Ponto(self._p2.getX(), self._p1.getY())
     
     
     def getTopoDireito(self):
         """Retorna um ponto que representa o ponto superior direito"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return Ponto()
+        return Ponto(self.getTopoEsquerdo()._x + self.getLargura(), \
+                     self.getTopoEsquerdo()._y)
     
     
     def getFundoEsquerdo(self):
         """Retorna um ponto que representa o ponto inferior esquerdo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return Ponto()
+        return Ponto(self.getTopoEsquerdo()._x, self.getTopoEsquerdo()._y + \
+                     self.getAltura())
     
     
     def getFundoDireito(self):
         """Retorna um ponto que representa o ponto inferior direito"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return Ponto()
+        return Ponto(self.getTopoDireito()._x, self.getTopoDireito()._y + \
+                     self.getAltura())
     
     
     def setRetangulo(self, ponto1, ponto2):
         """Modifica o retângulo, definindo-o com relação aos pontos"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
+        self._p1 = ponto1
+        self._p2 = ponto2
     
     
     def setRetanguloQueContem(self, lista_retangulos):
         """Modifica o retângulo, definindo-o como o menor retângulo que contém
         todos os outros retângulos da lista de retângulos."""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-    
+        x_esquerda = lista_retangulos[0].getTopoEsquerdo().getX()
+        y_esquerda = lista_retangulos[0].getTopoEsquerdo().getY()
+        x_direita = lista_retangulos[0].getFundoDireito().getX()
+        y_direita = lista_retangulos[0].getTopoDireito().getY()
+        for retangulo in lista_retangulos:
+            if x_esquerda > retangulo.getTopoEsquerdo().getX():
+                x_esquerda = retangulo.getTopoEsquerdo().getX()
+            if y_esquerda > retangulo.getTopoEsquerdo().getY():
+                y_esquerda = retangulo.getTopoEsquerdo().getY()
+            if x_direita < retangulo.getFundoDireito().getX():
+                x_direita = retangulo.getFundoDireito().getX()
+            if y_direita < retangulo.getFundoDireito().getY():
+                y_direita = retangulo.getFundoDireito().getY()
+            
     
     def estaDentro(self, ponto):
         """Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro
         do retângulo"""
-        raise NotImplementedError("Você deveria ter programado aqui!")
-        return True
+        if ponto._x > self.getTopoEsquerdo()._x and ponto._y > \
+        self.getTopoEsquerdo() and ponto._x < self.getFundoDireito()._x and \
+        ponto._y < self.getFundoDireito()._y:
+            return True
+        else:
+            return False
+    
+    
+    def setDimensoes(self, posX, posY, largura, altura):
+        """Parecido com o setRetangulo, mas utiliza largura e altura"""
+        self._p1.setXY(posX, posY)
+        self._p2 = self._p1.retornaSoma(Ponto(largura, altura))
 
 
 
@@ -845,12 +880,14 @@ class Cena(Camada):
         if figura.corte is None:
             figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
     def inicializaTexto(self, texto):
-        largura,altura = self.renderizador.getSizeTexto(texto.getString(),texto.tupla_fonte)
+        largura,altura = self.renderizador.getSizeTexto(texto.getString(),
+                                                        texto.tupla_fonte)
         texto.size = (largura,altura)
     
     
     def __init__ (self, audio, entrada, renderizador, str_musica_fundo = None):
-        """Precisa-se da referência aos objetos de Audio, Entrada e Renderizador"""
+        """Precisa-se da referência aos objetos de Audio, Entrada e 
+        Renderizador"""
         super().__init__()
         self.audio = audio
         if str_musica_fundo is not None:
@@ -864,7 +901,8 @@ class Cena(Camada):
     
     
     def atualiza(self, dt):
-        """Propaga o loop do jogo, sabendo o intervalo de tempo dt transcorrido"""
+        """Propaga o loop do jogo, sabendo o intervalo de tempo dt 
+        transcorrido"""
         self.entrada.atualiza()
         self.even.pararTodosLancamentos()
         self.entrada.even.propagaLancamento(self.even)
@@ -874,6 +912,8 @@ class Cena(Camada):
         self._propagaEventoDeCimaParaBaixo(self.even)
         
         imgs, txts = self._observaFilhos()
+        for i in imgs:
+            i[10].retang.setDimensoes(i[2], i[3], i[10])
         self.renderizador.renderiza(imgs, txts)
     
 

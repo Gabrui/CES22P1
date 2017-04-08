@@ -9,7 +9,8 @@ Created on Sat Apr  1 13:49:41 2017
 import unittest
 
 
-from motor import Aux, Angulo
+from motor import Aux, Angulo, Ponto, Retangulo
+
 class AuxTeste(unittest.TestCase):
     
     #Esse setUp é do unittest, e é executado antes de cada novo teste
@@ -65,6 +66,51 @@ class AuxTeste(unittest.TestCase):
 class EventoTeste(unittest.TestCase):
     pass
     
+
+
+class RetanguloTeste(unittest.TestCase):
+    
+    def setUp(self):
+        self.r1 = Retangulo(Ponto(0,0), Ponto(6,6))
+        self.r2 = Retangulo(Ponto(3,2), Ponto(-2, 3))
+        self.r3 = Retangulo(Ponto(-14,3), Ponto(231,3))
+    
+    def testaGetTopoEsquerdo(self):
+        self.assertEqual(self.r1.getTopoEsquerdo().getX(), 0)
+        self.assertEqual(self.r1.getTopoEsquerdo().getY(), 0)
+        self.assertEqual(self.r2.getTopoEsquerdo().getX(), -2)
+        self.assertEqual(self.r2.getTopoEsquerdo().getY(), 2)
+        self.assertEqual(self.r3.getTopoEsquerdo().getX(), -14)
+        self.assertEqual(self.r3.getTopoEsquerdo().getY(), 3)
+        
+    def testaGetTopoDireito(self):
+        self.assertEqual(self.r1.getTopoDireito().getX(), 6)
+        self.assertEqual(self.r1.getTopoDireito().getY(), 0)
+        self.assertEqual(self.r2.getTopoDireito().getX(), 3)
+        self.assertEqual(self.r2.getTopoDireito().getY(), 2)
+        self.assertEqual(self.r3.getTopoDireito().getX(), 231)
+        self.assertEqual(self.r3.getTopoDireito().getY(), 3)
+        
+    def testaGetFundoEsquerdo(self):
+        self.assertEqual(self.r1.getFundoEsquerdo().getX(), 0)
+        self.assertEqual(self.r1.getFundoEsquerdo().getY(), 6)
+        self.assertEqual(self.r2.getFundoEsquerdo().getX(), -2)
+        self.assertEqual(self.r2.getFundoEsquerdo().getY(), 3)
+        self.assertEqual(self.r3.getFundoEsquerdo().getX(), -14)
+        self.assertEqual(self.r3.getFundoEsquerdo().getY(), 3)
+        
+    def testaGetFundoDireito(self):
+        self.assertEqual(self.r1.getFundoDireito().getX(), 6)
+        self.assertEqual(self.r1.getFundoDireito().getY(), 6)
+        self.assertEqual(self.r2.getFundoDireito().getX(), 3)
+        self.assertEqual(self.r2.getFundoDireito().getY(), 3)
+        self.assertEqual(self.r3.getFundoDireito().getX(), 231)
+        self.assertEqual(self.r3.getFundoDireito().getY(), 3)
+        
+        
+
+
+
     
 #Executa os testes, se estivermos executando este arquivo
 if __name__ == '__main__':
