@@ -1,4 +1,4 @@
-KeyASCII      ASCII   Common Name 
+﻿KeyASCII      ASCII   Common Name 
 or Event      
 Name
 
@@ -135,6 +135,8 @@ K_BREAK               break
 K_MENU                menu
 K_POWER               power
 K_EURO                Euro
+K_vazio
+K_desfocado
 Play		      Jogar (chamada ao gameplay)
 Pause                 Pausar o jogo (chamada ao Pause Menu)
 Quit		      Sair do jogo
@@ -143,5 +145,13 @@ Vitoria               Missao completada
 Return		      Voltar ao menu anterior
 imagem_nova           string_imagem for modificada, o objeto do evento é o próprio objeto do tipo Figura
 tocar_efeito	      Para tocar um som, o objeto do evento é uma string
-
-
+M_click		      Botão esquerdo do mouse foi clicado
+M_clickD              Botão direito do mouse foi clicado
+M_pos                 Nenhum botao do mouse foi clicado e a posicao do mouse está sendo passada
+texto_novo            Pega o retangulo da superficie do texto
+imagem_nova
+Atirar                Algum objeto atirou em um inimigo
+PlayerLocation        Pedido de informacao da posicao e velocidade do Jogador 
+Manobra180V            Executar animacao de manobra de 180, ou seja, inverte a imagem com relacao ao eixo vertical
+ 
+disparo
