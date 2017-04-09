@@ -4,18 +4,19 @@ Created on Sat Apr  1 18:48:42 2017
 
 @author: Dylan N. Sugimoto
 """
+import Projetil
 
 class Arma():
     """Representa a ideia abstrata de arma"""
     
-    def __init__(self,Som, Projetil, Dono = None):
+    def __init__(self,Som, projetil = Projetil.Projetil(), Dono = None):
         """
         Som:        referencia o som da arma
         Projetil:   nome do projetil que a arma usa
         Dono:       nome da instancia que possui essa arma
         """
         self._Som = Som
-        self._Projetil = Projetil
+        self._Projetil = projetil
         self.Dono = Dono
         
     def getSom(self):
