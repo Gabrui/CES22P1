@@ -974,4 +974,7 @@ class Jogo():
             self.CenaAtual.atualiza(dt)
             self.cenaAtual.even.propagaLancamento(self.even)
     
-    
+
+class CarregadorDeCenas:
+    """"Classe que vai gerar as cenas a partir de um arquivo"""
+    pass
