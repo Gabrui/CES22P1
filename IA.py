@@ -7,8 +7,15 @@ Created on Sun Apr  9 12:00:23 2017
 import motor
 import math
 
+velPadrao = 10 #constante de valor padrao de velocidade para IA
+distanciaManobra = 300
+distanciaPerseguir = 200
+aceleracaoAngular = 1
+aceleracao = 1
+desaceleracao = 1
+
 class IA():
-    def __init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(0,0), alvoPos = motor.Ponto(0,0),
+    def __init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
                  alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
                  deltaAngTol = motor.Angulo(5)):
         """
@@ -33,7 +40,8 @@ class IA():
         self.velAng = 0
         self.deltaAngTol = deltaAngTol
         self.arma = arma
-        self.distanciaPerseguir = 10
+        self.distanciaPerseguir = distanciaPerseguir
+        self.distanciaManobra = distanciaManobra
         
         self.alvoPos = alvoPos
         self.alvoVel = alvoVel
@@ -58,27 +66,48 @@ class IA():
         
         
     def perseguir(self):
-        if self.Pos.getX() < self.alvoPos.getX() and self.Vel.getX() < 0:
-            """
-            Inverte a direcao de voo
-            """
-            pass
         
+        if self.Pos.getX() < self.alvoPos.getX() and self.Vel.getX() < 0:
+               """
+               Inverte a direcao de voo
+               """
+               if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
+                   self.Vel.setX(0)
+                   self.even.lancar("Manobra180V",(self.Pos.clonar(), self.ang.getAngulo()))
+                   self.Vel.setX(velPadrao)
+               elif self.Vel.getX() >= self.alvoVel.getX():
+                   acelX = self.Vel.getX() - aceleracao
+                   self.Vel.setX(acelX)
         elif (self.Pos.getX() > self.alvoPos.getX()) and (self.Vel.getX() > 0):
-            """
-            Inverte a direcao de voo
-            """
-            pass
-        elif self.Pos.distancia2(self.alvoPos) <self.distanciaPerseguir and self.Vel.getX() > self.alvoVel.getX():
+              """
+              Inverte a direcao de voo
+              """
+              if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
+                  self.Vel.setX(0)
+                  self.even.lancar("Manobra180V",(self.Pos.clonar(), self.ang.getAngulo()))
+                  self.Vel.setX(-velPadrao)
+              elif self.Vel.getX() <= self.alvoVel.getX():
+                  acelX = self.Vel.getX() + aceleracao
+                  self.Vel.setX(acelX)   
+                   
+        elif self.Pos.distancia2(self.alvoPos) <self.distanciaPerseguir:
             """
             se tiver a uma certa distancia, diminui a sua velocidade 
             para igualar à velocidade do jogador.
             """
-            if self.Vel.getX()-1 >= self.alvoVel.getX():
-                
-                self.Vel.setX(self.Vel.getX()-1)
-        
-            
+            if self.Vel.getX() > self.alvoVel.getX() and self.Vel.getX()>0:
+                acelX = self.Vel.getX() - desaceleracao
+                if acelX >= self.alvoVel.getX() and acelX != 0:
+                    self.Vel.setX(acelX)
+                elif self.alvoVel.getX() != 0:
+                    self.Vel.setX(self.alvoVel.getX())
+            elif self.Vel.getX() < self.alvoVel.getX() and self.Vel.getX() < 0:
+                acelX = self.Vel.getX() + desaceleracao
+                if acelX <= self.alvoVel.getX() and acelX != 0:
+                    self.Vel.setX(acelX)
+                elif self.alvoVel.getX() != 0:
+                    self.Vel.setX(self.alvoVel.getX())
+                    
     def aim(self):
         """
         Diminui o angulo de visada para zero.
@@ -87,9 +116,9 @@ class IA():
         """
         AngVisada = self.ang.getAngulo() - self.angUni.getAngulo()
         if AngVisada >0:
-            self.velAng = -1
+            self.velAng = -aceleracaoAngular
         elif AngVisada < 0 :
-            self.velAng = +1
+            self.velAng = +aceleracaoAngular
         elif AngVisada == 0:
             self.velAng = 0
         if AngVisada <= self.deltaAngTol:
