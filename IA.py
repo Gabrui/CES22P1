@@ -10,7 +10,7 @@ import math
 velPadrao = 10 #constante de valor padrao de velocidade para IA
 distanciaManobra = 300 #valor constante para distancia minima para realizar Manobra180V
 distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
-aceleracaoAngular = 1#velocidade com que IA rotaciona
+aceleracaoAngular = 0.1#velocidade com que IA rotaciona
 aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
 desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
 
@@ -167,4 +167,23 @@ class AviaoInimigo(IA,motor.Figura):
                 elif self.alvoVel.getX() != 0:
                     self.Vel.setX(self.alvoVel.getX())
     def voar(self):
-        pass          
+       self.Pos.soma(self.Vel.getXY) #atualiza a posicao para o frame seguinte
+       if self.Velang != 0: 
+           """
+           Se a velocidade angular nao for zero, tem que rotacionar a velocidade
+           e a figura de um angulo igual ao modulo da velocidade angular.
+           Logo, o novo Vx e novo Vy sao as projecoes do modulo de V.
+           """
+           ang = math.atan2(self.Vel.getY(),self.Vel.getX()) + self.Velang
+           self.ang.setAngulo(ang,False) #novo angulo com a horizontal
+           projX = self.Vel.distancia((0,0))*math.cos(self.ang.getAngulo(False))
+           projY = self.Vel.distancia((0,0))*math.sin(self.ang.getAngulo(False))
+           NovoVx = int(projX)#deve ser inteiro para alterar a posicao
+           NovoVy = int(projY)#deve ser inteiro para posicao ser inteira (pixel)
+           if NovoVx == 0 and projX!= 0:
+               #se o truncamento zerar uma velocidade nao nula
+               NovoVx = 1
+           if  NovoVy == 0 and projY!= 0:
+               #se o truncamento zerar uma velocidade nao nula
+               NovoVy = 1
+           self.Vel.setXY((NovoVx,NovoVy))
