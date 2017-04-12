@@ -168,6 +168,7 @@ class AviaoInimigo(IA,motor.Figura):
                     self.Vel.setX(self.alvoVel.getX())
     def voar(self):
        self.Pos.soma(self.Vel.getXY) #atualiza a posicao para o frame seguinte
+       self.pos.getXY(self.Pos.getXY)#atualiza a posicao da Figura
        if self.Velang != 0: 
            """
            Se a velocidade angular nao for zero, tem que rotacionar a velocidade
@@ -176,6 +177,7 @@ class AviaoInimigo(IA,motor.Figura):
            """
            ang = math.atan2(self.Vel.getY(),self.Vel.getX()) + self.Velang
            self.ang.setAngulo(ang,False) #novo angulo com a horizontal
+           self.rot.setAngulo(self.ang.getAngulo())#atualiza o angulo da Figura
            projX = self.Vel.distancia((0,0))*math.cos(self.ang.getAngulo(False))
            projY = self.Vel.distancia((0,0))*math.sin(self.ang.getAngulo(False))
            NovoVx = int(projX)#deve ser inteiro para alterar a posicao
@@ -187,3 +189,4 @@ class AviaoInimigo(IA,motor.Figura):
                #se o truncamento zerar uma velocidade nao nula
                NovoVy = 1
            self.Vel.setXY((NovoVx,NovoVy))
+           
