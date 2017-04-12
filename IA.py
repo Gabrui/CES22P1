@@ -13,11 +13,12 @@ distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
 aceleracaoAngular = 0.1#velocidade com que IA rotaciona
 aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
 desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
+erro = 5 #erro angular aceitavel para atirar
 
 class IA():
     def __init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
                  alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
-                 deltaAngTol = motor.Angulo(5)):
+                 deltaAngTol = motor.Angulo(erro)):
         """
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
@@ -189,4 +190,41 @@ class AviaoInimigo(IA,motor.Figura):
                #se o truncamento zerar uma velocidade nao nula
                NovoVy = 1
            self.Vel.setXY((NovoVx,NovoVy))
-           
+
+class TorreInimiga(IA,motor.Figura):
+    
+    def __init__(self,img,audio, arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
+                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
+                 deltaAngTol = motor.Angulo(5)): 
+        IA.__init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
+                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
+                 deltaAngTol = motor.Angulo(5))
+        motor.Figura.__init__(img)
+        """
+        img:     É a string do nome do arquivo imagem do aviao
+        audio:   É a string do nome do arquivo audio do aviao
+        alvoPos: (posXdoJogador,posYdoJogador)
+        alvoVel: (velXdoJogador,velYdoJogador)
+        arma:    Objeto do tipo Arma
+        pos:     tupla de posicao do IA
+        vel:     tupla de velocidade do IA
+        ang:     inclinacao angular da reta definida 
+                 pelo vetor velocidade de IA
+        angUni:  inclinacao angular da reta que uni
+                 o alvo e a IA
+        velAng:  velocidade angular de IA
+        distanciaPerseguir: distancia minima para o qual o IA 
+                            tenta estabelecer a mesma velocidade que a do Jogador
+        deltaAngTol: angulo de tolerancia para disparo
+        """
+        
+        self._audio = audio
+        self.even.lancar("tocar_efeito",self._audio)
+       
+        def apontar(self):
+            #atualiza novo angulo
+            novoAng = self.ang.getAngulo(False) + self.velAng
+            if novoAng >=0:#para garantir que a turreta nao aponte para baixo
+                self.ang.setAngulo(novoAng)#atualiza o angulo
+                self.rot.setAngulo(self.ang.getAngulo())#atualiza angulo da FIgura
+            
