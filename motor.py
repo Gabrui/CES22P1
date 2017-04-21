@@ -554,7 +554,10 @@ class Entrada:
         """Atualiza os seus eventos"""
         self._verTeclado()
         self._verMouse()
-
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: 
+                pygame.quit()
+                quit()
 
 
 
