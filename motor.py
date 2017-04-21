@@ -954,6 +954,22 @@ class Jogo():
     
     
     """Ainda estou pensando, podemos discutir esses métodos"""
+    def gameloop(self):
+        fundo1 = Figura("estFundo.png")
+        fundo2 = Figura("movFundo.png")
+        fundo3 = Figura("nuvem.png")
+        aviao = Figura("hellcat2.png")
+        
+        self.cenaAtual = Cena(self.Audio,self.entrada,self.rederizador)
+        self.cenaAtual.adicionaFilho(fundo1)
+        self.cenaAtual.adicionaFilho(fundo2)
+        self.cenaAtual.adicionaFilho(fundo3)
+        self.cenaAtual.adicionaFilho(aviao)
+        
+        while continuarLoop:
+        
+        
+        
     def carregaCenas(self, listaCenas):
         pass
     
