@@ -31,8 +31,27 @@ class Cenario(Camada):
 
 class FundoParalaxeInfinito(Camada):
     
-    def __init__(self, largura, altura, textura, y0, rvx, rvy):
+    def __init__(self, larguraTela, alturaTela, textura, corte, pos0, rel):
         super().__init__()
+        self.larguraTela = larguraTela
+        self.alturaTela = alturaTela
+        self.altura = alturaTela - corte.getAltura() - pos0.getY()
+        self.largura = corte.getLargura()
+        self.num = self.larguraTela/self.largura
+        
+        if rel.getX() > 0:
+            self.num += 1
+        
+        for i in range(num):
+            figura = Figura(textura, corte, Ponto(i*self.largura, self.altura))
+            self.adicionaFilho(figura)
+    
+    
+    def atualizaFundo(self, dx, dy):
+        for filho in self.filhos:
+            filho.pos.setXY(rel.getX()*dx, rel.getY()*dy)
+            if filho
+        
     
     function FazerFundos (textura, acrescimoY, razaoVeloX, razaoVeloY) {
     
