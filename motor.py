@@ -17,6 +17,7 @@ pygame.init()
 #POIS EU ESTOU USANDO VÁRIAS JANELAS ABERTAS COM ESSE TAMANHO BEM AQUI ------->
 """
 
+
 class Aux:
     """Classes com funções auxiliares para mexer com listas etc..."""
     @staticmethod
@@ -35,7 +36,7 @@ class Aux:
         for tupla in lista:
             if tupla[0] == elem:
                 return True
-    
+        return False
     
     @staticmethod
     def coordsInscrito(angulo, Cx, Cy, largura, altura):
@@ -79,6 +80,8 @@ class Evento:
         #É uma lista de tuplas (stringsEventos, objeto_do_evento) LANÇADOS
         self._lancados = []
     
+    def foiLancado(self,string_evento):
+        return Aux.existeTuplaElem(self._lancados,string_evento) 
     
     def escutar(self, string_evento, callback):
         """Começar a escutar determinado evento, isto é, a função de callback
@@ -102,29 +105,28 @@ class Evento:
         Para tal, é necessário o indentificador do evento e o objeto
         relacionado ao evento, que será passado como parâmetro para a função de
         callback"""
-        if Aux.existeTupla1Elem(self._escutaveis, string_evento):
-            self._disparados.append((string_evento, objeto_do_evento))
+        self._lancados.append((string_evento, objeto_do_evento))
     
     
     def pararLancamento(self, string_evento, objeto_do_evento = None):
         """Remove um evento da lista de eventos lançados"""
         if objeto_do_evento is None:
-            Aux.removeTuplas1Elem(self._disparados, string_evento)
+            Aux.removeTuplas1Elem(self._lancados, string_evento)
         else:
-            self._disparados.remove((string_evento, objeto_do_evento))
+            self._lancados.remove((string_evento, objeto_do_evento))
     
     
     def pararTodosLancamentos(self):
         """Limpa a lista de eventos lançados"""
-        del self._disparados[:]
+        del self._lancados[:]
     
     
     def recebeEscuta(self, evento):
         """Executa as funções de escuta (callback) dado os lançamentos 
         presentes em um outro evento"""
         for escutavel, callback in self._escutaveis:
-            for disparo, objeto_do_evento in evento._disparados: 
-                if escutavel == disparo:
+            for lancados, objeto_do_evento in evento._lancados: 
+                if escutavel == lancados:
                     callback(objeto_do_evento)
     
     
@@ -132,7 +134,7 @@ class Evento:
         """Fala para outro evento o que você disparou, e se ele não souber 
         responder, ele pega para ele o que você falou, isto é, parando o seu 
         lançamento e escutando o seu evento ou lançando-o adiante. """
-        for disparo, objeto_do_evento in self._disparados:
+        for disparo, objeto_do_evento in self._lancados:
             escutou = False
             for escutavel, callback in evento._escutaveis:
                 if escutavel == disparo:
@@ -196,7 +198,7 @@ class Ponto:
     def retornaSoma(self, ponto):
         """Retorna um novo ponto resultado da soma de si por outro, sem alterar
         o seu próprio valor"""
-        return Ponto((self._x + ponto._x, self._y + ponto._y))     
+        return Ponto(self._x + ponto._x, self._y + ponto._y)     
     
     
     def clonar(self):
@@ -493,7 +495,7 @@ class Renderizador:
         for i in imagens:
             imagem = self._bancoImagens(i[0])
             # nao foi implementado o corte
-            recorte = imagem.subsurface((i[1]))
+            recorte = imagem.subsurface(i[1])
             imagemRotate = pygame.transform.rotate(recorte,i[4])
             imagemRotate.set_alpha(i[5])
             self.tela.blit(imagemRotate,(i[2], i[3]))
@@ -623,7 +625,7 @@ class Renderizavel:
         self.pos = pos
         self.centro = centro
         self.escala = escala
-        self.retang = Retangulo(0, 0, 0, 0)
+        self.retang = Retangulo(Ponto(0, 0), Ponto(0, 0))
         self.rot = rot
         self.cor = cor
     
@@ -788,8 +790,8 @@ class Camada(Renderizavel):
                 x = filho.pos.getX() - x
                 y = filho.pos.getY() - y
                 figuras.append((filho.getString(), 
-                 (filho.corte.getTopoEsquerdo(), filho.corte.getTopoDireito(),
-                  filho.cor.getFundoEsquerdo(), filho.corte.getFundoDireito()),
+                 (filho.corte.getTopoEsquerdo().getX(), filho.corte.getTopoEsquerdo().getY(),
+                  filho.corte.getFundoDireito().getX(), filho.corte.getFundoDireito().getY()),
                   x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
                   filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A, filho))
             elif isinstance(filho, Texto):
@@ -936,64 +938,3 @@ class Cena(Camada):
         self._atualizaRetangs()
     
 
-
-
-
-class Jogo():
-    """Controla o loop principal do jogo, faz as transições de cena"""
-    
-    def __init__(self, fps):
-        """Ainda é só um esboço"""
-        self.audio = Audio()
-        self.renderizador = Renderizador()
-        self.entrada = Entrada()
-        self.even = Evento()
-        self.even.escutar("sair", self.irParaCena)
-        self.continuarLoop = True
-        self.cenaAtual = None
-    
-    
-    """Ainda estou pensando, podemos discutir esses métodos"""
-    def gameloop(self):
-        fundo1 = Figura("imgTeste/estFundo.png")
-        fundo2 = Figura("imgTeste/movFundo.png")
-        fundo3 = Figura("imgTeste/nuvem.png")
-        aviao = Figura("imgTeste/hellcat2.png")
-        
-        self.cenaAtual = Cena(self.Audio,self.entrada,self.rederizador)
-        self.cenaAtual.adicionaFilho(fundo1)
-        self.cenaAtual.adicionaFilho(fundo2)
-        self.cenaAtual.adicionaFilho(fundo3)
-        self.cenaAtual.adicionaFilho(aviao)
-        
-        self.even.escutar('MenuPause',self.menuPause)
-        self.even.escutar('Hangar',self.hangar) 
-        
-        while continuarLoop:
-            self.cenaAtual.atualiza
-        
-        
-    def carregaCenas(self, listaCenas):
-        pass
-    
-    
-    def rodarCena(self, cena):
-        pass
-    
-    
-    def irParaCena(self, cena):
-        if cena is None:
-            self.continuarLoop = False
-    
-    
-    def atualizar(self):
-        #Relógio
-        dt = 15 #Time1 - time0
-        if self.continuarLoop:
-            self.CenaAtual.atualiza(dt)
-            self.cenaAtual.even.propagaLancamento(self.even)
-    
-
-class CarregadorDeCenas:
-    """"Classe que vai gerar as cenas a partir de um arquivo"""
-    pass
