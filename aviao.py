@@ -6,11 +6,13 @@ Created on Wed Apr  5 12:40:42 2017
 @author: gabrui
 """
 
-import motor
+from motor import Figura, Ponto
 import math
 
-class Aviao(motor.Figura):
-    pass
+class Aviao(Figura):
+    
+    def __init__(self, string_imagem, pos0):
+        super().__init__(string_imagem, pos = pos0)
 
 
 class Jogador(Aviao):
@@ -27,7 +29,9 @@ class Jogador(Aviao):
     # ([8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
     [5, 50000, 5000/3, 100], [5000, 150])
     """
-    def __init__(self, aerMacro, empuxoMacro, rotMacro, inerciaMacro):
+    def __init__(self, string_imagem, pos0, aerMacro, empuxoMacro, rotMacro, 
+                 inerciaMacro):
+        super().__init__(string_imagem, pos0)
         #Constantes matemáticas
         self.radianosParaGraus      = 180 / math.pi
         self.grausParaRadianos      = math.pi/180
@@ -52,14 +56,14 @@ class Jogador(Aviao):
         self.hVelD                  = 0
         self.hVelmDm                = 0
         self.hArrastoRotacional     = 0
-        self.hArrastoRotacionalMax        #Requer inicialização.
+        #self.hArrastoRotacionalMax        #Requer inicialização.
         self.arrFrontH              = 0
         self.arrFrontHMax           = empuxoMacro[1] #Requer inicialização.
         self.hArrFrontRot           = 0
         self.empuxo                 = 0
         self.empuxoMax              = empuxoMacro[0] #Requer inicialização.
         self.percMotor              = 0
-        self.hArrFrontRotMax              #Requer inicialização
+        #self.hArrFrontRotMax              #Requer inicialização
         self.hArrFrontRat           = empuxoMacro[4]   #Requer inicialização
         self.hForcaMotorMax         = empuxoMacro[2]   #Requer inicialização
         self.hAtritoMotor           = empuxoMacro[3]   #Requer inicialização
@@ -118,8 +122,8 @@ class Jogador(Aviao):
     
         #Renderização
         self.lado             = 1
-        self.x                = 0
-        self.y                = 0
+        self.dx               = 0
+        self.dy               = 0
         self.rotacao          = 0
         self.rotacaoRad       = 0
             
@@ -198,7 +202,7 @@ class Jogador(Aviao):
         self.hVelD = self.hVelo * self.hVelo * self.densidade
 
         #FORÇAS AERODINÂMICAS E PESO
-        self._criarGrafico(self.angAtaq, self.constRatAer, self.graficoAngAtaq)                
+        self._interpolar(self.angAtaq, self.constRatAer, self.graficoAngAtaq)                
         #https:#www.youtube.com/watch?v=dY3daNK1Tek
         self.arrasto = (self.kArr * self.velveld * (1 + self.constRatAer[0]) * 
                         (1 + self.arrastoEsp))  
@@ -288,8 +292,8 @@ class Jogador(Aviao):
                        self.sustentacao - self.sinVelo * self.arrasto)
         self.xAcel = self.xForca / self.massa
         self.yAcel = self.yForca / self.massa
-        self.x = (self.xVel*dt + self.xAcel*dt*dt/2)
-        self.y = (self.yVel*dt + self.yAcel*dt*dt/2)
+        self.dx = (self.xVel*dt + self.xAcel*dt*dt/2)
+        self.dy = (self.yVel*dt + self.yAcel*dt*dt/2)
         self.xVel += self.xAcel * dt
         self.yVel += self.yAcel * dt
         
@@ -309,9 +313,9 @@ class Jogador(Aviao):
         # e sup
         inf=0
         sup=quantPontPos-1
-        med = (inf + sup) / 2
+        med = (inf + sup) // 2
         while sup > inf+1:
-            med = (inf + sup) / 2
+            med = (inf + sup) // 2
             if pontos[med][0] > entrada:
                 sup = med
             else:
@@ -326,6 +330,7 @@ class Jogador(Aviao):
         return True
     
     
-    def update(self, dt):
+    def atualiza(self, dt):
         self.calculus(dt)
+        self.pos.soma(Ponto(self.dx, self.dy))
         

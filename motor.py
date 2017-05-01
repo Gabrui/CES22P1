@@ -192,7 +192,7 @@ class Ponto:
     def soma(self, ponto):
         """Soma um outro ponto a si próprio"""
         self._x = self._x + ponto._x
-        self._y = self._y + ponto._x
+        self._y = self._y + ponto._y
     
     
     def retornaSoma(self, ponto):
@@ -357,7 +357,7 @@ class Angulo:
     
     
     @staticmethod
-    def RadianosParaGraus(angulo):
+    def radianosParaGraus(angulo):
         from math import degrees
         return degrees(angulo)
     
@@ -764,8 +764,9 @@ class Camada(Renderizavel):
         Cx = camadaFilha.centro.getX()
         Cy = camadaFilha.centro.getY()
         alfa = math.atan2(Cy - estado[3],Cx - estado[2])
-        hipo = math.sqrt((Cy - estado[3])^2 + (Cx - estado[2])^2 )
-        teta = Angulo.GrausParaRadianos(estado[4])
+        hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
+                         (Cx - estado[2])*(Cx - estado[2]) )
+        teta = Angulo.grausParaRadianos(estado[4])
         posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
         posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
         return (estado[0],estado[1], posX, posY, estado[4], estado[5],
@@ -848,7 +849,7 @@ class Camada(Renderizavel):
         """Atualiza os retangs das camadas filhas e depois da sua"""
         for filho in self.filhos:
             if isinstance(filho, Camada):
-                filho._atulizaRetangs()
+                filho._atualizaRetangs()
                 
         retangs = [filho.retang for filho in self.filhos]
         self.retang.setRetanguloQueContem(retangs)
@@ -967,5 +968,6 @@ class Cena(Camada):
         for ret in retangs:
             ret[0].retang.setDimensoes(ret[1], ret[2], ret[3], ret[4])
         self._atualizaRetangs()
+        super().atualiza(dt)
     
 

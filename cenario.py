@@ -44,7 +44,7 @@ class FundoParalaxeInfinito(Camada):
         self.alturaTela = alturaTela
         self.altura = alturaTela - corte.getAltura() - pos0.getY()
         self.largura = corte.getLargura()
-        self.quant = self.larguraTela/self.largura
+        self.quant = (int) (self.larguraTela/self.largura)
         self.rel = rel
         
         if rel.getX() > 0:
