@@ -956,12 +956,16 @@ class Cena(Camada):
         """Propaga o loop do jogo, sabendo o intervalo de tempo dt 
         transcorrido"""
         self.entrada.atualiza()
+        
         self.even.pararTodosLancamentos()
-        self.entrada.even.propagaLancamento(self.even)
+        #self.entrada.even.propagaLancamento(self.even)
+        
+        self.entrada.even.pararTodosLancamentos()
+        
         self._propagaEventoDeCimaParaBaixo(self.even)
-        #self.even.pararTodosLancamentos()
         self._propagaEventoDeBaixoParaCima()
         self._propagaEventoDeCimaParaBaixo(self.even)
+        print(self.even._lancados)
         
         imgs, txts = self._observaFilhos()
         retangs = self.renderizador.renderiza(imgs, txts)

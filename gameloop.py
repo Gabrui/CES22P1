@@ -55,6 +55,7 @@ class Jogo():
             tantigo = tnovo
             tnovo = time.clock()
             dt = tnovo - tantigo
+            print(dt)
             if dt < td:
                 time.sleep(td - dt)
             if dt > t20:
