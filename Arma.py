@@ -22,7 +22,8 @@ class Arma():
     def getSom(self):
         return self._Som
     def getProjetil(self):
-        return self._Projetil
+        projetil = self._Projetil.clonarProjetil()
+        return projetil
     def getDono(self):
         return self._Dono
     def setDono(self,Dono):

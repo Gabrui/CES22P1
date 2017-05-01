@@ -16,7 +16,7 @@ desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
 erro = 5 #erro angular aceitavel para atirar
 
 class IA():
-    def __init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
+    def __init__(self,arma, PV, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
                  alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
                  deltaAngTol = motor.Angulo(erro)):
         """
@@ -48,11 +48,17 @@ class IA():
         self.alvoVel = alvoVel
         self.angUni = angUni
         
+        self.PV = PV
+        
         #escuta o evento e chama a funcao
         #PlayerLocation: é o evento da posicao do player
         self.even.escutar("PlayerLocation", self.localizar)
         
-        
+    def getPV(self):
+        return self.PV
+    def reduzPV(self, dano):
+        if dano>0:
+            self.PV = self.PV - dano
     def localizar(self, alvo):
         """
             Receber a posicao e a velocidade do Jogador.
@@ -85,11 +91,11 @@ class IA():
     def shoot(self):
         """
         lanca evento de disparo.
-        tupla_tiro: (PosicaodaIA, direcaoDeDIsparo,ObjetoArma)
+        tupla_tiro: (PosicaodaIA, direcaoDeDIsparo,ObjetoProjetil)
         """
-        tupla_tiro = (self.Pos.clonar(),self.ang.getAngulo(),
-                     self.arma)
-        self.even.lancar("Atirar",tupla_tiro)
+        projetil = self.arma.getProjetil()
+        projetil.Disparo(self.Pos.clonar(),self.ang.getAngulo())
+        self.even.lancar("Atirar",projetil)
 
 class AviaoInimigo(IA,motor.Figura):
     
