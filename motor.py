@@ -241,6 +241,34 @@ class Retangulo:
             return alt
         else:
             return -alt
+    
+    
+    def getTopo(self):
+        """Retorna o valor de y do ponto no topo do retângulo (menor y)"""
+        if self._p1.getY() < self._p2.getY():
+            return self._p1.getY()
+        return self._p2.getY()
+    
+    
+    def getFundo(self):
+        """Retorna o valor de y do ponto no fundo do retângulo (maior y)"""
+        if self._p1.getY() > self._p2.getY():
+            return self._p1.getY()
+        return self._p2.getY()
+    
+    
+    def getEsquerda(self):
+        """Retorna o valor de x do ponto na esquerda do retângulo (menor x)"""
+        if self._p1.getX() < self._p2.getX():
+            return self._p1.getX()
+        return self._p2.getX()
+    
+    
+    def getDireita(self):
+        """Retorna o valor de x do ponto na direita do retângulo (maior x)"""
+        if self._p1.getX() > self._p2.getX():
+            return self._p1.getX()
+        return self._p2.getX()
 
     
     def getTopoEsquerdo(self):
