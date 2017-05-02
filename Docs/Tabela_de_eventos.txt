@@ -140,7 +140,7 @@ K_desfocado
 Play		      Jogar (chamada ao gameplay)
 menuPause             Pausar o jogo (chamada ao Pause Menu)
 Quit		      Sair do jogo
-Derrota	              Fim de jogo (morte do jogador)
+GameOver              Fim de jogo (morte do jogador)
 Vitoria               Missao completada
 Return		      Voltar ao menu anterior
 imagem_nova           string_imagem for modificada, o objeto do evento é o próprio objeto do tipo Figura
@@ -152,6 +152,6 @@ texto_novo            Pega o retangulo da superficie do texto
 imagem_nova
 Atirar                Algum objeto atirou em um inimigo
 PlayerLocation        Pedido de informacao da posicao e velocidade do Jogador 
-Manobra180V           Executar animacao de manobra de 180, ou seja, inverte a imagem com relacao ao eixo vertical
+Manobra180V           Executar animacao de manobra de 180°, ou seja, inverte a imagem com relacao ao eixo vertical
 Hangar                Ir para o Hangar 
-disparo
+tocarEfeito           Chama o metodo tocarEfeito da classe Audio.
