@@ -9,7 +9,7 @@ Created on Sat Apr  1 13:49:41 2017
 import unittest
 
 
-from motor import Aux, Angulo, Ponto, Retangulo
+from motor import Aux, Angulo, Ponto, Retangulo, Evento
 
 class AuxTeste(unittest.TestCase):
     
@@ -64,7 +64,31 @@ class AuxTeste(unittest.TestCase):
 
 #Gabriel: Sugou escrever os testes do que eu já programei, vou fazer dos outros
 class EventoTeste(unittest.TestCase):
-    pass
+    
+    def setUp(self):
+        self.even1 = Evento()
+        self.even2 = Evento()
+        self.even3 = Evento()
+    
+    def testaSingleton(self):
+        self.assertEqual(self.even1, self.even2)
+        self.assertEqual(self.even3, self.even2)
+    
+    
+    def testaEscutas(self):
+        t = []
+        callback1 = lambda lista: lista.append(1)
+        callback2 = lambda lista: lista.append(2)
+        callback3 = lambda lista: lista.append(3)
+        self.even1.escutar('ola', callback1)
+        self.even2.escutar('ok', callback2)
+        self.even3.escutar('blz', callback3)
+        self.even1.lancar('ok', t)
+        self.assertEqual(t, [2])
+        self.even2.lancar('blz', t)
+        self.assertEqual(t, [2, 3])
+        self.even3.lancar('ola', t)
+        self.assertEqual(t, [2, 3, 1])
     
 
 
