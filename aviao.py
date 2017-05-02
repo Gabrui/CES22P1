@@ -333,5 +333,5 @@ class Jogador(Aviao):
     def atualiza(self, dt):
         self.calculus(dt)
         self.pos.soma(Ponto(self.dx, self.dy))
-        self.rot.setAngulo(self.rotacao)
+        self.rot.setAngulo(-self.rotacao)
         
