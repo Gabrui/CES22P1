@@ -61,7 +61,7 @@ class Jogo():
             if dt > t20:
                 dt = t20
             self.cenaAtual.atualiza(dt)
-            self.even.recebeEscuta(self.cenaAtual.even)
+
             
  
             

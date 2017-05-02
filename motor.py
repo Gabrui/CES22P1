@@ -12,8 +12,8 @@ import math
 pygame.init()
 
 """ Gabriel:
-#OBS: NÃO EXEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI --------------->
-#OBS: NÃO EXEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI --------------->
+#OBS: NÃO EXCEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI -------------->
+#OBS: NÃO EXCEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI -------------->
 #POIS EU ESTOU USANDO VÁRIAS JANELAS ABERTAS COM ESSE TAMANHO BEM AQUI ------->
 """
 
@@ -451,6 +451,23 @@ class Renderizador:
         self.tela = pygame.display.set_mode((largura, altura))
         pygame.display.set_caption('As da Aviacao')
         self.corFundo = corFundo
+        self.even = Evento()
+        self.even.escutar("imagem_nova", self.inicializaImagem)
+        self.even.escutar("texto_novo", self.inicializaTexto)
+    
+    
+    # TENHA MISERICÓRDIA DA DEPENDÊNCIA ENTRE CLASSES
+    def inicializaImagem(self, figura):
+        lar, alt = self.carregaImagem(figura.getString())
+        if figura.corte is None:
+            figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
+            
+    
+    # QUE DEUS TENHA MISERICÓRDIA DESSE CÓDIGO
+    def inicializaTexto(self, texto):
+        largura,altura = self.getSizeTexto(texto.getString(),
+                                                        texto.tupla_fonte)
+        texto.size = (largura,altura)
     
     
     def _bancoImagens(self, string_imagem):
@@ -589,6 +606,8 @@ class Audio:
     
     def __init__ (self):
         self.musicaFundo = None
+        self.even = Evento()
+        self.even.escutar("tocar_efeito", self.tocarEfeito)
         
     
     def _carregarAudio(self, string_musica):
@@ -616,23 +635,28 @@ class Audio:
         self.musicaFundo.set_volume(volume)
         self.musicaFundo.play(-1)
     
+    
     def setVolumeMusicaFundo(self, volume):
         """Modifica apenas o volume da música de fundo, sem interferir nela"""
        
         self.musicaFundo.set_volume(volume)
     
+    
     def tocarEfeito(self, string_efeito):
         """Toca um efeito sonoro apenas uma vez"""
-     
         self.efeito = self._bancoAudio(string_efeito)
         self.efeito.play()
+    
     
     def pararMusicaFundo(self):  
         self.musicaFundo.stop()
         
+        
     def verificarMusicaFundo(self):
         """Retorna verdadeiro se esta tocando."""
         return self.musicaFundo.get_busy()
+
+
 
 
 class Renderizavel:
@@ -699,14 +723,19 @@ class Texto(Renderizavel):
         super().__init__(pos, centro, escala, rot, cor)
         self.tupla_fonte = tupla_fonte
         self.setString(string_texto)
-        self.size = 0
+        self.size = (0, 0)
+        
+        
     def setString(self, string_texto):
         """Redefine a string do texto dessa texto"""
         self._string_texto = string_texto
         self.even.lancar("texto_novo", self) 
+        
+        
     def getString(self):
         """Retorna a string_texto dessa texto"""
         return self._string_texto
+
 
 
 
@@ -798,8 +827,8 @@ class Camada(Renderizavel):
                 x = filho.pos.getX() - x
                 y = filho.pos.getY() - y
                 figuras.append((filho.getString(), 
-                 (filho.corte.getTopoEsquerdo().getX(), filho.corte.getTopoEsquerdo().getY(),
-                  filho.corte.getFundoDireito().getX(), filho.corte.getFundoDireito().getY()),
+                 (filho.corte.getEsquerda(), filho.corte.getTopo(),
+                  filho.corte.getDireita(), filho.corte.getFundo()),
                   x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
                   filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A, filho))
             elif isinstance(filho, Texto):
@@ -837,9 +866,9 @@ class Camada(Renderizavel):
 class Botao(Camada):
     """Representa um botão clicável que contém uma imagem de fundo e texto"""
     
-    def __init__(self,nome_evento, tupla_string_imagem, tupla_texto, pos = Ponto(), 
-                 centro = Ponto(), escala = Ponto(1, 1), rot = Angulo(0), 
-                 cor = Cor(1, 0, 0, 0, 0)):
+    def __init__(self,nome_evento, tupla_string_imagem, tupla_texto, 
+                 pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1), 
+                 rot = Angulo(0), cor = Cor(1, 0, 0, 0, 0)):
         """
         Cria.
         nome_evento: é uma string com o nome do evento que o botao deve gerar
@@ -903,15 +932,6 @@ class Cena(Camada):
     """Classe que representa a cena do jogo, no qual existem as camadas e 
     objetos renderizáveis. Ela é responsável pela propagação de eventos. Se 
     comunica com a Entrada, com o Audio e com o Renderizador. """
-    def inicializaImagem(self, figura):
-        lar, alt = self.renderizador.carregaImagem(figura.getString())
-        if figura.corte is None:
-            figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
-    def inicializaTexto(self, texto):
-        largura,altura = self.renderizador.getSizeTexto(texto.getString(),
-                                                        texto.tupla_fonte)
-        texto.size = (largura,altura)
-    
     
     def __init__ (self, audio, entrada, renderizador, str_musica_fundo = None):
         """Precisa-se da referência aos objetos de Audio, Entrada e 
@@ -922,10 +942,6 @@ class Cena(Camada):
             self.audio.setMusicaFundo(str_musica_fundo)
         self.entrada = entrada
         self.renderizador = renderizador
-        
-        self.even.escutar("imagem_nova", self.inicializaImagem)
-        self.even.escutar("texto_novo", self.inicializaTexto)
-        self.even.escutar("tocar_efeito", self.audio.tocarEfeito)
     
     
     def atualiza(self, dt):
