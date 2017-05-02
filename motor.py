@@ -66,37 +66,54 @@ class Aux:
                       - Cx*math.sin(angulo.getAngulo(False)))
         
 
+class Singleton:
+    """
+    Decorador para criação de Slingletons
+    """
+    def __init__(self, classe):
+        self.classe = classe
+        self.objeto = None
+    
+    
+    def __call__(self,*args, **kwargs):
+        if self.objeto == None:
+            self.objeto = self.classe(*args,**kwargs)
+        return self.objeto
 
 
 
+
+@Singleton
 class Evento:
-    """É uma classe que todo objeto que registra eventos deve ter uma instância
-    isto é, ele não é um Singleton como de costume."""
+    """
+    É uma classe Singleton como de costume. 
+    A performance foi muito prejudicada por várias instâncias de evento e o
+    modelo de propagação arquitetado anteriormente
+    """
+    
     
     def __init__(self):
-        """Variáveis de instância _escutaveis e lancados"""
-        #É uma lista de tuplas (stringEvento, funcao_de_chamada)
-        self._escutaveis = [] # Podem ser vistos como aparáveis
-        #É uma lista de tuplas (stringsEventos, objeto_do_evento) LANÇADOS
-        self._lancados = []
+        """Variáveis de instância _escutaveis"""
+        self._escutaveis = {} # Podem ser vistos como aparáveis
     
-    def foiLancado(self,string_evento):
-        return Aux.existeTuplaElem(self._lancados,string_evento) 
     
     def escutar(self, string_evento, callback):
         """Começar a escutar determinado evento, isto é, a função de callback
         será executada quando acontecer o evento em questão. 
         Será passado um objeto para a função de callback como parâmetro, 
         contendo informações sobre esse evento."""
-        self._escutaveis.append((string_evento, callback))
+        if self._escutaveis.get(string_evento) is None:
+            self._escutaveis[string_evento] = [callback]
+        else:
+            self._escutaveis[string_evento].append(callback)
     
     
     def pararDeEscutar(self, string_evento, callback = None):
         """Para de escutar determinado evento"""
-        if callback is None:
-            Aux.removeTuplas1Elem(self._escutaveis, string_evento)
+        if callback is None or len(self._escutaveis[string_evento]) == 1:
+            del self._escutaveis[string_evento]
         else:
-            self._escutaveis.remove((string_evento, callback))
+            self._escutaveis[string_evento].remove(callback)
     
     
     def lancar(self, string_evento, objeto_do_evento):
@@ -105,44 +122,9 @@ class Evento:
         Para tal, é necessário o indentificador do evento e o objeto
         relacionado ao evento, que será passado como parâmetro para a função de
         callback"""
-        self._lancados.append((string_evento, objeto_do_evento))
-    
-    
-    def pararLancamento(self, string_evento, objeto_do_evento = None):
-        """Remove um evento da lista de eventos lançados"""
-        if objeto_do_evento is None:
-            Aux.removeTuplas1Elem(self._lancados, string_evento)
-        else:
-            self._lancados.remove((string_evento, objeto_do_evento))
-    
-    
-    def pararTodosLancamentos(self):
-        """Limpa a lista de eventos lançados"""
-        del self._lancados[:]
-    
-    
-    def recebeEscuta(self, evento):
-        """Executa as funções de escuta (callback) dado os lançamentos 
-        presentes em um outro evento"""
-        for escutavel, callback in self._escutaveis:
-            for lancados, objeto_do_evento in evento._lancados: 
-                if escutavel == lancados:
-                    callback(objeto_do_evento)
-    
-    
-    def propagaLancamento(self, evento):
-        """Fala para outro evento o que você disparou, e se ele não souber 
-        responder, ele pega para ele o que você falou, isto é, parando o seu 
-        lançamento e escutando o seu evento ou lançando-o adiante. """
-        for disparo, objeto_do_evento in self._lancados:
-            escutou = False
-            for escutavel, callback in evento._escutaveis:
-                if escutavel == disparo:
-                    callback(objeto_do_evento)
-                    escutou = True
-            if not escutou:
-                evento.lancar(disparo, objeto_do_evento)
-            self.pararLancamento((disparo, objeto_do_evento))
+        if self._escutaveis.get(string_evento) is not None:
+            for callback in self._escutaveis[string_evento]:
+                callback(objeto_do_evento)
 
 
 
@@ -387,11 +369,20 @@ class Angulo:
     
     
     def setAngulo(self, angulo, emGraus = True):
+        """Modifica o valor do angulo, mantendo a sua consistência"""
         if emGraus:
             self._angulo =  angulo
         else: #Suponho que caso contrário esteja em radianos
             self._angulo = Angulo.RadianosParaGraus
         self._validaAngulo()
+        
+    
+    def incrementa(self, angulo, emGraus = True):
+        """Incrementa um valor de angulo ao atual"""
+        if emGraus:
+            self.setAngulo(self._angulo + angulo)
+        else:
+            self.setAngulo(self._angulo + Angulo.radianosParaGraus(angulo))
     
     
     def getQuadrante(self):
@@ -582,6 +573,7 @@ class Entrada:
         """Atualiza os seus eventos"""
         self._verTeclado()
         self._verMouse()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
                 pygame.quit()
@@ -738,22 +730,6 @@ class Camada(Renderizavel):
     def atualiza(self, dt):
         for filho in self.filhos:
             filho.atualiza(dt)
-
-
-    def _propagaEventoDeCimaParaBaixo(self, evento):
-        self.even.recebeEscuta(evento)
-        for filho in self.filhos:
-            if isinstance(filho, Camada):
-                filho._propagaEventoDeCimaParaBaixo(evento)
-            else:
-                filho.even.recebeEscuta(evento)
-    
-    
-    def _propagaEventoDeBaixoParaCima(self):
-        for filho in self.filhos:
-            if isinstance(filho, Camada):
-                filho._propagaEventoDeBaixoParaCima()
-            filho.even.propagaLancamento(self.even)
     
     
     def _transformaFigura(self, camadaFilha, estado):
@@ -957,15 +933,6 @@ class Cena(Camada):
         transcorrido"""
         self.entrada.atualiza()
         
-        self.even.pararTodosLancamentos()
-        #self.entrada.even.propagaLancamento(self.even)
-        
-        self.entrada.even.pararTodosLancamentos()
-        
-        self._propagaEventoDeCimaParaBaixo(self.even)
-        self._propagaEventoDeBaixoParaCima()
-        self._propagaEventoDeCimaParaBaixo(self.even)
-        print(self.even._lancados)
         
         imgs, txts = self._observaFilhos()
         retangs = self.renderizador.renderiza(imgs, txts)
