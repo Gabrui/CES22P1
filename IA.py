@@ -100,13 +100,13 @@ class IA():
 class AviaoInimigo(IA,motor.Figura):
     
     
-    def __init__(self,img,audio, arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
+    def __init__(self,img1,img2, audio, arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
                  alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
                  deltaAngTol = motor.Angulo(5)): 
         IA.__init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
                  alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
                  deltaAngTol = motor.Angulo(5))
-        motor.Figura.__init__(img)
+        motor.Figura.__init__(img1)
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao
@@ -123,11 +123,42 @@ class AviaoInimigo(IA,motor.Figura):
         distanciaPerseguir: distancia minima para o qual o IA 
                             tenta estabelecer a mesma velocidade que a do Jogador
         deltaAngTol: angulo de tolerancia para disparo
+        imgX:        A imagem 1 é para esquerda, e a 2 para direita.
         """
+        
+        self.img1 = img1
+        self.img2 = img2
+        
+        self.Manobra180V = False
         
         self._audio = audio
         self.even.lancar("tocar_efeito",self._audio)
 
+    def Manobra180V(self):
+        
+        if not self.Manobra180V:
+            self._string_imagem = self.img2
+            if self.ang.getAngulo() >0:
+                novoRot = 180 - self.ang.getAngulo()
+                self.rot.setAngulo(novoRot)        
+            elif self.ang.getAngulo()<0:
+                novoRot = -180 - self.ang.getAngulo()
+                self.rot.setAngulo(novoRot)
+                
+            self.Manobra180V = True
+        elif self.Manobra180V:
+            self._string_imagem = self.img1
+            
+            if self.ang.getAngulo() >0:
+                novoRot = 180 - self.ang.getAngulo()
+                self.rot.setAngulo(novoRot)        
+            elif self.ang.getAngulo()<0:
+                novoRot = -180 - self.ang.getAngulo()
+                self.rot.setAngulo(novoRot)
+            
+            self.Manobra180V = False
+        
+        
     def perseguir(self):
         """
         Ajusta a velocidade X da IA, de acordo com a posicao relativa 
@@ -139,7 +170,7 @@ class AviaoInimigo(IA,motor.Figura):
                """
                if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
                    self.Vel.setX(0)
-                   self.even.lancar("Manobra180V",(self.Pos.clonar(), self.ang.getAngulo()))
+                   self.Manobra180V()
                    self.Vel.setX(velPadrao)
                elif self.Vel.getX() >= self.alvoVel.getX():
                    acelX = self.Vel.getX() - aceleracao
@@ -150,7 +181,7 @@ class AviaoInimigo(IA,motor.Figura):
               """
               if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
                   self.Vel.setX(0)
-                  self.even.lancar("Manobra180V",(self.Pos.clonar(), self.ang.getAngulo()))
+                  self.Manobra180V()
                   self.Vel.setX(-velPadrao)
               elif self.Vel.getX() <= self.alvoVel.getX():
                   acelX = self.Vel.getX() + aceleracao
