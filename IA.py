@@ -87,7 +87,39 @@ class IA():
             self.velAng = 0
         if AngVisada <= self.deltaAngTol:
             self.shoot()
- 
+        if self.Vel.getX() > 0 and self.Pos.getX() > self.alvoPos.getX():
+            #Se o jogador estiver nas costas da IA
+            if self.ang.getAngulo() == 0:
+                #e IA estiver na horizontal,
+                #IA mantem a direcao da velocidade
+                self.velAng = 0
+            elif self.ang.getAngulo() >0:
+                #e IA estiver subindo
+                #IA tenta voltar para voo horizontal
+                self.velAng = -aceleracaoAngular
+            elif self.ang.getAngulo() < 0:
+                #e IA estiver descendo
+                #IA tenta voltar para voo horizontal
+                self.velAng = +aceleracaoAngular
+                
+        elif self.Vel.getX() < 0 and self.Pos.getX() < self.alvoPos.getX():
+            #Se o jogador estiver nas costas da IA
+            if self.ang.getAngulo() == 0:
+                #e IA estiver na horizontal,
+                #IA mantem a direcao da velocidade
+                self.velAng = 0
+            elif self.ang.getAngulo() >0:
+                #e IA estiver subindo
+                #IA tenta voltar para voo horizontal
+                self.velAng = -aceleracaoAngular
+            elif self.ang.getAngulo() < 0:
+                #e IA estiver descendo
+                #IA tenta voltar para voo horizontal
+                self.velAng = +aceleracaoAngular
+                
+        
+        
+        
     def shoot(self):
         """
         lanca evento de disparo.
