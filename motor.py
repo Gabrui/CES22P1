@@ -171,10 +171,28 @@ class Ponto:
         return sqrt(self.distancia2(ponto))
     
     
+    def __mul__(self, escalar):
+        return Ponto(self._x * escalar, self._y * escalar)
+    
+    
+    def retornaMultEscalar(self, escalar):
+        return Ponto(self._x * escalar, self._y * escalar)
+    
+    
+    def __iadd__(self, ponto):
+        """Soma um outro ponto a si próprio"""
+        self._x = self._x + ponto._x
+        self._y = self._y + ponto._y
+    
+    
     def soma(self, ponto):
         """Soma um outro ponto a si próprio"""
         self._x = self._x + ponto._x
         self._y = self._y + ponto._y
+    
+    
+    def __add__(self, ponto):
+        return Ponto(self._x + ponto._x, self._y + ponto._y)
     
     
     def retornaSoma(self, ponto):

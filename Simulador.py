@@ -9,6 +9,8 @@ import aviao
 import motor
 import Projetil
 import IA
+
+
 class Simulador(motor.Camada):
     """
         Realiza operacoes de fundo do gameplay, como verificar colisoes.
@@ -19,6 +21,16 @@ class Simulador(motor.Camada):
         """
         self.posChao = posChao
         self.even.escutar("Atirar",self.adicionaFilho)
+        self.jogador = None
+        
+    
+    def atualiza(self, dt):
+        self.verificarColisao()
+        super().atualiza(dt)
+        
+        
+    
+    
     
     def verificarColisao(self):
         

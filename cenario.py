@@ -11,15 +11,26 @@ from motor import Camada, Ponto, Figura
 
 class Camera(Camada):
     
-    def __init__(self):
+    def __init__(self, largura, altura, alvo):
         super().__init__()
+        self.largura = largura
+        self.altura = altura
+        self.l2 = largura/2
+        self.a2 = altura/2
+        self.alvo = alvo
     
     
-    def setPos(self, ponto):
-        self.pos = ponto.escalar(-1)
+    def _centraliza(self, ponto):
+        self.pos.setXY(-ponto.getX() + self.l2, -ponto.getY() + self.a2)
     
-    def setAngulo(self, angulo):
-        self.rot = angulo.escalar(-1)
+    
+    def _rot(self, angulo):
+        self.rot.setAngulo(-angulo.getAngulo())
+    
+    
+    def atualiza(self, dt):
+        super().atualiza(dt)
+        self._centraliza(self.alvo)
     
 
 
