@@ -14,20 +14,9 @@ t20 = 50/1000
 FPS = 60
 td = 1/FPS
 
-class Jogo():
-    """Controla o loop principal do jogo, faz as transições de cena"""
+class PainelMenuPrincipal(Cena):
     
     def __init__(self):
-        """Ainda é só um esboço"""
-        self.audio = Audio()
-        self.renderizador = Renderizador(800,600)
-        self.entrada = Entrada()
-        self.even = Evento()
-        self.even.escutar("sair", self.irParaCena)
-        self.continuarLoop = True
-        self.cenaAtual = None
-        self.gameplay()
-        self.gameloop()
         
         #Constantes do Menu Principal
         self._PosXBotaoMenuPrincipal = 329
@@ -58,28 +47,8 @@ class Jogo():
         self._string_imagem_AviaoDireita2 = "c02_AviaoDireita2.png"
         self._string_imagem_AviaoEsquerda = "c02_AviaoEsquerda.png" 
         self._string_imagem_TituloMenuPrincipal = "c03_Text_AsDaAviacao.png"
+        #self._string_imagem_Fundo = ""
         #----------------Fim das Constantes do Meneu Principal----------------
-    
-    """Ainda estou pensando, podemos discutir esses métodos"""
-    def gameplay(self):
-        fundos = FundoParalaxeInfinito(800, 600, "imgTeste/estFundo.png", 
-                    Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
-        #fundo2 = Figura("imgTeste/movFundo.png")
-        #fundo3 = Figura("imgTeste/nuvem.png")
-        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 0), 
-                 [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
-                 [5, 50000, 5000/3, 100], [5000, 150])
-        
-        self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
-        self.cenaAtual.adicionaFilho(fundos)
-        #self.cenaAtual.adicionaFilho(fundo2)
-        #self.cenaAtual.adicionaFilho(fundo3)
-        self.cenaAtual.adicionaFilho(avi)
-        
-        #self.even.escutar('MenuPause',self.menuPause)
-        #self.even.escutar('Hangar',self.hangar)
-    
-    def MenuPrincipal(self):
         
         #Criando Botoes do Menu
         botaoNovoJogo = Botao("Tutorial",
@@ -121,20 +90,62 @@ class Jogo():
                                         None,
                                         Ponto(self._PosXTituloMenuPrincipal,
                                               self._PosYTituloMenuPrincipal))
-        #criando a Cena do Menu principal
-        PainelMenuPrincipal = Cena(self.audio,self.entrada,self.renderizador)
+        #fundo = Figura(self._string_imagem_Fundo)
         #montando a cena do menu principal
-        PainelMenuPrincipal.adicionaFilho(botaoNovoJogo)
-        PainelMenuPrincipal.adicionaFilho(botaoJogoSalvo)
-        PainelMenuPrincipal.adicionaFilho(botaoOpcoes)
-        PainelMenuPrincipal.adicionaFilho(botaoCreditos)
-        PainelMenuPrincipal.adicionaFilho(botaoSair)
-        PainelMenuPrincipal.adicionaFilho(imgAviaoDireita1)
-        PainelMenuPrincipal.adicionaFilho(imgAviaoDireita2)
-        PainelMenuPrincipal.adicionaFilho(imgAviaoEsquerda)
-        PainelMenuPrincipal.adicionaFilho(imgTituloMenuPrincipal)
+        #self.adicionaFilho(fundo)
+        self.adicionaFilho(botaoNovoJogo)
+        self.adicionaFilho(botaoJogoSalvo)
+        self.adicionaFilho(botaoOpcoes)
+        self.adicionaFilho(botaoCreditos)
+        self.adicionaFilho(botaoSair)
+        self.adicionaFilho(imgAviaoDireita1)
+        self.adicionaFilho(imgAviaoDireita2)
+        self.adicionaFilho(imgAviaoEsquerda)
+        self.adicionaFilho(imgTituloMenuPrincipal)
+        
+
+class Jogo():
+    """Controla o loop principal do jogo, faz as transições de cena"""
+    
+    def __init__(self):
+        """Ainda é só um esboço"""
+        self.audio = Audio()
+        self.renderizador = Renderizador(800,600)
+        self.entrada = Entrada()
+        self.even = Evento()
+        self.even.escutar("sair", self.irParaCena)
+        self.continuarLoop = True
+        self.cenaAtual = None
+        self.gameplay()
+        self.gameloop()
+         
+    
+    """Ainda estou pensando, podemos discutir esses métodos"""
+    def gameplay(self):
+        fundos = FundoParalaxeInfinito(800, 600, "imgTeste/estFundo.png", 
+                    Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
+        #fundo2 = Figura("imgTeste/movFundo.png")
+        #fundo3 = Figura("imgTeste/nuvem.png")
+        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 0), 
+                 [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
+                 [5, 50000, 5000/3, 100], [5000, 150])
+        
+        self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
+        self.cenaAtual.adicionaFilho(fundos)
+        #self.cenaAtual.adicionaFilho(fundo2)
+        #self.cenaAtual.adicionaFilho(fundo3)
+        self.cenaAtual.adicionaFilho(avi)
+        
+        #self.even.escutar('MenuPause',self.menuPause)
+        #self.even.escutar('Hangar',self.hangar)
+    
+    def MenuPrincipal(self):
+        
+        
+        
         #trocando de transparencias
-        self.cenaAtual = PainelMenuPrincipal
+        self.cenaAtual = PainelMenuPrincipal(self.audio,self.entrada,
+                                             self.renderizador)
         
     
     def gameloop(self):
