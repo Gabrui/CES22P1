@@ -16,9 +16,9 @@ desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
 erro = 5 #erro angular aceitavel para atirar
 
 class IA():
-    def __init__(self,arma, PV, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
-                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
-                 deltaAngTol = motor.Angulo(erro)):
+    def __init__(self,arma, PV, pos, vel, alvoPos,
+                 alvoVel, ang, angUni, 
+                 deltaAngTol):
         """
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
@@ -34,6 +34,22 @@ class IA():
                             tenta estabelecer a mesma velocidade que a do Jogador
         deltaAngTol: angulo de tolerancia para disparo
         """
+        
+        if pos is None:
+            pos = motor.Ponto(0,0)
+        if vel is None:
+            vel=motor.Ponto(velPadrao,0)
+        if alvoPos is None:
+            alvoPos = motor.Ponto(0,0)
+        if alvoVel is None:
+            alvoVel = motor.Ponto(0,0)
+        if ang is None:
+            ang = motor.Angulo(0)
+        if angUni is None:
+            angUni = motor.Angulo(0)
+        if deltaAngTol is None:
+            deltaAngTol = motor.Angulo(erro)
+            
         self.Pos = pos
         self.Vel = vel
         self.ang = ang
@@ -132,12 +148,12 @@ class IA():
 class AviaoInimigo(IA,motor.Figura):
     
     
-    def __init__(self,img1,img2, audio, arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
-                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
-                 deltaAngTol = motor.Angulo(5)): 
-        IA.__init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
-                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
-                 deltaAngTol = motor.Angulo(5))
+    def __init__(self,img1,img2, audio, arma, pos, vel, alvoPos,
+                 alvoVel, ang, angUni, 
+                 deltaAngTol): 
+        IA.__init__(self,arma, pos, vel, alvoPos,
+                 alvoVel, ang, angUni, 
+                 deltaAngTol)
         motor.Figura.__init__(img1)
         """
         img:     É a string do nome do arquivo imagem do aviao
@@ -158,6 +174,21 @@ class AviaoInimigo(IA,motor.Figura):
         imgX:        A imagem 1 é para esquerda, e a 2 para direita.
         """
         
+        if pos is None:
+            pos = motor.Ponto(0,0)
+        if vel is None:
+            vel=motor.Ponto(velPadrao,0)
+        if alvoPos is None:
+            alvoPos = motor.Ponto(0,0)
+        if alvoVel is None:
+            alvoVel = motor.Ponto(0,0)
+        if ang is None:
+            ang = motor.Angulo(0)
+        if angUni is None:
+            angUni = motor.Angulo(0)
+        if deltaAngTol is None:
+            deltaAngTol = motor.Angulo(erro)
+            
         self.img1 = img1
         self.img2 = img2
         
@@ -262,12 +293,12 @@ class AviaoInimigo(IA,motor.Figura):
 
 class TorreInimiga(IA,motor.Figura):
     
-    def __init__(self,img,audio, arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
-                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
-                 deltaAngTol = motor.Angulo(5)): 
-        IA.__init__(self,arma, pos = motor.Ponto(0,0), vel=motor.Ponto(velPadrao,0), alvoPos = motor.Ponto(0,0),
-                 alvoVel = motor.Ponto(0,0), ang = motor.Angulo(0), angUni = motor.Angulo(0), 
-                 deltaAngTol = motor.Angulo(5))
+    def __init__(self,img,audio, arma, pos, vel, alvoPos,
+                 alvoVel, ang, angUni, 
+                 deltaAngTol): 
+        IA.__init__(self,arma, pos, vel, alvoPos,
+                 alvoVel, ang, angUni, 
+                 deltaAngTol)
         motor.Figura.__init__(img)
         """
         img:     É a string do nome do arquivo imagem do aviao
@@ -287,6 +318,21 @@ class TorreInimiga(IA,motor.Figura):
         deltaAngTol: angulo de tolerancia para disparo
         """
         
+        if pos is None:
+            pos = motor.Ponto(0,0)
+        if vel is None:
+            vel=motor.Ponto(velPadrao,0)
+        if alvoPos is None:
+            alvoPos = motor.Ponto(0,0)
+        if alvoVel is None:
+            alvoVel = motor.Ponto(0,0)
+        if ang is None:
+            ang = motor.Angulo(0)
+        if angUni is None:
+            angUni = motor.Angulo(0)
+        if deltaAngTol is None:
+            deltaAngTol = motor.Angulo(erro)
+            
         self._audio = audio
         self.even.lancar("tocar_efeito",self._audio)
        

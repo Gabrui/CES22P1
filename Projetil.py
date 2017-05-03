@@ -11,7 +11,7 @@ class Projetil(motor.Figura):
     """
      Representa a ideia abstrata de projetil
     """
-    def __init__(self,Imagem,Som,Dano, veli = 0,pos = motor.Ponto(0,0),Dono = None):
+    def __init__(self,Imagem,Som,Dano, veli = 0, pos, Dono = None):
         """
         Imagem: referencia a imagem do projetil
         Som:    referencia o som do impacto do projetil
@@ -19,6 +19,9 @@ class Projetil(motor.Figura):
         Dono:   Quem atirou
         veli:   modulo da velocidade do projetil
         """
+        if pos is None:
+            pos = motor.Ponto(0,0)
+        
         self._string_imagem = Imagem
         self._Som = Som
         self._Dano = Dano
