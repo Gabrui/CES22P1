@@ -97,9 +97,9 @@ class PainelMenuPrincipal(Cena):
                                         None,
                                         Ponto(self._PosXTituloMenuPrincipal,
                                               self._PosYTituloMenuPrincipal))
-        fundo = Figura(self._string_imagem_Fundo)
+        img_fundo = Figura(self._string_imagem_Fundo)
         #montando a cena do menu principal
-        self.adicionaFilho(fundo)
+        self.adicionaFilho(img_fundo)
         self.adicionaFilho(botaoNovoJogo)
         self.adicionaFilho(botaoJogoSalvo)
         self.adicionaFilho(botaoOpcoes)
@@ -177,7 +177,7 @@ class PainelTutorial(Cena):
         
         self.even.escutar("M_click",self.Proximo)
         
-    def Proximo(self):
+    def Proximo(self, chamada):
         self.even.lancar("MenuOperacoes", True)
 
 class PainelMenuOperacoes(Cena):
@@ -193,18 +193,18 @@ class PainelMenuOperacoes(Cena):
         self._PosTextOperacao1 = Ponto(130,250)
         self._PosTextOperacao2 = Ponto(365,250)
         self._PosTextOperacao3 = Ponto(597,250)
-        self._PosBotaoPlay1 = Ponto(125,300)
+        self._PosBotaoPlay1 = Ponto(125,500)
         self._PosText_GueraGraBret = Ponto(180,300)
         self._PosTextRetornar = Ponto(660,485)
         
         self._string_imagem_fundo = "imgTeste/sky.png"
         self._string_imagem_Background = "imgTeste/c01_Background.png"
         self._string_imagem_Operacao1 = "imgTeste/c02_Operacao1.png"
-        self._string_imagem_Operacao2 = "imgTeste/c02_Operacao.png"
+        self._string_imagem_Operacao2 = "imgTeste/c02_Operacao2.png"
         self._string_imagem_TextOperacao1 = "imgTeste/c02_Text_Operacao1.png"
         self._string_imagem_TextOperacao2 = "imgTeste/c02_Text_Operacao2.png"
         self._string_imagem_TextOpercao3 = "imgTeste/c02_Text_Operacao3.png"
-        self._string_imagem_BotaoPLay = "imgTeste/c02_BotaoPlay.png"
+        self._string_imagem_BotaoPlay = "imgTeste/c02_BotaoPlay.png"
         self._string_imagem_TextGuerraGraBret = "imgTeste/c02_Text_GuerraGraBret.png"
         self._string_imagem_TextRetornar = "imgTeste/c02_Text_Retornar.png"
         
@@ -217,7 +217,7 @@ class PainelMenuOperacoes(Cena):
                                self._PosOperacao1)
         img_Operacao2 = Figura(self._string_imagem_Operacao2,None,
                                self._PosOperacao2)
-        img_TextOperacao1 = Figura(self._string_imagem_TextOperacao,None,
+        img_TextOperacao1 = Figura(self._string_imagem_TextOperacao1,None,
                                    self._PosTextOperacao1)
         img_TextOperacao2 = Figura(self._string_imagem_TextOperacao2,None,
                                    self._PosTextOperacao2)
@@ -327,7 +327,7 @@ class Jogo():
     def __init__(self):
         """Ainda é só um esboço"""
         self.audio = Audio()
-        self.renderizador = Renderizador('As da Aviacao',800, 600)
+        self.renderizador = Renderizador('As da Aviacao',800, 800)
         self.entrada = Entrada()
         self.even = Evento()
         self.continuarLoop = True
@@ -340,13 +340,13 @@ class Jogo():
         self.even.escutar("Play", self.gameplay)
         self.even.escutar("MenuMissao1", self.MenuMissao1)
         
-        self.MenuPrincipal()
+        self.MenuPrincipal(True)
         self.gameloop()
          
     
     """Ainda estou pensando, podemos discutir esses métodos"""
-    def gameplay(self):
-        fundos = FundoParalaxeInfinito(1600, 1200, "imgTeste/estFundo.png", 
+    def gameplay(self,chamada):
+        fundos = FundoParalaxeInfinito(800, 600, "imgTeste/estFundo.png", 
                     Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
         #fundo2 = Figura("imgTeste/movFundo.png")
         #fundo3 = Figura("imgTeste/nuvem.png")
@@ -363,22 +363,22 @@ class Jogo():
         #self.even.escutar('MenuPause',self.menuPause)
         #self.even.escutar('Hangar',self.hangar)
     
-    def MenuPrincipal(self):
+    def MenuPrincipal(self,chamada):
         
         #trocando de transparencias
         self.cenaAtual = PainelMenuPrincipal(self.audio,self.entrada,
                                              self.renderizador)
-    def Tutorial(self):
+    def Tutorial(self,chamada):
         
         #trocando de transparencias
         self.cenaAtual = PainelTutorial(self.audio,self.entrada,
                                         self.renderizador)
-    def MenuOperacoes(self):
+    def MenuOperacoes(self,chamada):
         
         #trocando de transparencias
         self.cenaAtual = PainelMenuOperacoes(self.audio,self.entrada,
                                          self.renderizador)
-    def MenuMissao1(self):
+    def MenuMissao1(self,chamada):
         
         #trocando de transparencias
         self.cenaAtual = PainelMissoes1(self.audio,self.entrada,
