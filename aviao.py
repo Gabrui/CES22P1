@@ -97,7 +97,7 @@ class Jogador(Aviao):
         self.yForca  = 0
         self.xAcel   = 0
         self.yAcel   = 0
-        self.xVel    = 0
+        self.xVel    = 150
         self.yVel    = 0
         self.sinA    = 0
         self.sinVelo = 0
@@ -131,7 +131,6 @@ class Jogador(Aviao):
         self.kArr              = 0
         self.kSust             = 0
         
-        self.xVel = 0
         
         self.velmVelmDm = self.veloMax * self.veloMax * self.DENSIDADEMAR
         self.hVelmDm = self.hVeloMax * self.hVeloMax * self.DENSIDADEMAR
@@ -145,9 +144,9 @@ class Jogador(Aviao):
         - self.hAtritoMotor)
         
         self.even.escutar("K_up", self._cCima)
-        self.even.escutar("K_up", self._cBaixo)
-        self.even.escutar("K_up", self._cDireita)
-        self.even.escutar("K_up", self._cEsquerda)
+        self.even.escutar("K_down", self._cBaixo)
+        self.even.escutar("K_right", self._cDireita)
+        self.even.escutar("K_left", self._cEsquerda)
         self.cima = False
         self.baixo = False
         self.direita = False
@@ -332,6 +331,6 @@ class Jogador(Aviao):
     
     def atualiza(self, dt):
         self.calculus(dt)
-        self.pos.soma(Ponto(self.dx, self.dy))
+        self.pos.soma(Ponto(self.dx/2, self.dy/2))
         self.rot.setAngulo(-self.rotacao)
         
