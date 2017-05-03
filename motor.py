@@ -607,7 +607,7 @@ class Audio:
     def __init__ (self):
         self.musicaFundo = None
         self.even = Evento()
-        self.even.escutar("tocar_efeito", self.tocarEfeito)
+        self.even.escutar("tocarEfeito", self.tocarEfeito)
         
     
     def _carregarAudio(self, string_musica):
@@ -869,7 +869,7 @@ class Botao(Camada):
         A imagem do Botao já possui fundo e texto.
     """
     
-    def __init__(self,nome_evento, string_imagem1, string_imagem2, 
+    def __init__(self,nome_evento, string_imagem1, string_imagem2, som_click,
                  pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1), 
                  rot = Angulo(0), cor = Cor(1, 0, 0, 0, 0)):
         """
@@ -888,6 +888,8 @@ class Botao(Camada):
         self.imagem = self.imagem1
         self.adicionaFilho(self.imagem)
         self._nome_evento = nome_evento
+        self.som_click = som_click
+    
     
     def _verEmCima(self, mousePos):
         """Recebe um objeto mousePos do tipo ponto e verifica se o mousePos 
@@ -899,21 +901,14 @@ class Botao(Camada):
             Se está dentro, o botao brilha
             """
             self.imagem = self.imagem2
-            R = self.imagem.cor.R
-            G = self.imagem.cor.G
-            B = self.imagem.cor.B
-            alfa = self.imagem.cor.validaalpha(1)
-            self.imagem.cor.setRGBA(R,G,B,alfa)
+            self.imagem.cor.setOpacidade(1)
         else:
             """
             Se não tiver dentro, o botao nao brilha
             """
             self.imagem = self.imagem1
-            R = self.imagem.cor.R
-            G = self.imagem.cor.G
-            B = self.imagem.cor.B
-            alfa = self.imagem.cor.validaalpha(0.5)
-            self.imagem.cor.setRGBA(R,G,B,alfa)
+            self.imagem.cor.setOpacidade(0.8)
+            
     
     def _verClique(self, mousePos):
         """Análogo ao _verEmCima, só que é com o clique agora, o bizu é lançar
@@ -923,10 +918,8 @@ class Botao(Camada):
             """
             Se está dentro, o botao lança o nome do seu evento. 
             """
+            self.evenlancar("tocarEfeito", self.som_click)
             self.even.lancar(self._nome_evento,True)
-            
-    
-    """Precisa de outros métodos que ainda não pensei"""
     
 
 

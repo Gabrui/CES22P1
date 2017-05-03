@@ -144,7 +144,6 @@ GameOver              Fim de jogo (morte do jogador)
 Vitoria               Missao completada
 Return		      Voltar ao menu anterior
 imagem_nova           string_imagem for modificada, o objeto do evento é o próprio objeto do tipo Figura
-tocar_efeito	      Para tocar um som, o objeto do evento é uma string
 M_click		      Botão esquerdo do mouse foi clicado
 M_clickD              Botão direito do mouse foi clicado
 M_pos                 Nenhum botao do mouse foi clicado e a posicao do mouse está sendo passada
