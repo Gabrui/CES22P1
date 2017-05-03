@@ -5,7 +5,7 @@ Created on Sat Apr  1 19:29:56 2017
 @author: Dylan N. Sugimoto
 """
 
-from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, Retangulo, Ponto
+from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, Retangulo, Ponto, Botao
 import time
 from cenario import FundoParalaxeInfinito
 from aviao import Jogador
@@ -28,6 +28,37 @@ class Jogo():
         self.cenaAtual = None
         self.gameplay()
         self.gameloop()
+        
+        #Constantes do Menu Principal
+        self._PosXBotaoMenuPrincipal = 329
+        self._PosYBotaoJogoNovo      = 175
+        self._PosYBotaoJogoSalvo     = 255
+        self._PosYBotaoOpcoes        = 335
+        self._PosYBotaoCreditos      = 415
+        self._PosYBotaoSair          = 495
+        self._PosXAviaoDireita1 = 679
+        self._PosYAivaoDireita1 = 115
+        self._PosXAviaoDireita2 = 654
+        self._PosYAviaoDireita2 = 389
+        self._PosXAviaoEsquerda = 12
+        self._PosYAviaoEsquerda = 49
+        self._PosXTituloMenuPrincipal = 179
+        self._PosYTituloMenuPrincipal = 12
+        self._string_imagem1_botaoNovoJogo = "c04_Text_NovoJogo.png"
+        self._string_imagem2_botaoNovoJogo = "c03_Text_NovoJogo.png"
+        self._string_imagem1_botaoJogoSalvo = "c04_Text_JogosSalvos.png"
+        self._string_imagem2_botaoJogoSalvo = "c03_Text_JogosSalvos.png"
+        self._string_imagem1_botaoOpcoes = "c04_Text_Opcoes.png"
+        self._string_imagem2_botaoOpcoes = "c03_Text_Opcoes.png"
+        self._string_imagem1_botaoCreditos = "c04_Text_Creditos.png"
+        self._string_imagem2_botaoCreditos = "c03_Text_Creditos.png"
+        self._string_imagem1_botaoSair = "c04_Text_Sair.png"
+        self._string_imagem2_botaoSair = "c03_Text_Sair.png"
+        self._string_imagem_AviaoDireita1 = "c02_AviaoDireita1.png"
+        self._string_imagem_AviaoDireita2 = "c02_AviaoDireita2.png"
+        self._string_imagem_AviaoEsquerda = "c02_AviaoEsquerda.png" 
+        self._string_imagem_TituloMenuPrincipal = "c03_Text_AsDaAviacao.png"
+        #----------------Fim das Constantes do Meneu Principal----------------
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self):
@@ -48,6 +79,63 @@ class Jogo():
         #self.even.escutar('MenuPause',self.menuPause)
         #self.even.escutar('Hangar',self.hangar)
     
+    def MenuPrincipal(self):
+        
+        #Criando Botoes do Menu
+        botaoNovoJogo = Botao("Tutorial",
+                              self._string_imagem1_botaoNovoJogo,
+                              self._string_imagem2_botaoNovoJogo,
+                              Ponto(self._PosXBotaoMenuPrincipal,
+                                    self._PosYBotaoJogoNovo))
+        botaoJogoSalvo = Botao("MenuJogoSalvo",
+                              self._string_imagem1_botaoJogoSalvo,
+                              self._string_imagem2_botaoJogoSalvo,
+                              Ponto(self._PosXBotaoMenuPrincipal,
+                                    self._PosYBotaoJogoSalvo))
+        botaoOpcoes = Botao("MenuOpcoes",
+                              self._string_imagem1_botaoOpcoes,
+                              self._string_imagem2_botaoOpcoes,
+                              Ponto(self._PosXBotaoMenuPrincipal,
+                                    self._PosYBotaoOpcoes))
+        botaoCreditos = Botao("Creditos",
+                              self._string_imagem1_botaoCreditos,
+                              self._string_imagem2_botaoCreditos,
+                              Ponto(self._PosXBotaoMenuPrincipal,
+                                    self._PosYBotaoCreditos))
+        botaoSair = Botao("Quit",
+                          self._string_imagem1_botaoSair,
+                          self._string_imagem2_botaoSair,
+                          Ponto(self._PosXBotaoMenuPrincipal,
+                                self._PosYBotaoSair))
+        #Criando imagens e posicionando
+        imgAviaoDireita1 = Figura(self._string_imagem_AviaoDireita1,None,
+                                  Ponto(self._PosXAviaoDireita1,
+                                        self._PosYAviaoDireita1))
+        imgAviaoDireita2 = Figura(self._string_imagem_AviaoDireita2,None,
+                                  Ponto(self._PosXAviaoDireita2,
+                                        self._PosYAviaoDireita2))
+        imgAviaoEsquerda = Figura(self._string_imagem_AviaoEsquerda,None,
+                                  Ponto(self._PosXAviaoEsquerda,
+                                        self._PosYAviaoEsquerda))
+        imgTituloMenuPrincipal = Figura(self._string_imagem_TituloMenuPrincipal,
+                                        None,
+                                        Ponto(self._PosXTituloMenuPrincipal,
+                                              self._PosYTituloMenuPrincipal))
+        #criando a Cena do Menu principal
+        PainelMenuPrincipal = Cena(self.audio,self.entrada,self.renderizador)
+        #montando a cena do menu principal
+        PainelMenuPrincipal.adicionaFilho(botaoNovoJogo)
+        PainelMenuPrincipal.adicionaFilho(botaoJogoSalvo)
+        PainelMenuPrincipal.adicionaFilho(botaoOpcoes)
+        PainelMenuPrincipal.adicionaFilho(botaoCreditos)
+        PainelMenuPrincipal.adicionaFilho(botaoSair)
+        PainelMenuPrincipal.adicionaFilho(imgAviaoDireita1)
+        PainelMenuPrincipal.adicionaFilho(imgAviaoDireita2)
+        PainelMenuPrincipal.adicionaFilho(imgAviaoEsquerda)
+        PainelMenuPrincipal.adicionaFilho(imgTituloMenuPrincipal)
+        #trocando de transparencias
+        self.cenaAtual = PainelMenuPrincipal
+        
     
     def gameloop(self):
         tnovo = time.clock()
