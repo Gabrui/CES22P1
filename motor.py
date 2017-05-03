@@ -334,7 +334,9 @@ class Retangulo:
         """Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro
         do retângulo"""
         if ponto.getX() > self.getTopoEsquerdo().getX() and ponto.getY() > \
-        self.getTopoEsquerdo().getY() and ponto.getY() < self.getFundoDireito().getY():
+        self.getTopoEsquerdo().getY() and \
+        ponto.getY() < self.getFundoDireito().getY() and\
+        ponto.getX()< self.getFundoDireito().getX():
             return True
         else:
             return False
@@ -643,7 +645,7 @@ class Audio:
     def _bancoAudio(self, string_musica):
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
-        musica = self._arquivos(string_musica)
+        musica = self._arquivos.get(string_musica)
         if musica is None:
             musica = self._carregarAudio(string_musica)
         return musica
