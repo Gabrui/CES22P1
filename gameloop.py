@@ -47,7 +47,7 @@ class PainelMenuPrincipal(Cena):
         self._string_imagem_AviaoDireita2 = "c02_AviaoDireita2.png"
         self._string_imagem_AviaoEsquerda = "c02_AviaoEsquerda.png" 
         self._string_imagem_TituloMenuPrincipal = "c03_Text_AsDaAviacao.png"
-        #self._string_imagem_Fundo = ""
+        self._string_imagem_Fundo = "sky.png"
         #----------------Fim das Constantes do Meneu Principal----------------
         
         #Criando Botoes do Menu
@@ -90,9 +90,9 @@ class PainelMenuPrincipal(Cena):
                                         None,
                                         Ponto(self._PosXTituloMenuPrincipal,
                                               self._PosYTituloMenuPrincipal))
-        #fundo = Figura(self._string_imagem_Fundo)
+        fundo = Figura(self._string_imagem_Fundo)
         #montando a cena do menu principal
-        #self.adicionaFilho(fundo)
+        self.adicionaFilho(fundo)
         self.adicionaFilho(botaoNovoJogo)
         self.adicionaFilho(botaoJogoSalvo)
         self.adicionaFilho(botaoOpcoes)
@@ -107,7 +107,8 @@ class PainelTutorial(Cena):
     
     def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
         Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
-        
+       
+        #Constantes---------------------------------------------------------
         self._PosXPonteiroFuel = 56
         self._PosYPonteiroFuel = 24
         self._PosXCoin         = 124
@@ -115,13 +116,13 @@ class PainelTutorial(Cena):
         self._PosXFuel         = 17
         self._PosYFuel         = 7
         self._PosXHealthPoints = 228
-        self._PosYHealthPoint  = 15
+        self._PosYHealthPoints = 15
         self._PosXHP1          = 494
         self._PosYHP1          = 15
         self._PosXTextCoin     = 170
         self._PosYTextCoin     = 22
         self._PosXTextHealthPoints = 275
-        self._PosYTextHealthPoint  = 22
+        self._PosYTextHealthPoints = 22
         self._PosXTextMissao3      = 333
         self._PosYTextMissao3      = 22
         
@@ -133,7 +134,36 @@ class PainelTutorial(Cena):
         self._string_imagem_TextCoin = "c(X)_Text_Coin.png"
         self._string_imagem_TextHealth = "c(X)_Text_Missao3.png"
         self._string_imagem_TextMissao3 ="c(X)_Text_Missao3.png" 
-        
+        #--------------------------Fim das COnstates-------------------------
+        #Criando as imagens do tutorial
+        img_PonteiroFuel = Figura(self._string_imagem_PonteiroFuel,None,
+                                  Ponto(self._PosXPonteiroFuel,
+                                        self._PosYPonteiroFuel))
+        img_Coin = Figura(self._string_imagem_Coin, None, 
+                          Ponto(self._PosXCoin,self._PosYCoin))
+        img_Fuel = Figura(self._string_imagem_Fuel,None,Ponto(self._PosXFuel,
+                                                              self._PosYFuel))
+        img_HealthPoints = Figura(self._string_imagem_HealthPoint,None, 
+                         Ponto(self._PosXHealthPoints,self._PosYHealthPoints))
+        img_HP1 = Figura(self._string_imagem_HP, None,
+                         Ponto(self._PosXHP1,self._PosYHP1))
+        img_TextCoin = Figura(self._string_imagem_TextCoin,None, 
+                              Ponto(self._PosXTextCoin,self._PosYTextCoin))
+        img_TextHealthPoint = Figura(self._string_imagem_TextHealth,None,
+                                     Ponto(self._PosXTextHealthPoints,
+                                           self._PosYTextHealthPoints))
+        img_TextMissao3 = Figura(self._string_imagem_TextMissao3,None,
+                                 Ponto(self._PosXTextMissao3,
+                                       self._PosYTextMissao3))
+        #montando o tutorial
+        self.adicionarFilho(img_PonteiroFuel)
+        self.adicionarFilho(img_Coin)
+        self.adicionarFilho(img_Fuel)
+        self.adicionarFilho(img_HealthPoints)
+        self.adicionarFilho(img_HP1)
+        self.adicionarFilho(img_TextCoin)
+        self.adicionarFilho(img_TextHealthPoint)
+        self.adicionarFilho(img_TextMissao3)
         
 
 class Jogo():
