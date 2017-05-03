@@ -16,8 +16,8 @@ td = 1/FPS
 
 class PainelMenuPrincipal(Cena):
     
-    def __init__(self):
-        
+    def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
+        Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
         #Constantes do Menu Principal
         self._PosXBotaoMenuPrincipal = 329
         self._PosYBotaoJogoNovo      = 175
@@ -102,6 +102,38 @@ class PainelMenuPrincipal(Cena):
         self.adicionaFilho(imgAviaoDireita2)
         self.adicionaFilho(imgAviaoEsquerda)
         self.adicionaFilho(imgTituloMenuPrincipal)
+
+class PainelTutorial(Cena):
+    
+    def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
+        Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
+        
+        self._PosXPonteiroFuel = 56
+        self._PosYPonteiroFuel = 24
+        self._PosXCoin         = 124
+        self._PosYCoin         = 15
+        self._PosXFuel         = 17
+        self._PosYFuel         = 7
+        self._PosXHealthPoints = 228
+        self._PosYHealthPoint  = 15
+        self._PosXHP1          = 494
+        self._PosYHP1          = 15
+        self._PosXTextCoin     = 170
+        self._PosYTextCoin     = 22
+        self._PosXTextHealthPoints = 275
+        self._PosYTextHealthPoint  = 22
+        self._PosXTextMissao3      = 333
+        self._PosYTextMissao3      = 22
+        
+        self._string_imagem_PonteiroFuel = "c(X)_PonteiroFuel.png"
+        self._string_imagem_Coin = "c(X)_Coin.png"
+        self._string_imagem_Fuel = "c(X+1)_Fuel.png"
+        self._string_imagem_HealthPoint = "c(X)_HealthPoints.png"
+        self._string_imagem_HP = "c(X+5)_HP1.png"
+        self._string_imagem_TextCoin = "c(X)_Text_Coin.png"
+        self._string_imagem_TextHealth = "c(X)_Text_Missao3.png"
+        self._string_imagem_TextMissao3 ="c(X)_Text_Missao3.png" 
+        
         
 
 class Jogo():
