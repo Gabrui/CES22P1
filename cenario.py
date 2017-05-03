@@ -30,7 +30,7 @@ class Camera(Camada):
     
     def atualiza(self, dt):
         super().atualiza(dt)
-        self._centraliza(self.alvo)
+        #self._centraliza(self.alvo.pos)
     
 
 
