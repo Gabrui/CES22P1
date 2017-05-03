@@ -333,9 +333,8 @@ class Retangulo:
     def estaDentro(self, ponto):
         """Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro
         do retângulo"""
-        if ponto._x > self.getTopoEsquerdo()._x and ponto._y > \
-        self.getTopoEsquerdo() and ponto._x < self.getFundoDireito()._x and \
-        ponto._y < self.getFundoDireito()._y:
+        if ponto.getX() > self.getTopoEsquerdo().getX() and ponto.getY() > \
+        self.getTopoEsquerdo().getY() and ponto.getY() < self.getFundoDireito().getY():
             return True
         else:
             return False
@@ -644,7 +643,7 @@ class Audio:
     def _bancoAudio(self, string_musica):
         """Retorna o objeto de música a partir da string, e se não tiver
         carregado a música, carrega"""
-        musica = self._arquivos[string_musica]
+        musica = self._arquivos(string_musica)
         if musica is None:
             musica = self._carregarAudio(string_musica)
         return musica
@@ -939,7 +938,7 @@ class Botao(Camada):
         está dentro do seu retângulo de renderização, tomando as ações
         necessárias, como mudar a cor ou imagem de fundo"""
         
-        if self.imagemFundo.retang.estaDentro(mousePos):
+        if self.imagem.retang.estaDentro(mousePos):
             """
             Se está dentro, o botao brilha
             """
@@ -961,7 +960,7 @@ class Botao(Camada):
             """
             Se está dentro, o botao lança o nome do seu evento. 
             """
-            self.evenlancar("tocarEfeito", self.som_click)
+            self.even.lancar("tocarEfeito", self.som_click)
             self.even.lancar(self._nome_evento,True)
     
 
