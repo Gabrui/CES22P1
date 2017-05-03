@@ -26,30 +26,30 @@ class PainelMenuPrincipal(Cena):
         self._PosYBotaoCreditos      = 415
         self._PosYBotaoSair          = 495
         self._PosXAviaoDireita1 = 679
-        self._PosYAivaoDireita1 = 115
+        self._PosYAviaoDireita1 = 115
         self._PosXAviaoDireita2 = 654
         self._PosYAviaoDireita2 = 389
         self._PosXAviaoEsquerda = 12
         self._PosYAviaoEsquerda = 49
         self._PosXTituloMenuPrincipal = 179
         self._PosYTituloMenuPrincipal = 12
-        self._string_imagem1_botaoNovoJogo = "c04_Text_NovoJogo.png"
-        self._string_imagem2_botaoNovoJogo = "c03_Text_NovoJogo.png"
-        self._string_imagem1_botaoJogoSalvo = "c04_Text_JogosSalvos.png"
-        self._string_imagem2_botaoJogoSalvo = "c03_Text_JogosSalvos.png"
-        self._string_imagem1_botaoOpcoes = "c04_Text_Opcoes.png"
-        self._string_imagem2_botaoOpcoes = "c03_Text_Opcoes.png"
-        self._string_imagem1_botaoCreditos = "c04_Text_Creditos.png"
-        self._string_imagem2_botaoCreditos = "c03_Text_Creditos.png"
-        self._string_imagem1_botaoSair = "c04_Text_Sair.png"
-        self._string_imagem2_botaoSair = "c03_Text_Sair.png"
-        self._string_imagem_AviaoDireita1 = "c02_AviaoDireita1.png"
-        self._string_imagem_AviaoDireita2 = "c02_AviaoDireita2.png"
-        self._string_imagem_AviaoEsquerda = "c02_AviaoEsquerda.png" 
-        self._string_imagem_TituloMenuPrincipal = "c03_Text_AsDaAviacao.png"
-        self._string_imagem_Fundo = "sky.png"
+        self._string_imagem1_botaoNovoJogo = "imgTeste/c04_Text_NovoJogo.png"
+        self._string_imagem2_botaoNovoJogo = "imgTeste/c03_Text_NovoJogo.png"
+        self._string_imagem1_botaoJogoSalvo = "imgTeste/c04_Text_JogosSalvos.png"
+        self._string_imagem2_botaoJogoSalvo = "imgTeste/c03_Text_JogosSalvos.png"
+        self._string_imagem1_botaoOpcoes = "imgTeste/c04_Text_Opcoes.png"
+        self._string_imagem2_botaoOpcoes = "imgTeste/c03_Text_Opcoes.png"
+        self._string_imagem1_botaoCreditos = "imgTeste/c04_Text_Creditos.png"
+        self._string_imagem2_botaoCreditos = "imgTeste/c03_Text_Creditos.png"
+        self._string_imagem1_botaoSair = "imgTeste/c04_Text_Sair.png"
+        self._string_imagem2_botaoSair = "imgTeste/c03_Text_Sair.png"
+        self._string_imagem_AviaoDireita1 = "imgTeste/c02_AviaoDireita1.png"
+        self._string_imagem_AviaoDireita2 = "imgTeste/c02_AviaoDireita2.png"
+        self._string_imagem_AviaoEsquerda = "imgTeste/c02_AviaoEsquerda.png" 
+        self._string_imagem_TituloMenuPrincipal = "imgTeste/c03_Text_AsDaAviacao.png"
+        self._string_imagem_Fundo = "imgTeste/sky.png"
         
-        self._string_som_buttonClick = "button_click.ogg"
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #----------------Fim das Constantes do Meneu Principal----------------
         
         #Criando Botoes do Menu
@@ -133,15 +133,15 @@ class PainelTutorial(Cena):
         self._PosXTextMissao3      = 333
         self._PosYTextMissao3      = 22
         
-        self._string_imagem_PonteiroFuel = "c(X)_PonteiroFuel.png"
-        self._string_imagem_Coin = "c(X)_Coin.png"
-        self._string_imagem_Fuel = "c(X+1)_Fuel.png"
-        self._string_imagem_HealthPoint = "c(X)_HealthPoints.png"
-        self._string_imagem_HP = "c(X+5)_HP1.png"
-        self._string_imagem_TextCoin = "c(X)_Text_Coin.png"
-        self._string_imagem_TextHealth = "c(X)_Text_Missao3.png"
-        self._string_imagem_TextMissao3 ="c(X)_Text_Missao3.png" 
-        self._string_imagem_Fundo = "sky.png"
+        self._string_imagem_PonteiroFuel = "imgTeste/c(X)_PonteiroFuel.png"
+        self._string_imagem_Coin = "imgTeste/c(X)_Coin.png"
+        self._string_imagem_Fuel = "imgTeste/c(X+1)_Fuel.png"
+        self._string_imagem_HealthPoint = "imgTeste/c(X)_HealthPoints.png"
+        self._string_imagem_HP = "imgTeste/c(X+5)_HP1.png"
+        self._string_imagem_TextCoin = "imgTeste/c(X)_Text_Coin.png"
+        self._string_imagem_TextHealth = "imgTeste/c(X)_Text_Missao3.png"
+        self._string_imagem_TextMissao3 ="imgTeste/c(X)_Text_Missao3.png" 
+        self._string_imagem_Fundo = "imgTeste/sky.png"
         #--------------------------Fim das COnstates-------------------------
         #Criando as imagens do tutorial
         img_PonteiroFuel = Figura(self._string_imagem_PonteiroFuel,None,
@@ -163,7 +163,7 @@ class PainelTutorial(Cena):
         img_TextMissao3 = Figura(self._string_imagem_TextMissao3,None,
                                  Ponto(self._PosXTextMissao3,
                                        self._PosYTextMissao3))
-        img_Fundo = Figura(self._string_imagem-Fundo)
+        img_Fundo = Figura(self._string_imagem_Fundo)
         #montando o tutorial
         self.adicionaFilho(img_Fundo)
         self.adicionaFilho(img_PonteiroFuel)
@@ -197,18 +197,18 @@ class PainelMenuOperacoes(Cena):
         self._PosText_GueraGraBret = Ponto(180,300)
         self._PosTextRetornar = Ponto(660,485)
         
-        self._string_imagem_fundo = "sky.png"
-        self._string_imagem_Background = "c01_Background.png"
-        self._string_imagem_Operacao1 = "c02_Operacao1.png"
-        self._string_imagem_Operacao2 = "c02_Operacao.png"
-        self._string_imagem_TextOperacao1 = "c02_Text_Operacao1.png"
-        self._string_imagem_TextOperacao2 = "c02_Text_Operacao2.png"
-        self._string_imagem_TextOpercao3 = "c02_Text_Operacao3.png"
-        self._string_imagem_BotaoPLay = "c02_BotaoPlay.png"
-        self._string_imagem_TextGuerraGraBret = "c02_Text_GuerraGraBret.png"
-        self._string_imagem_TextRetornar = "c02_Text_Retornar.png"
+        self._string_imagem_fundo = "imgTeste/sky.png"
+        self._string_imagem_Background = "imgTeste/c01_Background.png"
+        self._string_imagem_Operacao1 = "imgTeste/c02_Operacao1.png"
+        self._string_imagem_Operacao2 = "imgTeste/c02_Operacao.png"
+        self._string_imagem_TextOperacao1 = "imgTeste/c02_Text_Operacao1.png"
+        self._string_imagem_TextOperacao2 = "imgTeste/c02_Text_Operacao2.png"
+        self._string_imagem_TextOpercao3 = "imgTeste/c02_Text_Operacao3.png"
+        self._string_imagem_BotaoPLay = "imgTeste/c02_BotaoPlay.png"
+        self._string_imagem_TextGuerraGraBret = "imgTeste/c02_Text_GuerraGraBret.png"
+        self._string_imagem_TextRetornar = "imgTeste/c02_Text_Retornar.png"
         
-        self._string_som_buttonClick = "button_click.ogg"
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #--------------------Fim das constantes------------------------------
         img_fundo = Figura(self._string_imagem_fundo)
         img_background = Figura(self._string_imagem_Background,None,
@@ -238,7 +238,7 @@ class PainelMenuOperacoes(Cena):
                                     self._string_som_buttonClick,
                                     self._PosBotaoPlay1)
         self.adicionaFilho(img_fundo)
-        self.adicionaFilho(img_bakcground)
+        self.adicionaFilho(img_background)
         self.adicionaFilho(img_Operacao1)
         self.adicionaFilho(img_Operacao2)
         self.adicionaFilho(img_TextOperacao1)
@@ -266,17 +266,17 @@ class PainelMissoes1(Cena):
         self._PosBotaoMissao8 = Ponto(660,320)
         self._PosBotaoRetornar = Ponto(660,490)
         
-        self._string_imagem_fundo = "sky.png"
-        self._string_imagem_background = "c01_Background.png"
-        self._string_imagem_BotaoMissao1 = "c02_Missao1.png"
-        self._string_imagem_BotaoMissao2 = "c02_Missao2.png"
-        self._string_imagem_BotaoMissao3 = "c02_Missao3.png"
-        self._string_imagem_BotaoMissao4 = "c02_Missao4.png"
-        self._string_imagem_BotaoMissao5 = "c02_Missao5.png"
-        self._string_imagem_BotaoMissao6 = "c02_Missao6.png"
-        self._string_imagem_BotaoMissao7 = "c02_Missao7.png"
-        self._string_imagem_BotaoMissao8 = "c02_Missao8.png"
-        self._string_imagem_BotaoRetornar = "c02_BotaoRetornar.png"
+        self._string_imagem_fundo = "imgTeste/sky.png"
+        self._string_imagem_background = "imgTeste/c01_Background.png"
+        self._string_imagem_BotaoMissao1 = "imgTeste/c02_Missao1.png"
+        self._string_imagem_BotaoMissao2 = "imgTeste/c02_Missao2.png"
+        self._string_imagem_BotaoMissao3 = "imgTeste/c02_Missao3.png"
+        self._string_imagem_BotaoMissao4 = "imgTeste/c02_Missao4.png"
+        self._string_imagem_BotaoMissao5 = "imgTeste/c02_Missao5.png"
+        self._string_imagem_BotaoMissao6 = "imgTeste/c02_Missao6.png"
+        self._string_imagem_BotaoMissao7 = "imgTeste/c02_Missao7.png"
+        self._string_imagem_BotaoMissao8 = "imgTeste/c02_Missao8.png"
+        self._string_imagem_BotaoRetornar = "imgTeste/c02_BotaoRetornar.png"
         #---------------Fim das Constantes---------------------------------
         
         #criando imagens
@@ -327,7 +327,7 @@ class Jogo():
     def __init__(self):
         """Ainda é só um esboço"""
         self.audio = Audio()
-        self.renderizador = Renderizador('Ás da Aviação', 800, 600)
+        self.renderizador = Renderizador('As da Aviacao',800, 600)
         self.entrada = Entrada()
         self.even = Evento()
         self.continuarLoop = True
@@ -340,17 +340,17 @@ class Jogo():
         self.even.escutar("Play", self.gameplay)
         self.even.escutar("MenuMissao1", self.MenuMissao1)
         
-        self.gameplay()
+        self.MenuPrincipal()
         self.gameloop()
          
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self):
-        fundos = FundoParalaxeInfinito(800, 600, "imgTeste/estFundo.png", 
+        fundos = FundoParalaxeInfinito(1600, 1200, "imgTeste/estFundo.png", 
                     Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
         #fundo2 = Figura("imgTeste/movFundo.png")
         #fundo3 = Figura("imgTeste/nuvem.png")
-        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 100), Ponto(28, 10),
+        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 0), Ponto(28, 10),
                  [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                  [5, 50000, 5000/3, 100], [5000, 150])
         
