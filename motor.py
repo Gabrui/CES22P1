@@ -194,11 +194,14 @@ class Retangulo:
     """Classe que representa um retângulo horizontal"""
 
 
-    def __init__(self, ponto1 = Ponto(0, 0), ponto2 = None,
+    def __init__(self, ponto1 = None, ponto2 = None,
                  largura = 0, altura = 0):
         """Inicializa o retângulo com dois pontos ou com um ponto e uma largura
         e uma altura"""
-        self._p1 = ponto1
+        if ponto1 is not None:
+            self._p1 = ponto1
+        else:
+            self._p1 = Ponto(0, 0)
         if ponto2 is not None:
             self._p2 = ponto2
         else:
@@ -447,9 +450,10 @@ class Renderizador:
     _listaImagens = {}
     _listaFontes = {}
     
-    def __init__(self, largura, altura, corFundo = (0, 0, 0)):
+    def __init__(self, nome_tela, 
+                 largura, altura, corFundo = (0, 0, 0)):
         self.tela = pygame.display.set_mode((largura, altura))
-        pygame.display.set_caption('As da Aviacao')
+        pygame.display.set_caption(nome_tela)
         self.corFundo = corFundo
         self.even = Evento()
         self.even.escutar("imagem_nova", self.inicializaImagem)
@@ -663,18 +667,41 @@ class Renderizavel:
     """Classe abstrata que contém os atributos básicos de um objeto 
     renderizável"""
     
-    def __init__(self, pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1),
-                 rot = Angulo(0), cor = Cor(1, 0, 0, 0, 0)):
-        """Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o 
+    def __init__(self, pos = None, centro = None, escala = None,
+                 rot = None, cor = None):
+        """
+        Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o 
         seu centro de rotação 'centro', relativo a si próprio, sua escala de 
-        tamanho, seu ângulo de rotação e sua coloração"""
+        tamanho, seu ângulo de rotação e sua coloração
+        pos: Ponto Posição do renderizável com relação ao seu pai
+        centro: Ponto Posição do seu centro de rotação com relação ao pos
+        escala: Ponto Escala x e y, seu tamanho relativo
+        rot: Angulo Angulo de rotação com relação ao seu pai
+        cor: Cor Tintura e opacidade
+        """
+        if pos is not None:
+            self.pos = pos
+        else:
+            self.pos = Ponto()
+        if centro is not None:
+            self.centro = centro
+        else:
+            self.centro = Ponto()
+        if escala is not None:
+            self.escala = escala
+        else:
+            self.escala = Ponto(1, 1)
+        if rot is not None:
+            self.rot = rot
+        else:
+            self.rot = Angulo(0)
+        if cor is not None:
+            self.cor = cor
+        else:
+            self.cor = Cor(1, 0, 0, 0, 0)
         self.even = Evento()
-        self.pos = pos
-        self.centro = centro
-        self.escala = escala
         self.retang = Retangulo(Ponto(0, 0), Ponto(0, 0))
-        self.rot = rot
-        self.cor = cor
+        
     
     
     def atualiza(self, dt):
@@ -695,9 +722,8 @@ class Figura(Renderizavel):
         self.even.lancar("imagem_nova", self)
     
     
-    def __init__(self, string_imagem, corte = None, pos = Ponto(0, 0), 
-                 centro = Ponto(0, 0), escala = Ponto(1, 1), rot = Angulo(0), 
-                 cor = Cor(1, 0, 0, 0, 0)):
+    def __init__(self, string_imagem, corte = None, pos = None, centro = None, 
+                 escala = None, rot = None, cor = None):
         """A string_imagem representa o caminho da imagem e é seu 
         indentificador único. O corte representa um retângulo que corta a
         imagem original, no caso dela ser um conjunto de imagens."""
@@ -717,9 +743,8 @@ class Texto(Renderizavel):
     
     """Representa um texto na aŕvore de renderização"""
     
-    def __init__(self, string_texto, tupla_fonte, pos = Ponto(0, 0), 
-                 centro = Ponto(0, 0), escala = Ponto(1, 1), rot = Angulo(0), 
-                 cor = Cor(1, 0, 0, 0, 0)):
+    def __init__(self, string_texto, tupla_fonte, pos = None, centro = None, 
+                 escala = None, rot = None, cor = None):
         super().__init__(pos, centro, escala, rot, cor)
         self.tupla_fonte = tupla_fonte
         self.setString(string_texto)
@@ -742,8 +767,8 @@ class Texto(Renderizavel):
 class Camada(Renderizavel):
     """Representa uma camada na árvore renderização"""
     
-    def __init__(self, pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1),
-                 rot = Angulo(0), cor = Cor(1, 0, 0, 0, 0)):
+    def __init__(self, pos = None, centro = None, escala = None, rot = None, 
+                 cor = None):
         super().__init__(pos, centro, escala, rot, cor)
         self.filhos = []
     
@@ -870,8 +895,8 @@ class Botao(Camada):
     """
     
     def __init__(self,nome_evento, string_imagem1, string_imagem2, som_click,
-                 pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1), 
-                 rot = Angulo(0), cor = Cor(1, 0, 0, 0, 0)):
+                 pos = None, centro = None, escala = None, rot = None, 
+                 cor = None):
         """
         Cria.
         nome_evento: é uma string com o nome do evento que o botao deve gerar
@@ -955,3 +980,8 @@ class Cena(Camada):
         super().atualiza(dt)
     
 
+
+r1 = Renderizavel()
+r2 = Renderizavel()
+print(r1.rot)
+print(r2.rot)
