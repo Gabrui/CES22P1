@@ -864,58 +864,62 @@ class Camada(Renderizavel):
 
 
 class Botao(Camada):
-    """Representa um botão clicável que contém uma imagem de fundo e texto"""
+    """
+        Representa um botão clicável que contém uma imagem de fundo e texto
+        A imagem do Botao já possui fundo e texto.
+    """
     
-    def __init__(self,nome_evento, tupla_string_imagem, tupla_texto, 
+    def __init__(self,nome_evento, string_imagem1, string_imagem2, 
                  pos = Ponto(), centro = Ponto(), escala = Ponto(1, 1), 
                  rot = Angulo(0), cor = Cor(1, 0, 0, 0, 0)):
         """
         Cria.
         nome_evento: é uma string com o nome do evento que o botao deve gerar
                      ao ser clicado.
+        string_imagem1: é o nome do arquivo imagem do botao em estado normal.
+        string_imagem2: é o nome do arquivo imagem do botao com mouse em cima.
         """
         super().__init__(pos, centro, escala, rot, cor)
         self.even.escutar("M_pos", self._verEmCima)
         self.even.escutar("M_click", self._verClique)
         # Implementar o esboço de imagem abaixo
-        self.imagemFundo = Figura(tupla_string_imagem[0]) # Mudar, esboço
-        #esboço, mudar
-        self.texto = Texto(tupla_texto[0], (tupla_texto[1], tupla_texto[2]))
-        self.adicionaFilho(self.imagemFundo)
-        self.adicionaFilho(self.texto)
+        self.imagem1 = Figura(string_imagem1,None,pos) # Mudar, esboço
+        self.imagem2 = Figura(string_imagem2,None,pos)
+        self.imagem = self.imagem1
+        self.adicionaFilho(self.imagem)
         self._nome_evento = nome_evento
-        raise NotImplementedError("Você deveria ter programado aqui!")
-    
     
     def _verEmCima(self, mousePos):
         """Recebe um objeto mousePos do tipo ponto e verifica se o mousePos 
         está dentro do seu retângulo de renderização, tomando as ações
         necessárias, como mudar a cor ou imagem de fundo"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        
         if self.imagemFundo.retang.estaDentro(mousePos):
             """
             Se está dentro, o botao brilha
             """
-            R = self.imagemFundo.cor.R
-            G = self.imagemFundo.cor.G
-            B = self.imagemFundo.cor.B
-            alfa = self.imagemFundo.cor.validaalpha(1)
-            self.imagemFundo.cor.setRGBA(R,G,B,alfa)
+            self.imagem = self.imagem2
+            R = self.imagem.cor.R
+            G = self.imagem.cor.G
+            B = self.imagem.cor.B
+            alfa = self.imagem.cor.validaalpha(1)
+            self.imagem.cor.setRGBA(R,G,B,alfa)
         else:
             """
             Se não tiver dentro, o botao nao brilha
             """
-            R = self.imagemFundo.cor.R
-            G = self.imagemFundo.cor.G
-            B = self.imagemFundo.cor.B
-            alfa = self.imagemFundo.cor.validaalpha(0.5)
-            self.imagemFundo.cor.setRGBA(R,G,B,alfa)
+            self.imagem = self.imagem1
+            R = self.imagem.cor.R
+            G = self.imagem.cor.G
+            B = self.imagem.cor.B
+            alfa = self.imagem.cor.validaalpha(0.5)
+            self.imagem.cor.setRGBA(R,G,B,alfa)
     
     def _verClique(self, mousePos):
         """Análogo ao _verEmCima, só que é com o clique agora, o bizu é lançar
         eventos relacionado ao clique, como 'pausar', 'irParaMenuTal' """
-        #raise NotImplementedError("Você deveria ter programado aqui!")
-        if self.imagemFundo.retang.estaDentro(mousePos):
+        
+        if self.imagem.retang.estaDentro(mousePos):
             """
             Se está dentro, o botao lança o nome do seu evento. 
             """
