@@ -158,3 +158,6 @@ Tutorial              Chamada para o Tutorial
 MenuJogoSalvo         Chamada para o Menu do Jogo Salvo
 MenuOpcoes            Chamada para o Menu de opcoes
 Creditos              Chamada para os Creditos
+MenuOperacoes         Chamada para o Menu de Operacoes
+MenuPrincipal         Chamada para o Menu Principal
+MenuMissao1           Chamada para o Menu de Missoes da Operacao 1
