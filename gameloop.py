@@ -142,7 +142,7 @@ class Jogo():
     def __init__(self):
         """Ainda é só um esboço"""
         self.audio = Audio()
-        self.renderizador = Renderizador(800,600)
+        self.renderizador = Renderizador('Ás da Aviação', 800, 600)
         self.entrada = Entrada()
         self.even = Evento()
         self.even.escutar("sair", self.irParaCena)
@@ -158,7 +158,7 @@ class Jogo():
                     Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
         #fundo2 = Figura("imgTeste/movFundo.png")
         #fundo3 = Figura("imgTeste/nuvem.png")
-        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 0), 
+        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 0), Ponto(28, 10),
                  [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                  [5, 50000, 5000/3, 100], [5000, 150])
         
@@ -186,7 +186,6 @@ class Jogo():
             tantigo = tnovo
             tnovo = time.clock()
             dt = tnovo - tantigo
-            print(dt)
             if dt < td:
                 time.sleep(td - dt)
             if dt > t20:

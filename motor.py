@@ -978,10 +978,4 @@ class Cena(Camada):
             ret[0].retang.setDimensoes(ret[1], ret[2], ret[3], ret[4])
         self._atualizaRetangs()
         super().atualiza(dt)
-    
 
-
-r1 = Renderizavel()
-r2 = Renderizavel()
-print(r1.rot)
-print(r2.rot)

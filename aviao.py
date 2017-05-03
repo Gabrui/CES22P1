@@ -11,8 +11,8 @@ import math
 
 class Aviao(Figura):
     
-    def __init__(self, string_imagem, pos0):
-        super().__init__(string_imagem, pos = pos0)
+    def __init__(self, string_imagem, pos0, c0):
+        super().__init__(string_imagem, pos = pos0, centro = c0)
 
 
 class Jogador(Aviao):
@@ -29,9 +29,9 @@ class Jogador(Aviao):
     # ([8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
     [5, 50000, 5000/3, 100], [5000, 150])
     """
-    def __init__(self, string_imagem, pos0, aerMacro, empuxoMacro, rotMacro, 
-                 inerciaMacro):
-        super().__init__(string_imagem, pos0)
+    def __init__(self, string_imagem, pos0, c0, aerMacro, empuxoMacro,
+                 rotMacro, inerciaMacro):
+        super().__init__(string_imagem, pos0, c0)
         #Constantes matemáticas
         self.radianosParaGraus      = 180 / math.pi
         self.grausParaRadianos      = math.pi/180
