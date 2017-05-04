@@ -11,7 +11,7 @@ class Projetil(motor.Figura):
     """
      Representa a ideia abstrata de projetil
     """
-    def __init__(self,Imagem,Som,Dano, veli = 0, pos, Dono = None):
+    def __init__(self,Imagem,Som,Dano,pos, veli = 0,Dono = None):
         """
         Imagem: referencia a imagem do projetil
         Som:    referencia o som do impacto do projetil

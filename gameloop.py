@@ -9,6 +9,7 @@ from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, Retangulo,
 import time
 from cenario import FundoParalaxeInfinito
 from aviao import Jogador
+from Simulador import Simulador
 
 t20 = 50/1000
 FPS = 60
@@ -489,8 +490,9 @@ class PainelJogosSalvos(Cena):
         self.adicionaFIlho(img_TextJogo3)
         self.adicionaFilho(img_TextJogosSalvo)
         self.adicionaFilho(Botao_TextRetornar)
-#------------------------------Fim da Classe Jogos Salvo-----------------------        
-        
+#------------------------------Fim da Classe Jogos Salvo-----------------------
+
+
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
     
@@ -520,15 +522,17 @@ class Jogo():
                     Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
         #fundo2 = Figura("imgTeste/movFundo.png")
         #fundo3 = Figura("imgTeste/nuvem.png")
-        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 0), Ponto(28, 10),
+        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 100), Ponto(28, 10),
                  [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                  [5, 50000, 5000/3, 100], [5000, 150])
         
         self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
         self.cenaAtual.adicionaFilho(fundos)
+        simulador = Simulador(400)
+        simulador.adicionaFilho(avi)
         #self.cenaAtual.adicionaFilho(fundo2)
         #self.cenaAtual.adicionaFilho(fundo3)
-        self.cenaAtual.adicionaFilho(avi)
+        #self.cenaAtual.adicionaFilho(avi)
         
         #self.even.escutar('MenuPause',self.menuPause)
         #self.even.escutar('Hangar',self.hangar)

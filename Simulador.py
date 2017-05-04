@@ -16,6 +16,7 @@ class Simulador(motor.Camada):
         Realiza operacoes de fundo do gameplay, como verificar colisoes.
     """
     def __init__(self, posChao):
+        motor.Camada.__init__(self)
         """
             posChao: é a posicao do chao (int).
         """
