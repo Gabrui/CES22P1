@@ -290,6 +290,13 @@ class AviaoInimigo(IA,motor.Figura):
                #se o truncamento zerar uma velocidade nao nula
                NovoVy = 1
            self.Vel.setXY((NovoVx,NovoVy))
+    
+    def atualiza(self):
+        
+        self.localizar()
+        self.perseguir()
+        self.aim()
+        self.voar()
 
 class TorreInimiga(IA,motor.Figura):
     
