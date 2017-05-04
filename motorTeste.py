@@ -9,7 +9,8 @@ Created on Sat Apr  1 13:49:41 2017
 import unittest
 
 
-from motor import Aux, Angulo, Ponto, Retangulo, Evento
+from motor import Aux, Angulo, Ponto, Retangulo, Evento, Camada, Figura
+from math import sin, cos, atan2, sqrt
 
 class AuxTeste(unittest.TestCase):
     
@@ -131,6 +132,42 @@ class RetanguloTeste(unittest.TestCase):
         self.assertEqual(self.r3.getFundoDireito().getX(), 231)
         self.assertEqual(self.r3.getFundoDireito().getY(), 3)
         
+        
+
+
+class CamadaTeste(unittest.TestCase):
+    
+    def setUp(self):
+        self.f1 = Figura("f1.png", Retangulo(Ponto(0,0), Ponto(100, 100)))
+        self.f2 = Figura("f2.png", Retangulo(Ponto(0,0), Ponto(100, 100)), 
+                    Ponto(21, 94))
+        self.c0 = Camada()
+        self.c1 = Camada(Ponto(43, 27))
+        self.c2 = Camada(Ponto(1002, 3842))
+        self.c3 = Camada(rot = Angulo(54))
+    
+    
+    def testeTranslacao(self):
+        self.c1.adicionaFilho(self.f1)
+        self.c1.adicionaFilho(self.f2)
+        self.c2.adicionaFilho(self.c1)
+        figs, texs = self.c2._observaFilhos()
+        self.assertEqual(figs[0][2], 43)
+        self.assertEqual(figs[0][3], 27)
+        self.assertEqual(figs[1][2], 43+21)
+        self.assertEqual(figs[1][3], 27+94)
+    
+    
+    def testeRotacaoPura(self):
+        self.c3.adicionaFilho(self.f1)
+        self.c3.adicionaFilho(self.f2)
+        self.c2.adicionaFilho(self.c3)
+        figs, text = self.c2._observaFilhos()
+        a = self.c3.rot.getAngulo(False)
+        self.assertAlmostEqual(figs[0][2], 0)
+        self.assertAlmostEqual(figs[0][3], 0)
+        self.assertAlmostEqual(figs[1][2], 21*cos(a) - 94*sin(a))
+        self.assertAlmostEqual(figs[1][3], 94*cos(a) + 21*sin(a))
         
 
 
