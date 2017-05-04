@@ -379,7 +379,7 @@ class Angulo:
         if emGraus:
             self._angulo =  angulo
         else: #Suponho que esteja em radianos
-            self._angulo = Angulo.radianosParaGraus
+            self._angulo = Angulo.radianosParaGraus(angulo)
         self._validaAngulo()
     
     
@@ -395,7 +395,7 @@ class Angulo:
         if emGraus:
             self._angulo =  angulo
         else: #Suponho que caso contrário esteja em radianos
-            self._angulo = Angulo.radianosParaGraus
+            self._angulo = Angulo.radianosParaGraus(angulo)
         self._validaAngulo()
         
     
