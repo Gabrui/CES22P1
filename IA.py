@@ -268,9 +268,12 @@ class AviaoInimigo(IA,motor.Figura):
                     self.Vel.setX(acelX)
                 elif self.alvoVel.getX() != 0:
                     self.Vel.setX(self.alvoVel.getX())
-    def voar(self):
-       self.Pos.soma(self.Vel.getXY) #atualiza a posicao para o frame seguinte
-       self.pos.getXY(self.Pos.getXY)#atualiza a posicao da Figura
+    def voar(self,dt):
+        
+       #atualiza a posicao para o frame seguinte
+       self.Pos.soma(int(self.Vel.getXY*dt)) 
+       #atualiza a posicao da Figura
+       self.pos.getXY(self.Pos.getXY)       
        if self.Velang != 0: 
            """
            Se a velocidade angular nao for zero, tem que rotacionar a velocidade
@@ -292,12 +295,12 @@ class AviaoInimigo(IA,motor.Figura):
                NovoVy = 1
            self.Vel.setXY((NovoVx,NovoVy))
     
-    def atualiza(self):
+    def atualiza(self,dt):
         
         self.localizar()
         self.perseguir()
         self.aim()
-        self.voar()
+        self.voar(dt)
 
 class TorreInimiga(IA,motor.Figura):
     
