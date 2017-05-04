@@ -10,7 +10,9 @@ import time
 from cenario import FundoParalaxeInfinito
 from aviao import Jogador
 from Simulador import Simulador
-
+from IA import AviaoInimigo
+from Arma import Arma
+from Projetil import Projetil
 t20 = 50/1000
 FPS = 60
 td = 1/FPS
@@ -498,8 +500,13 @@ class Jogo():
     
     def __init__(self):
         """Ainda é só um esboço"""
+        self.larguraTela = 1000
+        self.alturaTela  = 800
+        self.CorBlit     = (200,200,255)
+        
         self.audio = Audio()
-        self.renderizador = Renderizador('As da Aviacao',900, 800)
+        self.renderizador = Renderizador('As da Aviacao',self.larguraTela,
+                                         self.alturaTela,self.CorBlit)
         self.entrada = Entrada()
         self.even = Evento()
         self.continuarLoop = True
@@ -518,7 +525,7 @@ class Jogo():
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self,chamada):
-        fundos = FundoParalaxeInfinito(800, 600, "imgTeste/estFundo.png", 
+        fundos = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, "imgTeste/estFundo.png", 
                     Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
         #fundo2 = Figura("imgTeste/movFundo.png")
         #fundo3 = Figura("imgTeste/nuvem.png")
@@ -528,8 +535,20 @@ class Jogo():
         
         self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
         self.cenaAtual.adicionaFilho(fundos)
-        simulador = Simulador(400)
+        
+        projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
+                                            "imgTeste/MetalHit 1.wav",10)
+        armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
+                                projetilArmaAviaoInimigo)
+        aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em -x.png",
+                                    "imgTeste/aviaoInimigo em x.png",
+                                    "imgTeste/airplane.ogg",
+                                    armaAviaoInimigo,Ponto(300,100))
+        armaAviaoInimigo.setDono = aviaoInimigo
+        
+        simulador = Simulador(200)
         simulador.adicionaFilho(avi)
+        simulador.adicionaFilho(aviaoInimigo)
         self.cenaAtual.adicionaFilho(simulador)
         #self.cenaAtual.adicionaFilho(fundo2)
         #self.cenaAtual.adicionaFilho(fundo3)

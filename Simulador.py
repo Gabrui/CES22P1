@@ -24,9 +24,19 @@ class Simulador(motor.Camada):
         self.even.escutar("Atirar",self.adicionaFilho)
         self.jogador = None
         
-    
+        
+        
+        
     def atualiza(self, dt):
+        
+        #verificando colisoes 
         self.verificarColisao()
+        #lancando a posicao do Jogador
+        for filho in self.filhos:
+            if isinstance(filho, aviao.Jogador):
+                self.even.lancar("PlayerLocation",(filho.pos.getX(),
+                                                   filho.pos.getY(),
+                                                   filho.xVel,filho.yVel))
         super().atualiza(dt)
         
         
@@ -38,6 +48,7 @@ class Simulador(motor.Camada):
         """
             Verifica colisoes.
         """
+        self._atualizaRetangs()
         #Coletando objetos existentes no gameplay
         figuras, textos = self._observaFilhos()
         for filhos in figuras:
@@ -66,10 +77,10 @@ class Simulador(motor.Camada):
                         if colisao:
                             #se houver colisao entre projeteis, remove os dois
                             #projeteis do gameplay
-                            if isinstance(filhos,Projetil.Projetil) and isinstance(irmao,Projetil.Projetil):
+                            if isinstance(filhos[10],Projetil.Projetil) and isinstance(irmao[10],Projetil.Projetil):
                                 self.removeFilho(filhos[10])
                                 self.removeFilho(irmao[10])
-                            elif (isinstance(filhos,Projetil.Projetil) and isinstance(irmao, aviao.Aviao)):
+                            elif (isinstance(filhos[10],Projetil.Projetil) and isinstance(irmao[10], aviao.Aviao)):
                                 #Se houver colisao entre Jogador e projetil,
                                 #reduz os pontos de vida do Jogador
                                 irmao[10].reduzPV(filhos[10].getDano())
@@ -82,7 +93,7 @@ class Simulador(motor.Camada):
                                     if isinstance(irmao,aviao.Jogador):
                                         #se nao tiver vivo, chama tela de G.O.
                                         self.even.lancar("GameOver",True)
-                            elif(isinstance(filhos, aviao.Aviao) and isinstance(irmao,Projetil.Projetil)):
+                            elif(isinstance(filhos[10], aviao.Aviao) and isinstance(irmao[10],Projetil.Projetil)):
                                 #o mesmo que a anterior
                                 filhos[10].reduzPV(filhos[10].getDano())
                                 irmao[10].fisicaDeImpacto()
@@ -91,7 +102,7 @@ class Simulador(motor.Camada):
                                     if isinstance(filhos,aviao.Jogador):
                                         self.even.lancar("GameOver",True)
                                        
-                            elif (isinstance(filhos,Projetil.Projetil) and isinstance(irmao,IA.IA)):
+                            elif (isinstance(filhos[10],Projetil.Projetil) and isinstance(irmao[10],IA.IA)):
                                  #Se houver colisao entre projetil e IA
                                  #reduz os pontos de vida da IA
                                  irmao[10].reduzPV(filhos[10].getDano())
@@ -104,7 +115,7 @@ class Simulador(motor.Camada):
                                      irmao[10].explosao()
                                      #Se IA esvier morta, remove do gameplay
                                      self.removeFilho(irmao[10])
-                            elif(isinstance(filhos, IA.IA) and isinstance(irmao,Projetil.Projetil)):
+                            elif(isinstance(filhos[10], IA.IA) and isinstance(irmao[10],Projetil.Projetil)):
                                 #o mesmo que a anterior
                                 filhos[10].reduzPV(filhos[10].getDano())
                                 irmao[10].fisicaDeImpacto()
@@ -112,18 +123,23 @@ class Simulador(motor.Camada):
                                 if filhos[10].getPV() <= 0:
                                     filhos[10].explosao()
                                     self.removeFilho(filhos[10])
-                                   
-            if filhos[1][3] >= self.posChao:
+            print("ESTIVE AQUI 1!!!!!!!!!!!!!!!!!!!")
+            if filhos[3] >= self.posChao:
+                print("ESTIVE AQUI2!!!!!!!!!!!!!!!!!!!")
                 #verifica colisao com o chao
-                if isinstance(filhos, Projetil.Projetil):
+                if isinstance(filhos[10], Projetil.Projetil):
                    #Se for projetil ou IA, remove do gameplay
                    self.removeFilho(filhos[10])
-                elif isinstance(filhos, aviao.Aviao):
+                elif isinstance(filhos[10], aviao.Aviao):
                     #Se for Jogador, chama tela de G.O.
-                    filhos[10].explosao()
+                    #filhos[10].explosao()
+                    print("CRASH!!")
                     self.even.lancar("GameOver", True)
-                elif isinstance(filhos, IA.AviaoInimigo):
+                elif isinstance(filhos[10], IA.AviaoInimigo):
+                    #Se houver colisao entre aviaoInimigo e chao
+                    #Chama o metodo de animacao da explosao
                     filhos[10].explosao()
+                    #retira da lista de filhos
                     self.removeFilho(filhos[10])
                     
                     
