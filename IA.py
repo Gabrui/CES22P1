@@ -15,10 +15,11 @@ aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
 desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
 erro = 5 #erro angular aceitavel para atirar
 
-class IA():
+class IA(motor.Renderizavel):
     def __init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol):
+        motor.Renderizavel.__init__(self)
         """
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
@@ -53,7 +54,7 @@ class IA():
         self.Pos = pos
         self.Vel = vel
         self.ang = ang
-        self.ang.setAngulo(math.atan2(vel[1],vel[0]))
+        self.ang.setAngulo(math.atan2(vel.getX(),vel.getY()))
         self.velAng = 0
         self.deltaAngTol = deltaAngTol
         self.arma = arma
@@ -86,7 +87,7 @@ class IA():
         
         difY = self.Pos.getY() - alvo[1]
         difX = self.Pos.getX() - alvo[0]
-        self.angUni.set(math.atan2(difY,difX))
+        self.angUni.setAngulo(math.atan2(difY,difX),False)
         
     def aim(self):
         """
@@ -148,13 +149,13 @@ class IA():
 class AviaoInimigo(IA,motor.Figura):
     
     
-    def __init__(self,img1,img2, audio, arma, pos, vel, alvoPos,
+    def __init__(self,img1,img2, audio, arma, pos,PV, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol): 
-        IA.__init__(self,arma, pos, vel, alvoPos,
+        IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol)
-        motor.Figura.__init__(img1)
+        motor.Figura.__init__(self,img1)
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao
@@ -306,7 +307,7 @@ class TorreInimiga(IA,motor.Figura):
         IA.__init__(self,arma, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol)
-        motor.Figura.__init__(img)
+        motor.Figura.__init__(self,img)
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao

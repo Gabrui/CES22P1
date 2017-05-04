@@ -537,13 +537,14 @@ class Jogo():
         self.cenaAtual.adicionaFilho(fundos)
         
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
-                                            "imgTeste/MetalHit 1.wav",10)
+                                            "imgTeste/MetalHit 1.wav",10,None)
         armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
                                 projetilArmaAviaoInimigo)
         aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em -x.png",
                                     "imgTeste/aviaoInimigo em x.png",
                                     "imgTeste/airplane.ogg",
-                                    armaAviaoInimigo,Ponto(300,100))
+                                    armaAviaoInimigo,Ponto(300,100),100,None,None,
+                                    None,None,None,None)
         armaAviaoInimigo.setDono = aviaoInimigo
         
         simulador = Simulador(200)
