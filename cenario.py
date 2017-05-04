@@ -11,7 +11,7 @@ import math
 
 class Camera(Camada):
     
-    def __init__(self, largura, altura, alvo):
+    def __init__(self, largura, altura, alvo, ymax):
         super().__init__()
         self.largura = largura
         self.altura = altura
@@ -20,10 +20,13 @@ class Camera(Camada):
         self.alvo = alvo
         self.fundosParalaxeInfinita = []
         self.posAntiga = Ponto(0, 0)
+        self.ymax = ymax
     
     
     def _centraliza(self, ponto):
         self.pos.setXY(-ponto.getX() + self.l2, -ponto.getY() + self.a2)
+        if self.pos.getY() < -self.ymax:
+            self.pos.setY(-self.ymax)
     
     
     def _rot(self, angulo):
@@ -67,7 +70,7 @@ class FundoParalaxeInfinito(Camada):
         @param: textura string
         @param: corte Retangulo
         @param: pos0 Ponto
-        @param: rel Ponto De 0 a 1, 1 fundo é estático
+        @param: rel Ponto De -1 a 0, -1 fundo é estático
         """
         super().__init__()
         self.larguraTela = larguraTela
@@ -82,7 +85,7 @@ class FundoParalaxeInfinito(Camada):
         
         for i in range(self.quant):
             figura = Figura(textura, corte, 
-                    Ponto(i*self.largura+pos0.getX(), self.altura+pos0.getY()))
+                    Ponto(i*self.largura+pos0.getX(), self.altura))
             self.adicionaFilho(figura)
         print(self.quant)
     

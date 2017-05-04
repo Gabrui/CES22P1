@@ -5,9 +5,10 @@ Created on Sat Apr  1 19:29:56 2017
 @author: Dylan N. Sugimoto
 """
 
-from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, Retangulo, Ponto, Botao
+from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, \
+                  Retangulo, Ponto, Botao
 import time
-from cenario import FundoParalaxeInfinito
+from cenario import FundoParalaxeInfinito, Camera
 from aviao import Jogador
 from Simulador import Simulador
 from IA import AviaoInimigo
@@ -525,16 +526,19 @@ class Jogo():
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self,chamada):
-        fundos = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, "imgTeste/estFundo.png", 
-                    Retangulo(Ponto(0,0), Ponto(800, 132)), Ponto(0,0), Ponto(0,0))
-        #fundo2 = Figura("imgTeste/movFundo.png")
-        #fundo3 = Figura("imgTeste/nuvem.png")
+        fundo0 = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, 
+                     "imgTeste/estFundo.png", Retangulo(Ponto(0,0), 
+                     Ponto(800, 132)), Ponto(0, 80), Ponto(-1, -0.4))
+        fundo1 = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, 
+                     "imgTeste/movFundo.png", Retangulo(Ponto(0,0), 
+                     Ponto(800, 225)), Ponto(0,0), Ponto(0,0))
+        fundo3 = Figura("imgTeste/nuvem.png")
         avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 100), Ponto(28, 10),
                  [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                  [5, 50000, 5000/3, 100], [5000, 150])
         
+        
         self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
-        self.cenaAtual.adicionaFilho(fundos)
         
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
                                             "imgTeste/MetalHit 1.wav",10,None)
@@ -549,8 +553,13 @@ class Jogo():
         
         simulador = Simulador(200)
         simulador.adicionaFilho(avi)
-        simulador.adicionaFilho(aviaoInimigo)
-        self.cenaAtual.adicionaFilho(simulador)
+        camera = Camera(self.larguraTela, self.alturaTela, avi, 0)
+        camera.adicionaFilho(fundo0)
+        camera.adicionaFilho(fundo1)
+        camera.adicionaFilho(fundo3)
+        camera.adicionaFilho(simulador)
+        #simulador.adicionaFilho(aviaoInimigo)
+        self.cenaAtual.adicionaFilho(camera)
         #self.cenaAtual.adicionaFilho(fundo2)
         #self.cenaAtual.adicionaFilho(fundo3)
         #self.cenaAtual.adicionaFilho(avi)
