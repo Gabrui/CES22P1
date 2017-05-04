@@ -818,10 +818,8 @@ class Camada(Renderizavel):
             hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
                              (Cx - estado[2])*(Cx - estado[2]) )
             teta = Angulo.grausParaRadianos(ang)
-            posX = (camadaFilha.pos.getX() - hipo*math.cos(alfa - teta) + 
-                    Cx*math.cos(teta) + Cy*math.sin(teta))
-            posY = (camadaFilha.pos.getY() - hipo*math.sin(alfa + teta) +
-                    Cy*math.cos(teta) - Cx*math.sin(teta))
+            posX = camadaFilha.pos.getX() - hipo*math.cos(alfa + teta) + Cx
+            posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta) + Cy
         else:
             posX = camadaFilha.pos.getX() + estado[2]
             posY = camadaFilha.pos.getY() + estado[3]
@@ -873,11 +871,8 @@ class Camada(Renderizavel):
                 """(string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
                    R, G, B, A, self)
                 o self é a referência à própria imagem que gerou a tupla"""
-                x, y = Aux.coordsInscrito(filho.rot, filho.centro.getX(), 
-                        filho.centro.getY(), filho.corte.getLargura(), 
-                                         filho.corte.getAltura())
-                x = filho.pos.getX() - x
-                y = filho.pos.getY() - y
+                x = filho.pos.getX()
+                y = filho.pos.getY()
                 figuras.append((filho.getString(), 
                  (filho.corte.getEsquerda(), filho.corte.getTopo(),
                   filho.corte.getDireita(), filho.corte.getFundo()),
@@ -888,18 +883,47 @@ class Camada(Renderizavel):
                 (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
                  R, G, B, A, self)
                 o self é a referência à própria imagem que gerou a tupla"""
-                x, y = Aux.coordsInscrito(filho.rot, filho.centro.getX(),
-                                                     filho.centro.getY(),
-                                          filho.size[0], filho.size[1])
-                x = filho.pos.getX() - x
-                y = filho.pos.getY() - y
-                
+                x = filho.pos.getX()
+                y = filho.pos.getY()
                 textos.append((filho.getString(), filho.tupla_fonte,
                               x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
                               filho.cor.R, filho.cor.G, 
                               filho.cor.B, filho.cor.A, filho))
         #raise NotImplementedError("Você deveria ter programado aqui!")
         return (figuras, textos)
+    
+    
+    
+    def _transformaFinal(self, figtex):
+        figs, texs = figtex
+        for i in range(len(figs)):
+            estado = figs[i]
+            filho = estado[10]
+            ang = Angulo(estado[4])
+            if ang.getAngulo() != 0:
+                x, y = Aux.coordsInscrito( ang, filho.centro.getX(), 
+                            filho.centro.getY(), filho.corte.getLargura(), 
+                                             filho.corte.getAltura())
+                x = estado[2] - x
+                y = estado[3] - y
+                figs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
+                    estado[5], estado[6], estado[7], estado[8], estado[9],
+                    estado[10])
+        for i in range(len(texs)):
+            estado = texs[i]
+            filho = estado[10]
+            ang = Angulo(estado[4])
+            if ang.getAngulo() != 0:
+                x, y = Aux.coordsInscrito( ang, filho.centro.getX(), 
+                            filho.centro.getY(), filho.corte.getLargura(), 
+                                             filho.corte.getAltura())
+                x = estado[2] - x
+                y = estado[3] - y
+                texs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
+                    estado[5], estado[6], estado[7], estado[8], estado[9],
+                    estado[10])
+        return figtex
+    
     
     
     def _atualizaRetangs(self):
@@ -934,10 +958,9 @@ class Botao(Camada):
         super().__init__(pos, centro, escala, rot, cor)
         self.even.escutar("M_pos", self._verEmCima)
         self.even.escutar("M_click", self._verClique)
-        # Implementar o esboço de imagem abaixo
-        self.imagem1 = Figura(string_imagem1) # Mudar, esboço
-        self.imagem2 = Figura(string_imagem2)
-        self.imagem = self.imagem1
+        self.string_imagem1 = string_imagem1
+        self.string_imagem2 = string_imagem2
+        self.imagem = Figura(string_imagem1)
         self.adicionaFilho(self.imagem)
         self._nome_evento = nome_evento
         self.som_click = som_click
@@ -952,13 +975,13 @@ class Botao(Camada):
             """
             Se está dentro, o botao brilha
             """
-            self.imagem = self.imagem2
+            self.imagem.setString(self.string_imagem2)
             self.imagem.cor.setOpacidade(1)
         else:
             """
             Se não tiver dentro, o botao nao brilha
             """
-            self.imagem = self.imagem1
+            self.imagem.setString(self.string_imagem1)
             self.imagem.cor.setOpacidade(0.8)
             
     
@@ -999,7 +1022,7 @@ class Cena(Camada):
         self.entrada.atualiza()
         
         
-        imgs, txts = self._observaFilhos()
+        imgs, txts = self._transformaFinal(self._observaFilhos())
         retangs = self.renderizador.renderiza(imgs, txts)
         for ret in retangs:
             ret[0].retang.setDimensoes(ret[1], ret[2], ret[3], ret[4])
