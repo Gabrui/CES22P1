@@ -277,6 +277,8 @@ class PainelMissoes1(Cena):
         self._string_imagem_BotaoMissao7 = "imgTeste/c02_Missao7.png"
         self._string_imagem_BotaoMissao8 = "imgTeste/c02_Missao8.png"
         self._string_imagem_BotaoRetornar = "imgTeste/c02_BotaoRetornar.png"
+        
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #---------------Fim das Constantes---------------------------------
         
         #criando imagens
@@ -286,27 +288,35 @@ class PainelMissoes1(Cena):
         #criando botoes
         botao_Missao1 = Botao("Play",self._string_imagem_BotaoMissao1,
                               self._string_imagem_BotaoMissao1,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao1)
         botao_Missao2 = Botao("Play", self._string_imagem_BotaoMissao2,
                               self._string_imagem_BotaoMissao2,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao2)
         botao_Missao3 = Botao("Play",self._string_imagem_BotaoMissao3,
                               self._string_imagem_BotaoMissao3,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao3)
         botao_Missao4 = Botao("Play", self._string_imagem_BotaoMissao4,
                               self._string_imagem_BotaoMissao4,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao4)
         botao_Missao5 = Botao("Play",self._string_imagem_BotaoMissao5,
                               self._string_imagem_BotaoMissao5,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao5)
         botao_Missao6 = Botao("Play", self._string_imagem_BotaoMissao6,
                               self._string_imagem_BotaoMissao6,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao6)
         botao_Missao7 = Botao("Play",self._string_imagem_BotaoMissao7,
                               self._string_imagem_BotaoMissao7,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao7)
         botao_Missao8 = Botao("Play", self._string_imagem_BotaoMissao8,
                               self._string_imagem_BotaoMissao8,
+                              self._string_som_buttonClick,
                               self._PosBotaoMissao8)
         
         self.adicionaFilho(img_fundo)
