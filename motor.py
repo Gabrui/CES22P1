@@ -811,7 +811,7 @@ class Camada(Renderizavel):
         camadaFilha para o seu próprio referencial, retornando a nova tupla"""
         #raise NotImplementedError("Você deveria ter programado aqui!")
         ang = camadaFilha.rot.getAngulo()
-        if True: #ang != 0:
+        if ang != 0:
             Cx = camadaFilha.centro.getX()
             Cy = camadaFilha.centro.getY()
             alfa = math.atan2(Cy - estado[3],Cx - estado[2])
@@ -935,8 +935,8 @@ class Botao(Camada):
         self.even.escutar("M_pos", self._verEmCima)
         self.even.escutar("M_click", self._verClique)
         # Implementar o esboço de imagem abaixo
-        self.imagem1 = Figura(string_imagem1,None,pos) # Mudar, esboço
-        self.imagem2 = Figura(string_imagem2,None,pos)
+        self.imagem1 = Figura(string_imagem1) # Mudar, esboço
+        self.imagem2 = Figura(string_imagem2)
         self.imagem = self.imagem1
         self.adicionaFilho(self.imagem)
         self._nome_evento = nome_evento
