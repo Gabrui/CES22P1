@@ -15,10 +15,12 @@ FPS = 60
 td = 1/FPS
 
 class PainelMenuPrincipal(Cena):
-    
+    """
+        É a classe que monta a cena do menu principal.
+    """
     def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
         Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
-        #Constantes do Menu Principal
+        #--------------Constantes do Menu Principal---------------------------
         self._PosXBotaoMenuPrincipal = 329
         self._PosYBotaoJogoNovo      = 175
         self._PosYBotaoJogoSalvo     = 255
@@ -109,13 +111,16 @@ class PainelMenuPrincipal(Cena):
         self.adicionaFilho(imgAviaoDireita2)
         self.adicionaFilho(imgAviaoEsquerda)
         self.adicionaFilho(imgTituloMenuPrincipal)
+#---------------------------------Fim da Classe Menu Principal-----------------
 
 class PainelTutorial(Cena):
-    
+    """
+        É a classe que monta a cena do tutorial.
+    """    
     def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
         Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
        
-        #Constantes---------------------------------------------------------
+        #----------------------Constantes--------------------------------------
         self._PosXPonteiroFuel = 56
         self._PosYPonteiroFuel = 24
         self._PosXCoin         = 124
@@ -143,6 +148,7 @@ class PainelTutorial(Cena):
         self._string_imagem_TextMissao3 ="imgTeste/c(X)_Text_Missao3.png" 
         self._string_imagem_Fundo = "imgTeste/sky.png"
         #--------------------------Fim das COnstates-------------------------
+       
         #Criando as imagens do tutorial
         img_PonteiroFuel = Figura(self._string_imagem_PonteiroFuel,None,
                                   Ponto(self._PosXPonteiroFuel,
@@ -179,13 +185,16 @@ class PainelTutorial(Cena):
         
     def Proximo(self, chamada):
         self.even.lancar("MenuOperacoes", True)
+#------------------------------------Fim da Classe PainelTutorial--------------
 
 class PainelMenuOperacoes(Cena):
-    
+    """
+        É a classe que monta a cena do menu de operacoes.
+    """
     def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
         Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
         
-        #Constantes do Menu Principal
+        #-----------------Constantes do Menu Principal------------------------
         
         self._PosBackGround = Ponto(0,33)
         self._PosOperacao1 = Ponto(125,145)
@@ -210,6 +219,8 @@ class PainelMenuOperacoes(Cena):
         
         self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #--------------------Fim das constantes------------------------------
+        
+        #Criando imagens
         img_fundo = Figura(self._string_imagem_fundo)
         img_background = Figura(self._string_imagem_Background,None,
                                 self._PosBackGround)
@@ -237,6 +248,7 @@ class PainelMenuOperacoes(Cena):
                                     self._string_imagem_BotaoPlay,
                                     self._string_som_buttonClick,
                                     self._PosBotaoPlay1)
+        #montando a cena
         self.adicionaFilho(img_fundo)
         self.adicionaFilho(img_background)
         self.adicionaFilho(img_Operacao1)
@@ -247,14 +259,16 @@ class PainelMenuOperacoes(Cena):
         self.adicionaFilho(img_TextGuerraGraBret)
         self.adicionaFilho(botao_TextRetornar)
         self.adicionaFilho(botao_PlayOperacao1)
-        
+#----------------------------------Fim da Classe PainelMenuOperacoes-----------       
         
 class PainelMissoes1(Cena):
-    
+    """
+        É a classe que monta a cena do primeiro Menu de Missoes.
+    """
     def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
         Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
        
-        #Constantes---------------------------------------------------------
+        #--------------------Constantes----------------------------------------
         self._Posbackground = Ponto(4,41)
         self._PosBotaoMissao1 = Ponto(120,160)
         self._PosBotaoMissao2 = Ponto(300,160)
@@ -318,7 +332,7 @@ class PainelMissoes1(Cena):
                               self._string_imagem_BotaoMissao8,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao8)
-        
+        #montando a cena
         self.adicionaFilho(img_fundo)
         self.adicionaFilho(img_background)
         self.adicionaFilho(botao_Missao1)
@@ -329,9 +343,12 @@ class PainelMissoes1(Cena):
         self.adicionaFilho(botao_Missao6)
         self.adicionaFilho(botao_Missao7)
         self.adicionaFilho(botao_Missao8)
-        
-class Hangar(Cena):
-    
+#-----------------------------Fim da classe PainelMenuMissoes1-----------------
+       
+class PainelHangar(Cena):
+    """
+        É a classe que monta a cena do Hangar.
+    """
     def __init__(self,audio,entrada,renderizador,string_musica = None):
         Cena.__init__(self,audio,entrada,renderizador,string_musica)
         
@@ -372,6 +389,7 @@ class Hangar(Cena):
         self._string_imagem_Coin4 ="c02_Coin.png"
         #---------------------------Fim das COnstantes-------------------------
         
+        #criando imagens
         img_background    = Figura(self._string_imagem_background,None,
                                 self._Posbackground)
         img_TextVidaExtra = Figura(self._string_imagem_TextVidaExtra,None,
@@ -404,7 +422,7 @@ class Hangar(Cena):
                                         self._string_imagem_Coin3)
         img_Coin4              = Figura(self._string_imagem_Coin4,None,
                                         self._string_imagem_Coin4)
-        
+        #montando a cena
         self.adicionaFilho(img_background)
         self.adicionaFilho(img_TextVidaExtra)
         self.adicionaFilho(img_HealthPoint)
@@ -421,9 +439,57 @@ class Hangar(Cena):
         self.adicionaFilho(img_Coin2)
         self.adicionaFilho(img_Coin3)
         self.adicionaFilho(img_Coin4)
+#----------------------Fim da Classe PainelHangar------------------------------
+
+class PainelJogosSalvos(Cena):
+    """
+        É a classe que monta a cena do Menu de Jogos Salvos.
+    """
+    def __init__(self,audio,entrada,renderizador,string_musica = None):
+        Cena.__init__(self,audio,entrada,renderizador,string_musica)
         
+        #--------------------------Constantes----------------------------------
         
+        self._Posbackground = Ponto(4,43)
+        self._PosTextJogo1  = Ponto(7,50)
+        self._PosTextJogo2  = Ponto(7,55)
+        self._PosTextJogo3  = Ponto(7,60)
+        self._PosTextJogoSalvo = Ponto(7,43)
+        self._PosTextRetornar  = Ponto(7,65)
         
+        self._string_imagem_background = "c01_Background.png"
+        self._string_imagem_TextJogo1  = "c02_Text_Jogo1.png"
+        self._string_imagem_TextJogo2  = "c02_Text_Jogo2.png"
+        self._string_imagem_TextJogo3  = "c02_Text_Jogo3.png"
+        self._string_imagem_TextJogosSalvos = "c02_Text_JogosSalvos.png"
+        self._string_imagem_TextRetornar = "c02_Text_Retornar.png"
+        
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
+        #---------------------------Fim das constantes-------------------------
+        
+        img_background = Figura(self._string_imagem_background,None,
+                                self._Posbackground)
+        img_TextJogo1  = Figura(self._string_imagem_TextJogo1,None,
+                                self._PosTextJogo1)
+        img_TextJogo2  = Figura(self._string_imagem_TextJogo2,None,
+                                self._PosTextJogo2)
+        img_TextJogo3  = Figura(self._string_imagem_TextJogo3,None,
+                                self._PosTextJogo3)
+        img_TextJogosSalvo = Figura(self._string_imagem_TextJogosSalvos,None,
+                                       self._PosTextJogoSalvo)
+        Botao_TextRetornar = Botao("MenuPrincipal",
+                                   self._string_imagem_TextRetornar,
+                                   self._string_imagem_TextRetornar,
+                                   self._string_som_buttonClick,
+                                   self._PosTextRetornar)
+        #montando a cena
+        self.adicionaFilho(img_background)
+        self.adicionaFIlho(img_TextJogo1)
+        self.adicionaFIlho(img_TextJogo2)
+        self.adicionaFIlho(img_TextJogo3)
+        self.adicionaFilho(img_TextJogosSalvo)
+        self.adicionaFilho(Botao_TextRetornar)
+#------------------------------Fim da Classe Jogos Salvo-----------------------        
         
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
