@@ -810,15 +810,22 @@ class Camada(Renderizavel):
         pela sua tupla (string_imagem, posX ....) que está no referencial da
         camadaFilha para o seu próprio referencial, retornando a nova tupla"""
         #raise NotImplementedError("Você deveria ter programado aqui!")
-        Cx = camadaFilha.centro.getX()
-        Cy = camadaFilha.centro.getY()
-        alfa = math.atan2(Cy - estado[3],Cx - estado[2])
-        hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
-                         (Cx - estado[2])*(Cx - estado[2]) )
-        teta = Angulo.grausParaRadianos(estado[4])
-        posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
-        posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
-        return (estado[0],estado[1], posX, posY, estado[4], estado[5],
+        ang = camadaFilha.rot.getAngulo()
+        if True: #ang != 0:
+            Cx = camadaFilha.centro.getX()
+            Cy = camadaFilha.centro.getY()
+            alfa = math.atan2(Cy - estado[3],Cx - estado[2])
+            hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
+                             (Cx - estado[2])*(Cx - estado[2]) )
+            teta = Angulo.grausParaRadianos(ang)
+            posX = (camadaFilha.pos.getX() - hipo*math.cos(alfa - teta) + 
+                    Cx*math.cos(teta) + Cy*math.sin(teta))
+            posY = (camadaFilha.pos.getY() - hipo*math.sin(alfa + teta) +
+                    Cy*math.cos(teta) - Cx*math.sin(teta))
+        else:
+            posX = camadaFilha.pos.getX() + estado[2]
+            posY = camadaFilha.pos.getY() + estado[3]
+        return (estado[0],estado[1], posX, posY, estado[4] + ang, estado[5],
                 estado[6], estado[7],estado[8],estado[9],estado[10])
         
     
@@ -827,7 +834,8 @@ class Camada(Renderizavel):
         """Converte as coordenadas e transformações de um texti representado
         pela sua tupla (string_texto, posX ....) que está no referencial da
         camadaFilha para o seu próprio referencial, retornando a nova tupla"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        return self._transformaFigura(camadaFilha, estado)
+        """#raise NotImplementedError("Você deveria ter programado aqui!")
         Cx = camadaFilha.centro.getX()
         Cy = camadaFilha.centro.getY()
         alfa = math.atan2(Cy - estado[3],Cx - estado[2])
@@ -836,7 +844,7 @@ class Camada(Renderizavel):
         posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
         posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
         return (estado[0],estado[1], posX, posY, estado[4], estado[5],
-                estado[6], estado[7],estado[8],estado[9],estado[10])
+                estado[6], estado[7],estado[8],estado[9],estado[10])"""
         
     
     
