@@ -267,7 +267,7 @@ class PainelMissoes1(Cena):
         self._PosBotaoRetornar = Ponto(660,490)
         
         self._string_imagem_fundo = "imgTeste/sky.png"
-        self._string_imagem_background = "imgTeste/c01_Background.png"
+        self._string_imagem_background = "imgTeste/c01_Background._missao.png"
         self._string_imagem_BotaoMissao1 = "imgTeste/c02_Missao1.png"
         self._string_imagem_BotaoMissao2 = "imgTeste/c02_Missao2.png"
         self._string_imagem_BotaoMissao3 = "imgTeste/c02_Missao3.png"
@@ -330,14 +330,108 @@ class PainelMissoes1(Cena):
         self.adicionaFilho(botao_Missao7)
         self.adicionaFilho(botao_Missao8)
         
-
+class Hangar(Cena):
+    
+    def __init__(self,audio,entrada,renderizador,string_musica = None):
+        Cena.__init__(self,audio,entrada,renderizador,string_musica)
+        
+        #-----------Constanstes------------------------------------------------
+        
+        self._Posbackground = Ponto(0,17)
+        self._PosTextVidaExtra = Ponto(220,129)
+        self._PosHealthPoint   = Ponto(184,181)
+        self._PosTextBomba     = Ponto(220,226)
+        self._PosMissile       = Ponto(145,245)
+        self._PosTextAviaoAmigo = Ponto(263,321)
+        self._PosJunkerFriend   = Ponto(132,345)
+        self._PosTextAviaoMesserschmidt = Ponto(462,136)
+        self._PosAviaoMesserschmidt = Ponto(616,165)
+        self._PosLocker1            = Ponto(647,255)
+        self._PosLocker2            = Ponto(647,375)
+        self._PosTextRetornar       = Ponto(749,553)
+        self._PosCoin1              = Ponto(220,160)
+        self._PosCoin2              = Ponto(220,257)
+        self._PosCoin3              = Ponto(262,372)
+        self._PosCoin4              = Ponto(323,473)
+        
+        self._string_imagem_background = "c01_HangarBackground.png"
+        self._string_imagem_TextVidaExtra = "c02_Text_VidaExtra.png"
+        self._string_imagem_HealthPoint = "c02_HealthPoint.png"
+        self._string_imagem_TextBomba = "c02_Text_Bomba.png"
+        self._string_imagem_Missile = "c02_Missile.png"
+        self._string_imagem_TextAviaoAmigo = "c02_Text_AviaoAmigo.png"
+        self._string_imagem_JunkerFriend = "c02_JunkerFriend.png"
+        self._string_imagem_TextAviaoMesserschmidt = "c02_Text_AviaoMesserschmidt.png"
+        self._string_imagem_AviaoMesserschmidt = "c02_AviaoMesserschmidt.png"
+        self._string_imagem_Locker1 = "c02_Locker.png"
+        self._string_imagem_Locker2 = "c02_Locker.png"
+        self._string_imagem_TextRetornar = "c02_Text_Retornar.png"
+        self._string_imagem_Coin1 ="c02_Coin.png"
+        self._string_imagem_Coin2 ="c02_Coin.png"
+        self._string_imagem_Coin3 ="c02_Coin.png"
+        self._string_imagem_Coin4 ="c02_Coin.png"
+        #---------------------------Fim das COnstantes-------------------------
+        
+        img_background    = Figura(self._string_imagem_background,None,
+                                self._Posbackground)
+        img_TextVidaExtra = Figura(self._string_imagem_TextVidaExtra,None,
+                                   self._PosTextVidaExtra)
+        img_HealthPoint   = Figura(self._string_imagem_HealthPoint,None,
+                                 self._PosHealthPoint)
+        img_TextBomba     = Figura(self._string_imagem_TextBomba,None,
+                                   self._PosTextBomba)
+        img_Missile       = Figura(self._string_imagem_Missile,None,
+                                   self._PosMissile)
+        img_TextAviaoAmigo = Figura(self._string_imagem_TextAviaoAmigo,None,
+                                    self._PosTextAviaoAmigo)
+        img_JunkerFriend   = Figura(self._string_imagem_JunkerFriend,None,
+                                    self._PosJunkerFriend)
+        img_TextAviaoMesserschmidt = Figura(self._string_imagem_TextAviaoMesserschmidt,
+                                            None,self._PosTextAviaoMesserschmidt)
+        img_AviaoMesserschmidt = Figura(self._string_imagem_AviaoMesserschmidt,
+                                        None,self._PosAviaoMesserschmidt)
+        img_Locker1            = Figura(self._string_imagem_Locker1,None,
+                                        self._PosLocker1)
+        img_Locker2            = Figura(self._string_imagem_Locker2,None,
+                                        self._string_imagem_Locker2)
+        img_TextRetornar       = Figura(self._string_imagem_TextRetornar, None,
+                                        self._PosTextRetornar)
+        img_Coin1              = Figura(self._string_imagem_Coin1,None,
+                                        self._string_imagem_Coin1)
+        img_Coin2              = Figura(self._string_imagem_Coin2,None,
+                                        self._string_imagem_Coin2)
+        img_Coin3              = Figura(self._string_imagem_Coin3,None,
+                                        self._string_imagem_Coin3)
+        img_Coin4              = Figura(self._string_imagem_Coin4,None,
+                                        self._string_imagem_Coin4)
+        
+        self.adicionaFilho(img_background)
+        self.adicionaFilho(img_TextVidaExtra)
+        self.adicionaFilho(img_HealthPoint)
+        self.adicionaFilho(img_TextBomba)
+        self.adicionaFilho(img_Missile)
+        self.adicionaFilho(img_TextAviaoAmigo)
+        self.adicionaFilho(img_JunkerFriend)
+        self.adicionaFilho(img_TextAviaoMesserschmidt)
+        self.adicionaFilho(img_AviaoMesserschmidt)
+        self.adicionaFilho(img_Locker1)
+        self.adicionaFilho(img_Locker2)
+        self.adicionaFilho(img_TextRetornar)
+        self.adicionaFilho(img_Coin1)
+        self.adicionaFilho(img_Coin2)
+        self.adicionaFilho(img_Coin3)
+        self.adicionaFilho(img_Coin4)
+        
+        
+        
+        
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
     
     def __init__(self):
         """Ainda é só um esboço"""
         self.audio = Audio()
-        self.renderizador = Renderizador('As da Aviacao',800, 800)
+        self.renderizador = Renderizador('As da Aviacao',900, 800)
         self.entrada = Entrada()
         self.even = Evento()
         self.continuarLoop = True
