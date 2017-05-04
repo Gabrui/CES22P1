@@ -28,7 +28,7 @@ class Simulador(motor.Camada):
         
         
     def atualiza(self, dt):
-        
+        super().atualiza(dt)
         #verificando colisoes 
         self.verificarColisao()
         #lancando a posicao do Jogador
@@ -37,7 +37,7 @@ class Simulador(motor.Camada):
                 self.even.lancar("PlayerLocation",(filho.pos.getX(),
                                                    filho.pos.getY(),
                                                    filho.xVel,filho.yVel))
-        super().atualiza(dt)
+     
         
         
     
