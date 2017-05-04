@@ -116,6 +116,10 @@ class Evento:
             self._escutaveis[string_evento].remove(callback)
     
     
+    def pararDeEscutarTudo(self):
+        self._escutaveis.clear()
+    
+    
     def lancar(self, string_evento, objeto_do_evento):
         """Lançar um determinado evento, isto é, gera um evento no qual outros
         objetos podem escutar.
@@ -475,6 +479,10 @@ class Renderizador:
         pygame.display.set_caption(nome_tela)
         self.corFundo = corFundo
         self.even = Evento()
+        self.escutas()
+    
+    
+    def escutas(self):
         self.even.escutar("imagem_nova", self.inicializaImagem)
         self.even.escutar("texto_novo", self.inicializaTexto)
     
@@ -624,8 +632,13 @@ class Entrada:
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
-                pygame.quit()
-                quit()
+                self.sair()
+                
+    
+    def sair(self):
+        print("bye bye")
+        pygame.quit()
+        quit()
 
 
 
@@ -638,6 +651,10 @@ class Audio:
     def __init__ (self):
         self.musicaFundo = None
         self.even = Evento()
+        self.escutas()
+    
+    
+    def escutas(self):
         self.even.escutar("tocarEfeito", self.tocarEfeito)
         
     

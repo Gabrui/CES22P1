@@ -83,7 +83,7 @@ class PainelMenuPrincipal(Cena):
                               self._string_som_buttonClick,
                               Ponto(self._PosXBotaoMenuPrincipal,
                                     self._PosYBotaoCreditos))
-        botaoSair = Botao("Quit",
+        botaoSair = Botao("sair",
                           self._string_imagem1_botaoSair,
                           self._string_imagem2_botaoSair,
                           self._string_som_buttonClick,
@@ -513,12 +513,7 @@ class Jogo():
         self.continuarLoop = True
         self.cenaAtual = None
         
-        self.even.escutar("sair", self.irParaCena)
-        self.even.escutar("MenuPrincipal",self.MenuPrincipal)
-        self.even.escutar("Tutorial",self.Tutorial)
-        self.even.escutar("MenuOperacoes",self.MenuOperacoes)
-        self.even.escutar("Play", self.gameplay)
-        self.even.escutar("MenuMissao1", self.MenuMissao1)
+        self.limparEventos()
         
         self.MenuPrincipal(True)
         self.gameloop()
@@ -526,6 +521,7 @@ class Jogo():
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self,chamada):
+        self.limparEventos()
         fundo0 = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, 
                      "imgTeste/estFundo.png", Retangulo(Ponto(0,0), 
                      Ponto(800, 132)), Ponto(0, 80), Ponto(-1, -0.4))
@@ -560,33 +556,47 @@ class Jogo():
         camera.adicionaFilho(simulador)
         #simulador.adicionaFilho(aviaoInimigo)
         self.cenaAtual.adicionaFilho(camera)
-        #self.cenaAtual.adicionaFilho(fundo2)
-        #self.cenaAtual.adicionaFilho(fundo3)
-        #self.cenaAtual.adicionaFilho(avi)
-        
-        #self.even.escutar('MenuPause',self.menuPause)
-        #self.even.escutar('Hangar',self.hangar)
+    
+    
     
     def MenuPrincipal(self,chamada):
-        
+        self.limparEventos()
         #trocando de transparencias
         self.cenaAtual = PainelMenuPrincipal(self.audio,self.entrada,
                                              self.renderizador)
+    
+    
     def Tutorial(self,chamada):
-        
+        self.limparEventos()
         #trocando de transparencias
         self.cenaAtual = PainelTutorial(self.audio,self.entrada,
                                         self.renderizador)
+    
+    
     def MenuOperacoes(self,chamada):
-        
+        self.limparEventos()
         #trocando de transparencias
         self.cenaAtual = PainelMenuOperacoes(self.audio,self.entrada,
                                          self.renderizador)
+    
+    
     def MenuMissao1(self,chamada):
-        
+        self.limparEventos()
         #trocando de transparencias
         self.cenaAtual = PainelMissoes1(self.audio,self.entrada,
                                         self.renderizador)
+    
+    
+    def limparEventos(self):
+        self.even.pararDeEscutarTudo()
+        self.even.escutar("sair", self.sair)
+        self.even.escutar("MenuPrincipal",self.MenuPrincipal)
+        self.even.escutar("Tutorial",self.Tutorial)
+        self.even.escutar("MenuOperacoes",self.MenuOperacoes)
+        self.even.escutar("Play", self.gameplay)
+        self.even.escutar("MenuMissao1", self.MenuMissao1)
+        self.audio.escutas()
+        self.renderizador.escutas()
     
     
     def gameloop(self):
@@ -612,9 +622,8 @@ class Jogo():
         pass
     
     
-    def irParaCena(self, cena):
-        if cena is None:
-            self.continuarLoop = False
+    def sair(self, cena):
+        self.entrada.sair()
     
     
     def atualizar(self):
