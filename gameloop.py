@@ -530,6 +530,7 @@ class Jogo():
         self.cenaAtual.adicionaFilho(fundos)
         simulador = Simulador(400)
         simulador.adicionaFilho(avi)
+        self.cenaAtual.adicionaFilho(simulador)
         #self.cenaAtual.adicionaFilho(fundo2)
         #self.cenaAtual.adicionaFilho(fundo3)
         #self.cenaAtual.adicionaFilho(avi)
