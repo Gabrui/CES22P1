@@ -22,6 +22,7 @@ class Projetil(motor.Figura):
         if pos is None:
             pos = motor.Ponto(0,0)
         
+        self.direcao = motor.Angulo(0)
         self._string_imagem = Imagem
         self._Som = Som
         self._Dano = Dano
@@ -69,5 +70,9 @@ class Projetil(motor.Figura):
         """
         self.even.lancar("tocarEfeito",self._Som)
     def Disparo(self, posI,direcao):
-        self.Pos.setXY( posI.getX, posI.getY)
+        self.Pos.setXY( posI.getX(), posI.getY())
         self.direcao = motor.Angulo(direcao)
+        
+        
+        
+        

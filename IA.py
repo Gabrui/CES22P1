@@ -96,13 +96,15 @@ class IA(motor.Renderizavel):
         ,então, atira.
         """
         AngVisada = self.ang.getAngulo() - self.angUni.getAngulo()
+        #Ajustando a mira
         if AngVisada >0:
             self.velAng = -aceleracaoAngular
         elif AngVisada < 0 :
             self.velAng = +aceleracaoAngular
         elif AngVisada == 0:
             self.velAng = 0
-        if AngVisada <= self.deltaAngTol:
+        if AngVisada <= self.deltaAngTol.getAngulo():
+            #Atirar
             self.shoot()
         if self.Vel.getX() > 0 and self.Pos.getX() > self.alvoPos.getX():
             #Se o jogador estiver nas costas da IA
@@ -198,7 +200,7 @@ class AviaoInimigo(IA,motor.Figura):
         self._audio = audio
         self.even.lancar("tocar_efeito",self._audio)
 
-    def Manobra180V(self):
+    def realizarManobra180V(self):
         
         if not self.Manobra180V:
             self._string_imagem = self.img2
@@ -234,7 +236,7 @@ class AviaoInimigo(IA,motor.Figura):
                """
                if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
                    self.Vel.setX(0)
-                   self.Manobra180V()
+                   self.realizarManobra180V()
                    self.Vel.setX(velPadrao)
                elif self.Vel.getX() >= self.alvoVel.getX():
                    acelX = self.Vel.getX() - aceleracao
@@ -245,7 +247,7 @@ class AviaoInimigo(IA,motor.Figura):
               """
               if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
                   self.Vel.setX(0)
-                  self.Manobra180V()
+                  self.realizarManobra180V()
                   self.Vel.setX(-velPadrao)
               elif self.Vel.getX() <= self.alvoVel.getX():
                   acelX = self.Vel.getX() + aceleracao
@@ -271,20 +273,22 @@ class AviaoInimigo(IA,motor.Figura):
     def voar(self,dt):
         
        #atualiza a posicao para o frame seguinte
-       self.Pos.soma(int(self.Vel.getXY*dt)) 
+       acrescimoX = int(self.Vel.getX()*dt)
+       acrescimoY = int(self.Vel.getY()*dt)
+       self.Pos.soma(motor.Ponto(acrescimoX,acrescimoY)) 
        #atualiza a posicao da Figura
-       self.pos.getXY(self.Pos.getXY)       
-       if self.Velang != 0: 
+       self.pos.setXY(self.Pos.getX(),self.Pos.getY())       
+       if self.velAng != 0: 
            """
            Se a velocidade angular nao for zero, tem que rotacionar a velocidade
            e a figura de um angulo igual ao modulo da velocidade angular.
            Logo, o novo Vx e novo Vy sao as projecoes do modulo de V.
            """
-           ang = math.atan2(self.Vel.getY(),self.Vel.getX()) + self.Velang
+           ang = math.atan2(self.Vel.getY(),self.Vel.getX()) + self.velAng
            self.ang.setAngulo(ang,False) #novo angulo com a horizontal
            self.rot.setAngulo(self.ang.getAngulo())#atualiza o angulo da Figura
-           projX = self.Vel.distancia((0,0))*math.cos(self.ang.getAngulo(False))
-           projY = self.Vel.distancia((0,0))*math.sin(self.ang.getAngulo(False))
+           projX = self.Vel.distancia(motor.Ponto(0,0))*math.cos(self.ang.getAngulo(False))
+           projY = self.Vel.distancia(motor.Ponto(0,0))*math.sin(self.ang.getAngulo(False))
            NovoVx = int(projX)#deve ser inteiro para alterar a posicao
            NovoVy = int(projY)#deve ser inteiro para posicao ser inteira (pixel)
            if NovoVx == 0 and projX!= 0:
@@ -293,11 +297,10 @@ class AviaoInimigo(IA,motor.Figura):
            if  NovoVy == 0 and projY!= 0:
                #se o truncamento zerar uma velocidade nao nula
                NovoVy = 1
-           self.Vel.setXY((NovoVx,NovoVy))
+           self.Vel.setXY(NovoVx,NovoVy)
     
     def atualiza(self,dt):
         
-        self.localizar()
         self.perseguir()
         self.aim()
         self.voar(dt)

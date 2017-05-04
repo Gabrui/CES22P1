@@ -541,7 +541,7 @@ class Jogo():
         self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
         
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
-                                            "imgTeste/MetalHit 1.wav",10,None)
+                                            "imgTeste/MetalHit 1.wav",10,Ponto(0,0))
         armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
                                 projetilArmaAviaoInimigo)
         aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em -x.png",
