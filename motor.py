@@ -479,14 +479,12 @@ class Renderizador:
         self.even.escutar("texto_novo", self.inicializaTexto)
     
     
-    # TENHA MISERICÓRDIA DA DEPENDÊNCIA ENTRE CLASSES
     def inicializaImagem(self, figura):
         lar, alt = self.carregaImagem(figura.getString())
         if figura.corte is None:
             figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
             
     
-    # QUE DEUS TENHA MISERICÓRDIA DESSE CÓDIGO
     def inicializaTexto(self, texto):
         largura,altura = self.getSizeTexto(texto.getString(),
                                                         texto.tupla_fonte)
@@ -553,10 +551,20 @@ class Renderizador:
         retangs = []
         for i in imagens:
             imagem = self._bancoImagens(i[0])
-            # nao foi implementado o corte
-            recorte = imagem.subsurface(i[1])
-            imagemRotate = pygame.transform.rotate(recorte,i[4])
-            imagemRotate.set_alpha(i[5])
+            tam = imagem.get_size()
+            # Verifica se o corte é a própria imagem
+            if i[1] == (0, 0, tam[0], tam[1]):
+                recorte = imagem
+            else: # Se não for, realiza o corte
+                recorte = imagem.subsurface(i[1])
+            # Verifica se a rotação da imagem é nula
+            if i[4] == 0:
+                imagemRotate = recorte
+            else: # Se houver rotação, realiza a transformação
+                imagemRotate = pygame.transform.rotate(recorte,i[4])
+            # Verifica a opacidade, se for diferente de 1, calcula
+            if i[5] != 1 :
+                imagemRotate.set_alpha(i[5])
             self.tela.blit(imagemRotate,(i[2], i[3]))
             larg, alt = imagemRotate.get_size()
             retangs.append((i[10], i[2], i[3], larg, alt))
