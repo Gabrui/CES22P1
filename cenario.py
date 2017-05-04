@@ -7,7 +7,7 @@ Created on Thu Apr  6 21:23:16 2017
 """
 
 from motor import Camada, Ponto, Figura
-
+import math
 
 class Camera(Camada):
     
@@ -18,6 +18,8 @@ class Camera(Camada):
         self.l2 = largura/2
         self.a2 = altura/2
         self.alvo = alvo
+        self.fundosParalaxeInfinita = []
+        self.posAntiga = Ponto(0, 0)
     
     
     def _centraliza(self, ponto):
@@ -28,9 +30,26 @@ class Camera(Camada):
         self.rot.setAngulo(-angulo.getAngulo())
     
     
+    def adicionaFilho(self, filho):
+        super().adicionaFilho(filho)
+        if isinstance(filho, FundoParalaxeInfinito):
+            self.fundosParalaxeInfinita.append(filho)
+    
+    
+    def removeFilho(self, filho):
+        super().removeFilho(filho)
+        if isinstance(filho, FundoParalaxeInfinito):
+            self.fundosParalaxeInfinita.remove(filho)
+    
+    
     def atualiza(self, dt):
         super().atualiza(dt)
-        #self._centraliza(self.alvo.pos)
+        self.posAntiga.setXY(self.pos.getX(), self.pos.getY())
+        self._centraliza(self.alvo.pos)
+        dx = self.pos.getX() - self.posAntiga.getX()
+        dy = self.pos.getY() - self.posAntiga.getY()
+        for fundo in self.fundosParalaxeInfinita:
+            fundo.atualizaFundo(dx, dy)
     
 
 
@@ -55,24 +74,27 @@ class FundoParalaxeInfinito(Camada):
         self.alturaTela = alturaTela
         self.altura = alturaTela - corte.getAltura() - pos0.getY()
         self.largura = corte.getLargura()
-        self.quant = (int) (self.larguraTela/self.largura)
+        self.quant = int(math.ceil(self.larguraTela/self.largura))
         self.rel = rel
         
-        if rel.getX() > 0:
+        if rel.getX() < 1:
             self.quant += 1
         
         for i in range(self.quant):
             figura = Figura(textura, corte, 
                     Ponto(i*self.largura+pos0.getX(), self.altura+pos0.getY()))
             self.adicionaFilho(figura)
+        print(self.quant)
     
     
     def atualizaFundo(self, dx, dy):
         for filho in self.filhos:
             delta = Ponto(self.rel.getX()*dx, self.rel.getY()*dy)
             filho.pos.soma(delta)
-            if filho.retang.getEsquerda() + delta.getX() < - self.largura:
-                filho.pos.soma(Ponto(self.largura + self.larguraTela, 0))
-            elif filho.retang.getDireita() + delta.getX() > self.larguraTela:
-                filho.pos.soma(Ponto(-self.largura - self.larguraTela, 0))
+            if filho.retang.getDireita() + delta.getX() < 0:
+                filho.pos.soma(Ponto(self.largura*self.quant, 0))
+            elif filho.retang.getEsquerda() + delta.getX() > self.larguraTela:
+                filho.pos.soma(Ponto(-self.largura*self.quant, 0))
+    
+        
         
