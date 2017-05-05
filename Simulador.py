@@ -146,7 +146,7 @@ class Simulador(motor.Camada):
                 elif isinstance(filhos, aviao.Aviao):
                     #Se for Jogador, chama tela de G.O.
                     #filhos[10].explosao()
-                    print("CRASH!!")
+                    filhos.yVel *= -1
                     self.even.lancar("GameOver", True)
                 elif isinstance(filhos, IA.AviaoInimigo):
                     #Se houver colisao entre aviaoInimigo e chao

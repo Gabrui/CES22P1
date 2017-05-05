@@ -229,7 +229,7 @@ class AviaoInimigo(IA,motor.Figura):
         Ajusta a velocidade X da IA, de acordo com a posicao relativa 
         do Jogador com a IA
         """
-        if self.Pos.getX() < self.alvoPos.getX() and self.Vel.getX() < 0:
+        if (self.Pos.getX() < self.alvoPos.getX()) and (self.Vel.getX() < 0):
                """
                Inverte a direcao de voo
                """
@@ -257,7 +257,9 @@ class AviaoInimigo(IA,motor.Figura):
             se tiver a uma certa distancia, diminui a sua velocidade 
             para igualar à velocidade do jogador.
             """
-            if self.Vel.getX() > self.alvoVel.getX() and self.Vel.getX()>0:
+            if self.Vel.getX() > self.alvoVel.getX() and self.Vel.getX()>0 and\
+               self.Pos.getX()< self.alvoPos.getX():
+                   
                 acelX = self.Vel.getX() - desaceleracao
                 if acelX >= self.alvoVel.getX() and acelX != 0:
                     self.Vel.setX(acelX)

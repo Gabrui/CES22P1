@@ -502,7 +502,7 @@ class Jogo():
     def __init__(self):
         """Ainda é só um esboço"""
         self.larguraTela = 1000
-        self.alturaTela  = 800
+        self.alturaTela  = 700
         self.CorBlit     = (200,200,255)
         
         self.audio = Audio()
@@ -548,7 +548,7 @@ class Jogo():
                                     None,None,None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
 
-        simulador = Simulador(200)
+        simulador = Simulador(self.alturaTela)
         simulador.adicionaFilho(avi)
         camera = Camera(self.larguraTela, self.alturaTela, avi, 0)
         camera.adicionaFilho(fundo0)
