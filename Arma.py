@@ -32,4 +32,4 @@ class Arma():
         return self._Dono
     def setDono(self,Dono):
         self.Dono = Dono
-        
+        self._Projetil.definirDono(Dono)

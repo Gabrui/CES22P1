@@ -12,6 +12,7 @@ class Projetil(motor.Figura):
      Representa a ideia abstrata de projetil
     """
     def __init__(self,Imagem,Som,Dano,pos, veli = 0,Dono = None):
+        motor.Figura.__init__(self,Imagem,None,pos)
         """
         Imagem: referencia a imagem do projetil
         Som:    referencia o som do impacto do projetil
@@ -31,7 +32,7 @@ class Projetil(motor.Figura):
         self.veli = veli
         
     def clonarProjetil(self):
-        return Projetil(self._string_imagem, self._Som, self._Dano, self.Pos, self.Dono)
+        return Projetil(self._string_imagem, self._Som, self._Dano, self.Pos, self.veli,self.Dono)
     def getSom(self):
         return self._Som
     def getDano(self):
@@ -64,7 +65,7 @@ class Projetil(motor.Figura):
         posY = self.Pos.getY() + VelocidadeY
         #atualiza posicao
         self.Pos.setXY( posX, posY)
-    def fisicaDeImpacto(self, posI,velI,acelI):
+    def fisicaDeImpacto(self):
         """
         Algoritmo da fisica de impacto. 
         """

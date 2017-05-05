@@ -538,7 +538,7 @@ class Jogo():
         self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
         
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
-                                            "imgTeste/MetalHit 1.wav",10,Ponto(0,0))
+                                            "imgTeste/MetalHit1.ogg",10,Ponto(0,0),10)
         armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
                                 projetilArmaAviaoInimigo)
         aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em -x.png",
@@ -546,8 +546,8 @@ class Jogo():
                                     "imgTeste/airplane.ogg",
                                     armaAviaoInimigo,Ponto(300,100),100,None,None,
                                     None,None,None,None)
-        armaAviaoInimigo.setDono = aviaoInimigo
-        
+        armaAviaoInimigo.setDono(aviaoInimigo)
+
         simulador = Simulador(200)
         simulador.adicionaFilho(avi)
         camera = Camera(self.larguraTela, self.alturaTela, avi, 0)
@@ -555,7 +555,7 @@ class Jogo():
         camera.adicionaFilho(fundo1)
         camera.adicionaFilho(fundo3)
         camera.adicionaFilho(simulador)
-        #simulador.adicionaFilho(aviaoInimigo)
+        simulador.adicionaFilho(aviaoInimigo)
         self.cenaAtual.adicionaFilho(camera)
     
     

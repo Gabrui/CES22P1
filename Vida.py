@@ -15,9 +15,9 @@ class Vida():
         """
         self._MaxVida = Max
         self.Vida = Max
-    def getLife(self):
+    def getPV(self):
         return self.Vida
-    def Subtrair(self, Dano):
+    def reduzPV(self, Dano):
         """
         Dano: Quantidade de dano sofrido
         """

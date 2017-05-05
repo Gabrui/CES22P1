@@ -6,7 +6,7 @@ Created on Sun Apr  9 12:00:23 2017
 """
 import motor
 import math
-
+from Vida import Vida 
 velPadrao = 10 #constante de valor padrao de velocidade para IA
 distanciaManobra = 300 #valor constante para distancia minima para realizar Manobra180V
 distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
@@ -15,11 +15,12 @@ aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
 desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
 erro = 5 #erro angular aceitavel para atirar
 
-class IA(motor.Renderizavel):
+class IA(motor.Renderizavel, Vida):
     def __init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol):
         motor.Renderizavel.__init__(self)
+        Vida.__init__(self,PV)
         """
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
@@ -71,11 +72,6 @@ class IA(motor.Renderizavel):
         #PlayerLocation: é o evento da posicao do player
         self.even.escutar("PlayerLocation", self.localizar)
         
-    def getPV(self):
-        return self.PV
-    def reduzPV(self, dano):
-        if dano>0:
-            self.PV = self.PV - dano
     def localizar(self, alvo):
         """
             Receber a posicao e a velocidade do Jogador.
@@ -105,7 +101,8 @@ class IA(motor.Renderizavel):
             self.velAng = 0
         if AngVisada <= self.deltaAngTol.getAngulo():
             #Atirar
-            self.shoot()
+           # self.shoot()
+           pass
         if self.Vel.getX() > 0 and self.Pos.getX() > self.alvoPos.getX():
             #Se o jogador estiver nas costas da IA
             if self.ang.getAngulo() == 0:
@@ -307,10 +304,10 @@ class AviaoInimigo(IA,motor.Figura):
 
 class TorreInimiga(IA,motor.Figura):
     
-    def __init__(self,img,audio, arma, pos, vel, alvoPos,
+    def __init__(self,img,audio, arma,PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol): 
-        IA.__init__(self,arma, pos, vel, alvoPos,
+        IA.__init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol)
         motor.Figura.__init__(self,img)
