@@ -422,6 +422,12 @@ class Angulo:
             return 3
         elif -90 <= self._angulo < 0:
             return 4
+    
+    
+    def getDiferenca(self, outro):
+        """Retorna um angulo que é a diferença entre o outro ângulo, isto é, 
+        o que é necessário somar a este ângulo para atingir o outro"""
+        return Angulo(outro.getAngulo() - self.getAngulo())
 
 
 

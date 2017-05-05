@@ -33,7 +33,7 @@ class IA(motor.Renderizavel, Vida):
                  o alvo e a IA
         velAng:  velocidade angular de IA
         distanciaPerseguir: distancia minima para o qual o IA 
-                            tenta estabelecer a mesma velocidade que a do Jogador
+                          tenta estabelecer a mesma velocidade que a do Jogador
         deltaAngTol: angulo de tolerancia para disparo
         """
         
@@ -161,7 +161,7 @@ class AviaoInimigo(IA,motor.Figura):
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol)
-        motor.Figura.__init__(self,img1)
+        motor.Figura.__init__(self,img2)
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao
@@ -312,14 +312,51 @@ class AviaoInimigo(IA,motor.Figura):
                #se o truncamento zerar a velocidade vertical nao nula
                NovoVy = 1
            self.Vel.setXY(NovoVx,NovoVy)
+        
+        
+    def mira(self, dt):
+        visada = motor.Angulo(math.atan2(self.pos.getY() - self.alvoPos.getY(),
+                            self.alvoPos.getX() - self.pos.getX()), False)
+        dif = self.rot.getDiferenca(visada).getAngulo()
+        self.velMax = 56
+        
+        # Cálculo da velocidade
+        if abs(dif) < self.velMax:
+            vel = dif
+        elif dif > 0:
+            vel = self.velMax
+        else:
+            vel = -self.velMax
+        
+        # Runge-Kutta de primeira ordem :D
+        self.rot.incrementa(vel*dt) 
+        
+    
+    def voarSimples(self, dt):
+        # 140 é a velocidade em pixel/s
+        self.velo = 140
+        self.pos.setX(self.pos.getX() + 
+                      math.cos(self.rot.getAngulo(False))*self.velo*dt)
+        self.pos.setY(self.pos.getY() - 
+                      math.sin(self.rot.getAngulo(False))*self.velo*dt)
+    
+    
+    def explosao(self):
+        self.rot.setAngulo(-self.rot.getAngulo())
+    
+        
     
     def atualiza(self,dt):
-        
-        if self.Pos.distancia2(self.alvoPos) > self.distanciaReacao:
+        self.mira(dt)
+        self.voarSimples(dt)
+        """if self.Pos.distancia2(self.alvoPos) > self.distanciaReacao:
             self.perseguir()
             self.aim()
             
-        self.voar(dt)
+        self.voar(dt)"""
+    
+    
+    
 
 class TorreInimiga(IA,motor.Figura):
     

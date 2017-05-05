@@ -555,7 +555,7 @@ class Jogo():
         camera.adicionaFilho(fundo1)
         camera.adicionaFilho(fundo3)
         camera.adicionaFilho(simulador)
-        #simulador.adicionaFilho(aviaoInimigo)
+        simulador.adicionaFilho(aviaoInimigo)
         self.cenaAtual.adicionaFilho(camera)
     
     
