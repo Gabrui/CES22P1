@@ -139,15 +139,17 @@ class IA(motor.Renderizavel, Vida):
                self.shoot()
 
         
-    def shoot(self):
+    def shoot(self,dt):
         """
         lanca evento de disparo.
         tupla_tiro: (PosicaodaIA, direcaoDeDIsparo,ObjetoProjetil)
         """
         projetil = self.arma.getProjetil()
         posInicialProjetil = self.Pos.clonar()
-        posInicialProjetil.setXY(posInicialProjetil.getX()+self.Vel.getX(),
-                                 posInicialProjetil.getY()+self.Vel.getY())
+        posInicialProjetil.setXY(posInicialProjetil.getX()+
+                            math.cos(self.rot.getAngulo(False))*self.velo*dt,
+                                 posInicialProjetil.getY()+- 
+                      math.sin(self.rot.getAngulo(False))*self.velo*dt)
         projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
         self.even.lancar("Atirar",projetil)
         self.even.lancar("tocarEfeito",self._string_som_disparo)
@@ -323,7 +325,7 @@ class AviaoInimigo(IA,motor.Figura):
         else:
             vel = -self.velMax
         if abs(dif) < self.deltaAngTol.getAngulo():
-            self.shoot()
+            #self.shoot(dt)
             
         # Runge-Kutta de primeira ordem :D
         self.rot.incrementa(vel*dt) 
