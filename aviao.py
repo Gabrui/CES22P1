@@ -29,9 +29,12 @@ class Jogador(Aviao):
     # ([8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
     [5, 50000, 5000/3, 100], [5000, 150])
     """
-    def __init__(self, string_imagem, pos0, c0, aerMacro, empuxoMacro,
-                 rotMacro, inerciaMacro):
+    def __init__(self, string_imagem, string_imagem_invertida, pos0, c0, 
+                 aerMacro, empuxoMacro, rotMacro, inerciaMacro):
         super().__init__(string_imagem, pos0, c0)
+        self.img1 = string_imagem
+        self.img2 = string_imagem_invertida
+        
         #Constantes matemáticas
         self.radianosParaGraus      = 180 / math.pi
         self.grausParaRadianos      = math.pi/180
@@ -147,23 +150,41 @@ class Jogador(Aviao):
         self.even.escutar("K_down", self._cBaixo)
         self.even.escutar("K_right", self._cDireita)
         self.even.escutar("K_left", self._cEsquerda)
+        self.even.escutar("K_space", self._cVirar)
         self.cima = False
         self.baixo = False
         self.direita = False
         self.esquerda = False
+        self.virar = False
+        self.dtVirar = 2
+        self.dtVirarMin = 1
     
     
     def _cCima(self, eventoTeclado):
         self.cima = True
         
+    
     def _cBaixo(self, eventoTeclado):
         self.baixo = True
+    
     
     def _cDireita(self, eventoTeclado):
         self.direita = True
     
+    
     def _cEsquerda(self, eventoTeclado):
         self.esquerda = True
+    
+    
+    def _cVirar(self, eventoTeclado):
+        self.virar = True
+    
+    
+    def inverterFigura(self):
+        if self.getString() == self.img1:
+            self.setString(self.img2)
+        else:
+            self.setString(self.img1)
     
     
     def calculus(self, dt):
@@ -171,22 +192,22 @@ class Jogador(Aviao):
         #CONTROLADOR:
         if self.cima:
             self.elevador = self.lado
-            self.cima = False
         elif self.baixo:
             self.elevador = -self.lado
-            self.baixo = False
         else:
             self.elevador = 0
         if self.direita:
             self.percMotor += 0.5 * dt
-            self.direita = False
         elif self.esquerda:
             self.percMotor -= 0.5 * dt
-            self.esquerda = False
         if self.percMotor > 1:
             self.percMotor = 1 
         elif self.percMotor < 0:
             self.percMotor = 0
+        if self.virar and self.dtVirar > self.dtVirarMin:
+            self.lado *= -1
+            self.inverterFigura()
+            self.dtVirar = 0
             
         #DADOS ATMOSFÉRICOS:
         #altitude = 10000
@@ -260,7 +281,7 @@ class Jogador(Aviao):
         # Tende o avião à velocidade, no stall fica impossivel de virar com 
         #elevador
         self.tEstabilizador = ((self.velveld / self.velmVelmDm) * self.angAtaq 
-                               * self.tEstabilizadorMax)
+                               * self.tEstabilizadorMax) * self.lado
         #* (angAtaq / angStall) * angElevadorMax 
         # Estabelece uma velocidade angular máxima, primeiro grau para 
         #conservar o sinal
@@ -296,8 +317,14 @@ class Jogador(Aviao):
         self.xVel += self.xAcel * dt
         self.yVel += self.yAcel * dt
         
-        # Reinicia Controle do Elevador:
+        # Reinicia Controle do Elevador e de eventos:
         self.elevador = 0
+        self.cima = False
+        self.baixo = False
+        self.direita = False
+        self.esquerda = False
+        self.virar = False
+        self.dtVirar += dt
         
     
     def _interpolar(self, entrada, saida, pontos):

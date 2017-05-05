@@ -529,7 +529,8 @@ class Jogo():
                      "imgTeste/movFundo.png", Retangulo(Ponto(0,0), 
                      Ponto(800, 225)), Ponto(0,0), Ponto(0,0))
         fundo3 = Figura("imgTeste/nuvem.png")
-        avi = Jogador("imgTeste/hellcat2.png", Ponto(100, 100), Ponto(28, 10),
+        avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
+                 Ponto(100, 100), Ponto(28, 10),
                  [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                  [5, 50000, 5000/3, 100], [5000, 150])
         
