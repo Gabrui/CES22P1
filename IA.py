@@ -7,13 +7,13 @@ Created on Sun Apr  9 12:00:23 2017
 import motor
 import math
 from Vida import Vida 
-velPadrao = -10 #constante de valor padrao de velocidade para IA
-distanciaManobra = 300 #valor constante para distancia minima para realizar Manobra180V
+velPadrao = -100 #constante de valor padrao de velocidade para IA
+distanciaManobra = 400 #valor constante para distancia minima para realizar Manobra180V
 distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
-aceleracaoAngular = 0.1#velocidade com que IA rotaciona
+aceleracaoAngular = 0.01#velocidade com que IA rotaciona
 aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
 desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
-erro = 5 #erro angular aceitavel para atirar
+erro = 0 #erro angular aceitavel para atirar
 
 class IA(motor.Renderizavel, Vida):
     def __init__(self,arma, PV, pos, vel, alvoPos,
@@ -67,6 +67,8 @@ class IA(motor.Renderizavel, Vida):
         self.angUni = angUni
         
         self.PV = PV
+        
+        self.distanciaMira = 300 #distancia em que IA ajusta a mira
         
         #escuta o evento e chama a funcao
         #PlayerLocation: é o evento da posicao do player
@@ -124,9 +126,9 @@ class IA(motor.Renderizavel, Vida):
                 self.velAng = +aceleracaoAngular
         else:
             #Ajustando a mira
-            if AngVisada >0:
+            if AngVisada >0 and self.alvoPos.getX() - self.Pos.getX()> self.distanciaMira:
                 self.velAng = -aceleracaoAngular
-            elif AngVisada < 0 :
+            elif AngVisada < 0 and self.Pos.getX() - self.alvoPos.getX()>self.distanciaMira:
                 self.velAng = +aceleracaoAngular
             elif AngVisada == 0:
                 self.velAng = 0
@@ -144,7 +146,10 @@ class IA(motor.Renderizavel, Vida):
         tupla_tiro: (PosicaodaIA, direcaoDeDIsparo,ObjetoProjetil)
         """
         projetil = self.arma.getProjetil()
-        projetil.Disparo(self.Pos.clonar(),self.ang.getAngulo())
+        posInicialProjetil = self.Pos.clonar()
+        posInicialProjetil.setXY(posInicialProjetil.getX()+self.Vel.getX(),
+                                 posInicialProjetil.getY()+self.Vel.getY())
+        projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
         self.even.lancar("Atirar",projetil)
 
 class AviaoInimigo(IA,motor.Figura):
@@ -198,32 +203,29 @@ class AviaoInimigo(IA,motor.Figura):
         
         self._audio = audio
         self.even.lancar("tocar_efeito",self._audio)
-
+        
+        self.distanciaReacao = 30
+        
     def realizarManobra180V(self):
         
         if not self.Manobra180V:
+            #Troca a imagem
             self.setString(self.img2)
-            if self.ang.getAngulo() >0:
-                novoRot = 180 - self.ang.getAngulo()
-                self.rot.setAngulo(novoRot)        
-            elif self.ang.getAngulo()<0:
-                novoRot = -180 - self.ang.getAngulo()
-                self.rot.setAngulo(novoRot)
-                
+            #troca o estado na manobra
+            #voando para direita
             self.Manobra180V = True
+            
         elif self.Manobra180V:
+            #Troca a imagem
             self.setString(self.img1)
-            
-            if self.ang.getAngulo() >0:
-                novoRot = 180 - self.ang.getAngulo()
-                self.rot.setAngulo(novoRot)        
-            elif self.ang.getAngulo()<0:
-                novoRot = -180 - self.ang.getAngulo()
-                self.rot.setAngulo(novoRot)
-            
+            #Troca o estado da manobra
+            #voando pra esquerda
             self.Manobra180V = False
-        
-        
+        #calcula novo angulo da imagem    
+        novoRot = - self.ang.getAngulo()
+        #atualiza o angulo da imagem
+        self.rot.setAngulo(novoRot)
+  
     def perseguir(self):
         """
         Ajusta a velocidade X da IA, de acordo com a posicao relativa 
@@ -233,10 +235,10 @@ class AviaoInimigo(IA,motor.Figura):
                """
                Inverte a direcao de voo
                """
-               if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
+               if self.alvoPos.getX() - self.Pos.getX() > self.distanciaManobra:
                    self.Vel.setX(0)
                    self.realizarManobra180V()
-                   self.Vel.setX(velPadrao)
+                   self.Vel.setX(-velPadrao)
                elif self.Vel.getX() >= self.alvoVel.getX():
                    acelX = self.Vel.getX() - aceleracao
                    self.Vel.setX(acelX)
@@ -244,10 +246,10 @@ class AviaoInimigo(IA,motor.Figura):
               """
               Inverte a direcao de voo
               """
-              if self.Pos.distancia2(self.alvoPos) > self.distanciaManobra:
+              if self.Pos.getX() - self.alvoPos.getX() > self.distanciaManobra:
                   self.Vel.setX(0)
                   self.realizarManobra180V()
-                  self.Vel.setX(-velPadrao)
+                  self.Vel.setX(velPadrao)
               elif self.Vel.getX() <= self.alvoVel.getX():
                   acelX = self.Vel.getX() + aceleracao
                   self.Vel.setX(acelX)   
@@ -261,16 +263,21 @@ class AviaoInimigo(IA,motor.Figura):
                self.Pos.getX()< self.alvoPos.getX():
                    
                 acelX = self.Vel.getX() - desaceleracao
-                if acelX >= self.alvoVel.getX() and acelX != 0:
+                if acelX >= self.alvoVel.getX() and acelX > 0:
                     self.Vel.setX(acelX)
-                elif self.alvoVel.getX() != 0:
+                elif self.alvoVel.getX() > 0 and self.Vel.getX()<= self.alvoVel.getX():
                     self.Vel.setX(self.alvoVel.getX())
-            elif self.Vel.getX() < self.alvoVel.getX() and self.Vel.getX() < 0:
+                
+            elif self.Vel.getX() < self.alvoVel.getX() and self.Vel.getX() < 0\
+                 and self.Pos.getX() > self.alvoPos.getX():
                 acelX = self.Vel.getX() + desaceleracao
-                if acelX <= self.alvoVel.getX() and acelX != 0:
+                if acelX <= self.alvoVel.getX() and acelX < 0:
                     self.Vel.setX(acelX)
-                elif self.alvoVel.getX() != 0:
+                elif self.alvoVel.getX() < 0 and\
+                    self.Vel.getX() > self.alvoVel.getX():
+                        
                     self.Vel.setX(self.alvoVel.getX())
+            
     def voar(self,dt):
         
        #atualiza a posicao para o frame seguinte
@@ -292,18 +299,26 @@ class AviaoInimigo(IA,motor.Figura):
            projY = self.Vel.distancia(motor.Ponto(0,0))*math.sin(self.ang.getAngulo(False))
            NovoVx = int(projX)#deve ser inteiro para alterar a posicao
            NovoVy = int(projY)#deve ser inteiro para posicao ser inteira (pixel)
-           if NovoVx == 0 and projX!= 0:
-               #se o truncamento zerar uma velocidade nao nula
-               NovoVx = 1
+           if NovoVx == 0 and ((-math.pi/2)<self.ang.getAngulo()<(math.pi/2)):
+               #se a velocidade horizontal for zerada
+               #atribui um valor padrao
+               NovoVx = -velPadrao
+           elif NovoVx == 0 and ((math.pi/2)<self.ang.getAngulo() or\
+                                 self.ang.getAngulo() <(-math.pi/2)):
+               #se a velocidade horizontal for zerada
+               #atribui um valor padrao
+               NovoVx = velPadrao
            if  NovoVy == 0 and projY!= 0:
-               #se o truncamento zerar uma velocidade nao nula
+               #se o truncamento zerar a velocidade vertical nao nula
                NovoVy = 1
            self.Vel.setXY(NovoVx,NovoVy)
     
     def atualiza(self,dt):
         
-        self.perseguir()
-        self.aim()
+        if self.Pos.distancia2(self.alvoPos) > self.distanciaReacao:
+            self.perseguir()
+            self.aim()
+            
         self.voar(dt)
 
 class TorreInimiga(IA,motor.Figura):
