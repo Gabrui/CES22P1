@@ -18,7 +18,7 @@ erro = 5 #erro angular aceitavel para atirar
 class IA(motor.Renderizavel, Vida):
     def __init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
-                 deltaAngTol,string_som_disparo = None):
+                 deltaAngTol,string_som_disparo = None,string_som_fallShell=None):
         motor.Renderizavel.__init__(self)
         Vida.__init__(self,PV)
         """
@@ -62,7 +62,7 @@ class IA(motor.Renderizavel, Vida):
         self.arma = arma
         self.distanciaPerseguir = distanciaPerseguir
         self.distanciaManobra = distanciaManobra
-        
+        self._string_som_fallShell = string_som_fallShell
         self.alvoPos = alvoPos
         self.alvoVel = alvoVel
         self.angUni = angUni
@@ -153,17 +153,18 @@ class IA(motor.Renderizavel, Vida):
         projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
         self.even.lancar("Atirar",projetil)
         self.even.lancar("tocarEfeito",self._string_som_disparo)
+        self.even.lancar("tocarEfeito",self._string_som_fallShell)
 
 class AviaoInimigo(IA,motor.Figura):
     
     
     def __init__(self,img1,img2, audio, arma, pos,PV,string_som_disparo,
-                 string_som_explosao, vel, alvoPos,
+                 string_som_explosao,string_som_fallShell, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol): 
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
-                 deltaAngTol,string_som_disparo)
+                 deltaAngTol,string_som_disparo,string_som_fallShell)
         motor.Figura.__init__(self,img1)
         """
         img:     É a string do nome do arquivo imagem do aviao
@@ -324,7 +325,7 @@ class AviaoInimigo(IA,motor.Figura):
             vel = self.velMax
         else:
             vel = -self.velMax
-        if abs(dif) < self.deltaAngTol.getAngulo():
+        #if abs(dif) < self.deltaAngTol.getAngulo():
             #self.shoot(dt)
             
         # Runge-Kutta de primeira ordem :D

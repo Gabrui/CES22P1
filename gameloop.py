@@ -535,7 +535,7 @@ class Jogo():
                  [5, 50000, 5000/3, 100], [5000, 150])
         
         
-        self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador)
+        self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador,"imgTeste/NowOrNever.ogg")
         
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
                                             "imgTeste/MetalHit1.ogg",10,Ponto(0,0),10)
@@ -547,6 +547,7 @@ class Jogo():
                                     armaAviaoInimigo,Ponto(300,100),100,
                                     "imgTeste/MP5_SMG_auto.ogg",
                                     "imgTeste/Explosion_6.ogg",
+                                    "imgTeste/Shells_falls.ogg",
                                     None,None,
                                     None,None,None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
@@ -560,7 +561,6 @@ class Jogo():
         camera.adicionaFilho(simulador)
         simulador.adicionaFilho(aviaoInimigo)
         self.cenaAtual.adicionaFilho(camera)
-    
     
     
     def MenuPrincipal(self,chamada):
