@@ -488,7 +488,11 @@ class Renderizador:
     
     
     def inicializaImagem(self, figura):
-        lar, alt = self.carregaImagem(figura.getString())
+        img = self._bancoImagens(figura.getString())
+        if img is None:
+            lar, alt = self._carregaImagem(figura.getString())
+        else:
+            lar, alt = img.get_size()
         if figura.corte is None:
             figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
             
@@ -504,11 +508,11 @@ class Renderizador:
         return self._listaImagens.get(string_imagem)
     
     
-    def carregaImagem(self, string_imagem):
+    def _carregaImagem(self, string_imagem):
         """Carrega a imagem na memória e retorna o tamanho dela"""
-        import os
+        from os import sep
         # Dependendo do sistema operacional o separador pode ser / ou \\
-        caminho = string_imagem.replace('/', os.sep)
+        caminho = string_imagem.replace('/', sep)
         imagem = pygame.image.load(caminho)
         self._listaImagens[string_imagem] = imagem
         return imagem.get_size()

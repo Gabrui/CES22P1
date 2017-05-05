@@ -555,7 +555,7 @@ class Jogo():
         camera.adicionaFilho(fundo1)
         camera.adicionaFilho(fundo3)
         camera.adicionaFilho(simulador)
-        simulador.adicionaFilho(aviaoInimigo)
+        #simulador.adicionaFilho(aviaoInimigo)
         self.cenaAtual.adicionaFilho(camera)
     
     
@@ -606,6 +606,8 @@ class Jogo():
             tantigo = tnovo
             tnovo = time.clock()
             dt = tnovo - tantigo
+            if dt > 0.1:
+                print(dt)
             if dt < td:
                 time.sleep(td - dt)
             if dt > t20:
@@ -627,11 +629,5 @@ class Jogo():
         self.entrada.sair()
     
     
-    def atualizar(self):
-        #Relógio
-        dt = 15 #Time1 - time0
-        if self.continuarLoop:
-            self.CenaAtual.atualiza(dt)
-            self.cenaAtual.even.propagaLancamento(self.even)
     
 Jogo()
