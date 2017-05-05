@@ -13,12 +13,12 @@ distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
 aceleracaoAngular = 0.01#velocidade com que IA rotaciona
 aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
 desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
-erro = 0 #erro angular aceitavel para atirar
+erro = 5 #erro angular aceitavel para atirar
 
 class IA(motor.Renderizavel, Vida):
     def __init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
-                 deltaAngTol):
+                 deltaAngTol,string_som_disparo = None):
         motor.Renderizavel.__init__(self)
         Vida.__init__(self,PV)
         """
@@ -35,6 +35,7 @@ class IA(motor.Renderizavel, Vida):
         distanciaPerseguir: distancia minima para o qual o IA 
                           tenta estabelecer a mesma velocidade que a do Jogador
         deltaAngTol: angulo de tolerancia para disparo
+        string_som_disparo: nome do arquivo do som do disparo
         """
         
         if pos is None:
@@ -67,6 +68,7 @@ class IA(motor.Renderizavel, Vida):
         self.angUni = angUni
         
         self.PV = PV
+        self._string_som_disparo = string_som_disparo 
         
         self.distanciaMira = 300 #distancia em que IA ajusta a mira
         
@@ -135,10 +137,7 @@ class IA(motor.Renderizavel, Vida):
             if AngVisada <= self.deltaAngTol.getAngulo():
                #Atirar
                self.shoot()
-           
-                
-        
-        
+
         
     def shoot(self):
         """
@@ -151,17 +150,19 @@ class IA(motor.Renderizavel, Vida):
                                  posInicialProjetil.getY()+self.Vel.getY())
         projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
         self.even.lancar("Atirar",projetil)
+        self.even.lancar("tocarEfeito",self._string_som_disparo)
 
 class AviaoInimigo(IA,motor.Figura):
     
     
-    def __init__(self,img1,img2, audio, arma, pos,PV, vel, alvoPos,
+    def __init__(self,img1,img2, audio, arma, pos,PV,string_som_disparo,
+                 string_som_explosao, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol): 
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
-                 deltaAngTol)
-        motor.Figura.__init__(self,img2)
+                 deltaAngTol,string_som_disparo)
+        motor.Figura.__init__(self,img1)
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao
@@ -198,33 +199,27 @@ class AviaoInimigo(IA,motor.Figura):
             
         self.img1 = img1
         self.img2 = img2
-        
+        self.tol = 0.080
         self.Manobra180V = False
-        
+        self._string_som_explosao = string_som_explosao
         self._audio = audio
-        self.even.lancar("tocar_efeito",self._audio)
+        self.even.lancar("tocarEfeito",self._audio)
         
         self.distanciaReacao = 30
         
-    def realizarManobra180V(self):
+    def realizarManobra180H(self):
         
         if not self.Manobra180V:
             #Troca a imagem
             self.setString(self.img2)
             #troca o estado na manobra
             #voando para direita
-            self.Manobra180V = True
             
         elif self.Manobra180V:
             #Troca a imagem
             self.setString(self.img1)
             #Troca o estado da manobra
             #voando pra esquerda
-            self.Manobra180V = False
-        #calcula novo angulo da imagem    
-        novoRot = - self.ang.getAngulo()
-        #atualiza o angulo da imagem
-        self.rot.setAngulo(novoRot)
   
     def perseguir(self):
         """
@@ -327,7 +322,9 @@ class AviaoInimigo(IA,motor.Figura):
             vel = self.velMax
         else:
             vel = -self.velMax
-        
+        if abs(dif) < self.deltaAngTol.getAngulo():
+            self.shoot()
+            
         # Runge-Kutta de primeira ordem :D
         self.rot.incrementa(vel*dt) 
         
@@ -339,10 +336,18 @@ class AviaoInimigo(IA,motor.Figura):
                       math.cos(self.rot.getAngulo(False))*self.velo*dt)
         self.pos.setY(self.pos.getY() - 
                       math.sin(self.rot.getAngulo(False))*self.velo*dt)
-    
+        if (180-self.tol <=math.fabs(self.rot.getAngulo())%180<= 180)\
+           and self.pos.getX() > self.alvoPos.getX():
+               self.Manobra180V = False
+               self.realizarManobra180H()
+        elif (0 <=math.fabs(self.rot.getAngulo())%360<= self.tol)\
+           and self.pos.getX() < self.alvoPos.getX():
+               self.Manobra180V = True
+               self.realizarManobra180H()
     
     def explosao(self):
         self.rot.setAngulo(-self.rot.getAngulo())
+        self.even.lancar("tocarEfeito",self._string_som_explosao)
     
         
     

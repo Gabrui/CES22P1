@@ -541,10 +541,13 @@ class Jogo():
                                             "imgTeste/MetalHit1.ogg",10,Ponto(0,0),10)
         armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
                                 projetilArmaAviaoInimigo)
-        aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em -x.png",
-                                    "imgTeste/aviaoInimigo em x.png",
-                                    "imgTeste/airplane.ogg",
-                                    armaAviaoInimigo,Ponto(300,100),100,None,None,
+        aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
+                                    "imgTeste/aviaoInimigo em -y.png",
+                                    "imgTeste/airplane_b25-1.ogg",
+                                    armaAviaoInimigo,Ponto(300,100),100,
+                                    "imgTeste/MP5_SMG_auto.ogg",
+                                    "imgTeste/Explosion_6.ogg",
+                                    None,None,
                                     None,None,None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
 
