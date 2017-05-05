@@ -10,7 +10,7 @@ import unittest
 
 
 from motor import Aux, Angulo, Ponto, Retangulo, Evento, Camada, Figura
-from math import sin, cos, atan2, sqrt
+from math import sin, cos, atan2, sqrt, pi
 
 class AuxTeste(unittest.TestCase):
     
@@ -133,6 +133,34 @@ class RetanguloTeste(unittest.TestCase):
         self.assertEqual(self.r3.getFundoDireito().getY(), 3)
         
         
+class AnguloTeste(unittest.TestCase):
+    
+    def setUp(self):
+        self.a1 = Angulo(100)
+        self.a2 = Angulo(200)
+        self.a3 = Angulo(730)
+        self.a4 = Angulo(pi, False)
+        self.a5 = Angulo(4*pi, False)
+        self.a6 = Angulo(-2*pi, False)
+    
+    
+    def testeInicial(self):
+        self.assertEqual(self.a1.getAngulo(), 100)
+        self.assertEqual(self.a2.getAngulo(), -160)
+        self.assertEqual(self.a3.getAngulo(), 10)
+        self.assertEqual(self.a1.getAngulo(False), pi*100/180)
+        self.assertEqual(self.a4.getAngulo(), 180)
+        self.assertEqual(self.a5.getAngulo(), 0)
+        self.assertEqual(self.a6.getAngulo(), 0)
+    
+    
+    def testeIncremento(self):
+        self.a1.incrementa(100)
+        self.assertEqual(self.a1.getAngulo(), -160)
+        self.a3.incrementa(200)
+        self.assertEqual(self.a3.getAngulo(), -150)
+
+
 
 
 class CamadaTeste(unittest.TestCase):
