@@ -7,7 +7,7 @@ Created on Sun Apr  9 12:00:23 2017
 import motor
 import math
 from Vida import Vida 
-velPadrao = 10 #constante de valor padrao de velocidade para IA
+velPadrao = -10 #constante de valor padrao de velocidade para IA
 distanciaManobra = 300 #valor constante para distancia minima para realizar Manobra180V
 distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
 aceleracaoAngular = 0.1#velocidade com que IA rotaciona
@@ -55,7 +55,7 @@ class IA(motor.Renderizavel, Vida):
         self.Pos = pos
         self.Vel = vel
         self.ang = ang
-        self.ang.setAngulo(math.atan2(vel.getX(),vel.getY()))
+        self.ang.setAngulo(math.atan2(vel.getY(),vel.getX()))
         self.velAng = 0
         self.deltaAngTol = deltaAngTol
         self.arma = arma
@@ -92,18 +92,8 @@ class IA(motor.Renderizavel, Vida):
         ,então, atira.
         """
         AngVisada = self.ang.getAngulo() - self.angUni.getAngulo()
-        #Ajustando a mira
-        if AngVisada >0:
-            self.velAng = -aceleracaoAngular
-        elif AngVisada < 0 :
-            self.velAng = +aceleracaoAngular
-        elif AngVisada == 0:
-            self.velAng = 0
-        if AngVisada <= self.deltaAngTol.getAngulo():
-            #Atirar
-           # self.shoot()
-           pass
-        if self.Vel.getX() > 0 and self.Pos.getX() > self.alvoPos.getX():
+           
+        if self.Vel.getX() > 0 and self.Pos.getX() >= self.alvoPos.getX():
             #Se o jogador estiver nas costas da IA
             if self.ang.getAngulo() == 0:
                 #e IA estiver na horizontal,
@@ -118,7 +108,7 @@ class IA(motor.Renderizavel, Vida):
                 #IA tenta voltar para voo horizontal
                 self.velAng = +aceleracaoAngular
                 
-        elif self.Vel.getX() < 0 and self.Pos.getX() < self.alvoPos.getX():
+        elif self.Vel.getX() < 0 and self.Pos.getX() <= self.alvoPos.getX():
             #Se o jogador estiver nas costas da IA
             if self.ang.getAngulo() == 0:
                 #e IA estiver na horizontal,
@@ -132,6 +122,18 @@ class IA(motor.Renderizavel, Vida):
                 #e IA estiver descendo
                 #IA tenta voltar para voo horizontal
                 self.velAng = +aceleracaoAngular
+        else:
+            #Ajustando a mira
+            if AngVisada >0:
+                self.velAng = -aceleracaoAngular
+            elif AngVisada < 0 :
+                self.velAng = +aceleracaoAngular
+            elif AngVisada == 0:
+                self.velAng = 0
+            if AngVisada <= self.deltaAngTol.getAngulo():
+               #Atirar
+               self.shoot()
+           
                 
         
         
@@ -200,7 +202,7 @@ class AviaoInimigo(IA,motor.Figura):
     def realizarManobra180V(self):
         
         if not self.Manobra180V:
-            self._string_imagem = self.img2
+            self.setString(self.img2)
             if self.ang.getAngulo() >0:
                 novoRot = 180 - self.ang.getAngulo()
                 self.rot.setAngulo(novoRot)        
@@ -210,7 +212,7 @@ class AviaoInimigo(IA,motor.Figura):
                 
             self.Manobra180V = True
         elif self.Manobra180V:
-            self._string_imagem = self.img1
+            self.setString(self.img1)
             
             if self.ang.getAngulo() >0:
                 novoRot = 180 - self.ang.getAngulo()
