@@ -185,7 +185,7 @@ class PainelTutorial(Cena):
         self.adicionaFilho(img_TextHealthPoint)
         self.adicionaFilho(img_TextMissao3)
         
-        self.even.escutar("M_click",self.Proximo)
+        self.even.escutar("M_fclick",self.Proximo)
         
     def Proximo(self, chamada):
         self.even.lancar("MenuOperacoes", True)

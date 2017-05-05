@@ -2,17 +2,17 @@
 or Event      
 Name
 
-K_BACKSPACE   \b      backspace
-K_TAB         \t      tab
-K_CLEAR               clear
-K_RETURN      \r      return
-K_PAUSE               pause
-K_ESCAPE      ^[      escape
-K_SPACE               space
-K_EXCLAIM     !       exclaim
-K_QUOTEDBL    "       quotedbl
-K_HASH        #       hash
-K_DOLLAR      $       dollar
+K_backspace   \b      backspace
+K_tab         \t      tab
+K_clear               clear
+K_return      \r      return
+K_pause               pause
+K_escape      ^[      escape
+K_space               space
+K_exclaim     !       exclaim
+K_quotedbl    "       quotedbl
+K_hash        #       hash
+K_dollar      $       dollar
 K_AMPERSAND   &       ampersand
 K_QUOTE               quote
 K_LEFTPAREN   (       left parenthesis
@@ -144,9 +144,10 @@ GameOver              Fim de jogo (morte do jogador)
 Vitoria               Missao completada
 Return		      Voltar ao menu anterior
 imagem_nova           string_imagem for modificada, o objeto do evento é o próprio objeto do tipo Figura
-M_click		      Botão esquerdo do mouse foi clicado
-M_clickD              Botão direito do mouse foi clicado
-M_pos                 Nenhum botao do mouse foi clicado e a posicao do mouse está sendo passada
+M_fclick              Botão esquerdo do mouse foi clicado
+M_click		         Botão esquerdo do mouse está clicado
+M_clickD              Botão direito do mouse está clicado
+M_pos                 Posicao do mouse em um dado instante
 texto_novo            Pega o retangulo da superficie do texto
 imagem_nova
 Atirar                Algum objeto atirou em um inimigo

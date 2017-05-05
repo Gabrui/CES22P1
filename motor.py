@@ -597,6 +597,7 @@ class Entrada:
     
     def __init__(self):
         self.even = Evento()
+        self.clickAntigo = False
     
     
     def _verTeclado(self):
@@ -619,10 +620,13 @@ class Entrada:
         click = pygame.mouse.get_pressed() 
         mouse = pygame.mouse.get_pos()
         if click[0]:
-            self.even.lancar("M_click", Ponto(mouse[0],mouse[1]))
+            if self.clickAntigo == False:
+                self.even.lancar("M_fclick", Ponto(mouse[0], mouse[1]))
+            self.even.lancar("M_click", Ponto(mouse[0], mouse[1]))
         if click[2]:
-            self.even.lancar("M_clickD", Ponto(mouse[0],mouse[1]))
-        self.even.lancar("M_pos", Ponto(mouse[0],mouse[1]))
+            self.even.lancar("M_clickD", Ponto(mouse[0], mouse[1]))
+        self.even.lancar("M_pos", Ponto(mouse[0], mouse[1]))
+        self.clickAntigo = click[0]
             
     
     def atualiza(self):
@@ -631,7 +635,7 @@ class Entrada:
         self._verMouse()
         
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: 
+            if event.type == pygame.QUIT:
                 self.sair()
                 
     
@@ -822,7 +826,12 @@ class Camada(Renderizavel):
     
     
     def removeFilho(self, filho):
-        self.filhos.remove(filho)
+        if filho in self.filhos:
+            self.filhos.remove(filho)
+        
+        
+    def isFilho(self, filho):
+        return (filho in self.filhos)
     
     
     def atualiza(self, dt):
