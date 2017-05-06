@@ -595,9 +595,7 @@ class Painelgameplay(Cena):
         self.even.lancar("MenuPause","gameplay")
     def ativarEscuta(self):
         for filho in self.filhos:
-            if isinstance(filho,Simulador) or isinstance(filho,Jogador) or \
-                isinstance(filho,IA):
-                filho.ativarEscuta()
+            filho.ativarEscuta()
 
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
