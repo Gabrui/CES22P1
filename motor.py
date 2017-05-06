@@ -1000,7 +1000,7 @@ class Botao(Camada):
         A imagem do Botao já possui fundo e texto.
     """
     
-    def __init__(self,nome_evento, string_imagem1, string_imagem2, som_click,
+    def __init__(self,nome_evento,string_chamada, string_imagem1, string_imagem2, som_click,
                  pos = None, centro = None, escala = None, rot = None, 
                  cor = None):
         """
@@ -1009,6 +1009,8 @@ class Botao(Camada):
                      ao ser clicado.
         string_imagem1: é o nome do arquivo imagem do botao em estado normal.
         string_imagem2: é o nome do arquivo imagem do botao com mouse em cima.
+        string_chamada: é o nome da cena que fez uma chamada para outra cena.
+        som_click:      é o nome do arquivo som do botao quando clicado.
         """
         super().__init__(pos, centro, escala, rot, cor)
         self.even.escutar("M_pos", self._verEmCima)
@@ -1018,6 +1020,7 @@ class Botao(Camada):
         self.imagem = Figura(string_imagem1)
         self.adicionaFilho(self.imagem)
         self._nome_evento = nome_evento
+        self.string_chamada = string_chamada
         self.som_click = som_click
     
     
@@ -1049,7 +1052,7 @@ class Botao(Camada):
             Se está dentro, o botao lança o nome do seu evento. 
             """
             self.even.lancar("tocarEfeito", self.som_click)
-            self.even.lancar(self._nome_evento,True)
+            self.even.lancar(self._nome_evento, self.string_chamada)
     
 
 

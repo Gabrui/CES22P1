@@ -98,9 +98,9 @@ class IA(motor.Renderizavel, Vida):
         projetil = self.arma.getProjetil()
         posInicialProjetil = self.pos.clonar()
         posInicialProjetil.setXY(posInicialProjetil.getX()+
-                            math.cos(self.rot.getAngulo(False))*self.velo*dt*50,
-                                 posInicialProjetil.getY()+- 
-                      math.sin(self.rot.getAngulo(False))*self.velo*dt*50)
+                            math.cos(self.rot.getAngulo(False))*self.velo*dt,
+                                 posInicialProjetil.getY() - 
+                      math.sin(self.rot.getAngulo(False))*self.velo*dt)
         projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
         self.even.lancar("Atirar",projetil)
         self.even.lancar("tocarEfeito",self._string_som_disparo)

@@ -495,7 +495,47 @@ class PainelJogosSalvos(Cena):
         self.adicionaFilho(Botao_TextRetornar)
 #------------------------------Fim da Classe Jogos Salvo-----------------------
 
-
+class PainelMenuPause(Cena):
+    
+    def __init__(self,audio,entrada,renderizador,string_musica_fundo=None):
+        Cena.__init__(self,audio,entrada,renderizador,string_musica_fundo)
+        
+        #-------------Constantes-----------------------------------------------
+        
+        self._PosbackGround = Ponto(190,41)
+        self._PosTextResumir = Ponto(400,200)
+        self._PosTextJogosSalvos = Ponto(374,220)
+        self._PosTextAbortar = Ponto(400,270)
+        
+        self._string_imagem_background = "c01_Background_pause.png"
+        self._string_imagem_textResumir = "c02_Text_Resumir.png"
+        self._string_imagem_textJogosSalvos = "c02_Text_JogosSalvos.png"
+        self._string_imagem_textAbortar = "c02_Text_Abortar.png"
+        
+        #--------------Fim das constantes--------------------------------------
+        
+        #CRIAR imagens
+        img_background = Figura(self._string_imagem_background,None,
+                                self._PosbackGround)
+        #Criar botoes
+        Botao_resumir = Botao("Play",self._string_imagem_textResumir,
+                              self._string_imagem_textResumir,
+                              self._PosTextResumir)
+        Botao_JogosSalvos = Botao("MenuJogoSalvo",
+                                  self._string_imagem_textJogosSalvos,
+                                  self._string_imagem_textJogosSalvos,
+                                  self._PosTextJogosSalvos)
+        Botao_Abortar = Botao("sair",self._string_imagem_textAbortar,
+                              self._string_imagem_textAbortar,
+                              self._PosTextAbortar)
+        #montar cena
+        self.adicionaFilho(img_background)
+        self.adicionaFilho(Botao_resumir)
+        self.adicionaFilho(Botao_JogosSalvos)
+        self.adicionaFilho(Botao_Abortar)
+    
+#----------------Fim da classe PainelMenuPause---------------------------------    
+    
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
     
@@ -589,7 +629,12 @@ class Jogo():
         #trocando de transparencias
         self.cenaAtual = PainelMissoes1(self.audio,self.entrada,
                                         self.renderizador)
-    
+    def MenuPause(self,chamada):
+        #limpando eventos
+        self.limparEventos()
+        #trocando de  transparencias
+        self.cenaAtual = PainelMenuPause(self.audio,self.entrada,
+                                         self.renderizador)
     
     def limparEventos(self):
         self.even.pararDeEscutarTudo()
