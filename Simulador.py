@@ -15,11 +15,14 @@ class Simulador(motor.Camada):
     """
         Realiza operacoes de fundo do gameplay, como verificar colisoes.
     """
-    def __init__(self, posChao):
+    def __init__(self, posChao, larguraTela):
         motor.Camada.__init__(self)
         """
             posChao: é a posicao do chao (int).
+            meialarguraTela: é a metade da largura da tela.
         """
+        self.PosXCentroTela = larguraTela/2
+        self.meialarguraTela = larguraTela/2
         self.posChao = posChao
         #Ativa a escuta de eventos
         self.ativarEscuta()
@@ -40,6 +43,7 @@ class Simulador(motor.Camada):
         #lancando a posicao do Jogador
         for filho in self.filhos:
             if isinstance(filho, aviao.Jogador):
+                self.PosXCentroTela = filho.pos.getX()
                 self.even.lancar("PlayerLocation",(filho.pos.getX(),
                                                    filho.pos.getY(),
                                                    filho.xVel,filho.yVel))
@@ -143,14 +147,17 @@ class Simulador(motor.Camada):
                             if filhos.getPV() <= 0:
                                 #   filhos[10].explosao()
                                  self.removeFilho(filhos)
-           
-            if filhos.pos.getY() >= self.posChao:
-                
-                #verifica colisao com o chao
-                if isinstance(filhos, Projetil.Projetil):
+                                 
+            if isinstance(filhos, Projetil.Projetil):
+                if filhos.pos.getX()<self.PosXCentroTela-self.meialarguraTela or\
+                   filhos.pos.getX() > self.PosXCentroTela + self.meialarguraTela\
+                   or filhos.pos.getY() >= self.posChao:
                    #Se for projetil ou IA, remove do gameplay
                    self.removeFilho(filhos)
-                elif isinstance(filhos, aviao.Aviao):
+            
+            if filhos.pos.getY() >= self.posChao:
+                
+                if isinstance(filhos, aviao.Aviao):
                     #Se for Jogador, chama tela de G.O.
                     #filhos[10].explosao()
                     filhos.yVel *= -1

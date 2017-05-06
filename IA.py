@@ -15,7 +15,7 @@ erro = 5 #erro angular aceitavel para atirar
 class IA(motor.Renderizavel, Vida):
     def __init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel,
-                 deltaAngTol,string_som_disparo = None,string_som_fallShell=None):
+                 deltaAngTol,string_som_fallShell=None):
         motor.Renderizavel.__init__(self)
         Vida.__init__(self,PV)
         """
@@ -54,7 +54,6 @@ class IA(motor.Renderizavel, Vida):
         self.dtAtirarMin = 1
         
         self.PV = PV
-        self._string_som_disparo = string_som_disparo 
         
         self.distanciaMira = 300 #distancia em que IA ajusta a mira
         
@@ -76,6 +75,7 @@ class IA(motor.Renderizavel, Vida):
         self.alvoVel.setXY(alvo[2],alvo[3])
         
     def mira(self, dt):
+        
         visada = motor.Angulo(math.atan2(self.pos.getY() - self.alvoPos.getY(),
                             self.alvoPos.getX() - self.pos.getX()), False)
         dif = self.rot.getDiferenca(visada).getAngulo()
@@ -99,30 +99,38 @@ class IA(motor.Renderizavel, Vida):
     def shoot(self,dt):
         """
         lanca evento de disparo.
-        tupla_tiro: (PosicaodaIA, direcaoDeDIsparo,ObjetoProjetil)
         """
+        #zera o contador
         self.dtAtirar =0
+        #copia o projetil
         projetil = self.arma.getProjetil()
+        #copia a posicao
         posInicialProjetil = self.pos.clonar()
+        #ajusta a posicao inicial do projetil
         posInicialProjetil.setXY(posInicialProjetil.getX()+
                             math.cos(self.rot.getAngulo(False))*50,
                                  posInicialProjetil.getY() - 
                       math.sin(self.rot.getAngulo(False))*50)
+        #coloca a posicao inicial no projetil
         projetil.Disparo(posInicialProjetil,self.rot.getAngulo())
+        #Pegar nome do arquivo do som do disparo
+        self._string_som_disparo = self.arma.getSom()
+        #lanca para ser adicionado no simulador
         self.even.lancar("Atirar",projetil)
+        #lanca para tocar sons
         self.even.lancar("tocarEfeito",self._string_som_disparo)
         self.even.lancar("tocarEfeito",self._string_som_fallShell)
 
 class AviaoInimigo(IA,motor.Figura):
     
     
-    def __init__(self,img1,img2, audio, arma, pos,PV,string_som_disparo,
-                 string_som_explosao,string_som_fallShell, vel, alvoPos,
+    def __init__(self,img1,img2, audio, arma, pos,PV,string_som_explosao,
+                 string_som_fallShell, vel, alvoPos,
                  alvoVel,  
                  deltaAngTol): 
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel,
-                 deltaAngTol,string_som_disparo,string_som_fallShell)
+                 deltaAngTol,string_som_fallShell)
         motor.Figura.__init__(self,img1, centro = motor.Ponto(32,20))
         """
         img:     É a string do nome do arquivo imagem do aviao
@@ -132,9 +140,9 @@ class AviaoInimigo(IA,motor.Figura):
         arma:    Objeto do tipo Arma
         pos:     tupla de posicao do aviao inimigo
         vel:     tupla de velocidade do aviao inimigo
-        velAng:  velocidade angular do aviao inimigo
         deltaAngTol: angulo de tolerancia para disparo
         imgX:        A imagem 1 é para esquerda, e a 2 para direita.
+        velo:     É o módulo da velocidade do aviao
         """
         
         if pos is None:
@@ -150,13 +158,12 @@ class AviaoInimigo(IA,motor.Figura):
             
         self.img1 = img1
         self.img2 = img2
-        self.tol = 0.080
+        self.tol = 0.087
         self.Manobra180V = False
         self._string_som_explosao = string_som_explosao
         self._audio = audio
        # self.even.lancar("tocarEfeito",self._audio)
-        
-        self.distanciaReacao = 30
+ 
         
     def realizarManobra180H(self):
         
@@ -197,25 +204,17 @@ class AviaoInimigo(IA,motor.Figura):
     
         self.mira(dt)
         self.voarSimples(dt)
-        """if self.Pos.distancia2(self.alvoPos) > self.distanciaReacao:
-            self.perseguir()
-            self.aim()
-            
-        self.voar(dt)"""
-    
-    
-    
 
 class TorreInimiga(IA,motor.Figura):
     
-    def __init__(self,img,string_som_disparo,string_som_fallShell,
+    def __init__(self,img,string_som_fallShell,
                  arma,PV, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol): 
         IA.__init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel,
-                 deltaAngTol, string_som_disparo,string_som_fallShell)
-        motor.Figura.__init__(self,img)
+                 deltaAngTol,string_som_fallShell)
+        motor.Figura.__init__(self,img, centro = motor.Ponto(32,20))
         """
         img:     É a string do nome do arquivo imagem da Torre inimiga
         string_som_disparo:   É a string do nome do arquivo audio do disparo
@@ -224,9 +223,6 @@ class TorreInimiga(IA,motor.Figura):
         arma:    Objeto do tipo Arma
         pos:     tupla de posicao da Torre Inimiga
         vel:     tupla de velocidade da Torre inimiga. No caso é sempre zero.
-        ang:     inclinacao angular da reta definida 
-                 pelo vetor velocidade da Torre Inimiga
-        velAng:  velocidade angular da Torre inimiga
         deltaAngTol: angulo de tolerancia para disparo
         """
         
@@ -239,8 +235,9 @@ class TorreInimiga(IA,motor.Figura):
         if alvoVel is None:
             alvoVel = motor.Ponto(0,0)
         if deltaAngTol is None:
-            deltaAngTol = motor.Angulo(erro)
-
+            deltaAngTol = motor.Angulo(10)
+        self.pos.setXY(pos.getX(),pos.getY())
+        
         def atualiza(self,dt):
             self.mira(dt)
            

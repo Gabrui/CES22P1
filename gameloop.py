@@ -11,7 +11,7 @@ import time
 from cenario import FundoParalaxeInfinito, Camera
 from aviao import Jogador
 from Simulador import Simulador
-from IA import AviaoInimigo
+from IA import AviaoInimigo,TorreInimiga
 from Arma import Arma
 from Projetil import Projetil
 t20 = 50/1000
@@ -201,13 +201,13 @@ class PainelMenuOperacoes(Cena):
         #-----------------Constantes do Menu Principal------------------------
         
         self._PosBackGround = Ponto(0,33)
-        self._PosOperacao1 = Ponto(125,145)
-        self._PosOperacao2 = Ponto(355,145)
-        self._PosTextOperacao1 = Ponto(130,250)
-        self._PosTextOperacao2 = Ponto(365,250)
-        self._PosTextOperacao3 = Ponto(597,250)
-        self._PosBotaoPlay1 = Ponto(125,500)
-        self._PosText_GueraGraBret = Ponto(180,300)
+        self._PosOperacao1 = Ponto(125,160)
+        self._PosOperacao2 = Ponto(355,160)
+        self._PosTextOperacao1 = Ponto(130,260)
+        self._PosTextOperacao2 = Ponto(365,260)
+        self._PosTextOperacao3 = Ponto(597,260)
+        self._PosBotaoPlay1 = Ponto(180,310)
+        self._PosText_GueraGraBret = Ponto(400,100)
         self._PosTextRetornar = Ponto(660,485)
         
         self._string_imagem_fundo = "imgTeste/sky1_menor.png"
@@ -560,28 +560,60 @@ class Painelgameplay(Cena):
                          "imgTeste/movFundo.png", Retangulo(Ponto(0,0), 
                          Ponto(800, 225)), Ponto(0,0), Ponto(0,0))
         fundo3 = Figura("imgTeste/nuvem.png")
+        
+        projetilJogador = Projetil("imgTeste/BulletEnemies.png","imgTeste/MetalHit1.ogg",
+                                   1,Ponto(0,0),10)
+        armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
         avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
                      Ponto(100, 100), Ponto(28, 10),
                      [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
-                     [5, 50000, 5000/3, 100], [5000, 150])
-
+                     [5, 50000, 5000/3, 100], [5000, 150], arma = armaJogador,
+                     string_som_fallShell="imgTeste/Shells_falls.ogg")
+        armaJogador.setDono(avi)
+        #Criando aviao inimigo
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",10,
                                                 Ponto(0,0),10)
-        armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
+        armaAviaoInimigo = Arma("imgTeste/MP5_SMG_auto.ogg",
                                     projetilArmaAviaoInimigo)
         aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
                                         "imgTeste/aviaoInimigo em -y.png",
                                         "imgTeste/airplane_b25-1.ogg",
                                         armaAviaoInimigo,Ponto(300,100),100,
-                                        "imgTeste/MP5_SMG_auto.ogg",
                                         "imgTeste/Explosion_6.ogg",
                                         "imgTeste/Shells_falls.ogg",
                                         None,None,
                                         None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
-    
-        simulador = Simulador(alturaTela)
+        #Criando outro aviao inimigo
+        projetilArmaAviaoInimigo2 = Projetil("imgTeste/BulletEnemies.png",
+                                                "imgTeste/MetalHit1.ogg",10,
+                                                Ponto(0,0),10)
+        armaAviaoInimigo2 = Arma("imgTeste/MP5_SMG_auto.ogg",
+                                    projetilArmaAviaoInimigo2)
+        aviaoInimigo2 = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
+                                        "imgTeste/aviaoInimigo em -y.png",
+                                        "imgTeste/airplane_b25-1.ogg",
+                                        armaAviaoInimigo2,Ponto(300,50),100,
+                                        "imgTeste/Explosion_6.ogg",
+                                        "imgTeste/Shells_falls.ogg",
+                                        None,None,
+                                        None,None)
+        armaAviaoInimigo2.setDono(aviaoInimigo2)
+        #Criando Torre Inimiga
+        projetilTorreInimiga = Projetil("imgTeste/Bullet_3.png",
+                                        "imgTeste/MetalHit1.ogg",
+                                        10,Ponto(0,0))
+        armaTorreInimiga = Arma("imgTeste/Anti_Aircraft_Gun.ogg",
+                                projetilTorreInimiga)
+        torreInimiga = TorreInimiga("imgTeste/turret_1_default.png",
+                                    "imgTeste/Shells_falls.ogg",
+                                    armaTorreInimiga,1000,Ponto(500,580),
+                                    None,None,
+                                    None,None)
+        armaTorreInimiga.setDono(torreInimiga)
+        
+        simulador = Simulador(alturaTela,larguraTela)
         simulador.adicionaFilho(avi)
         camera = Camera(larguraTela, alturaTela, avi, 0)
         camera.adicionaFilho(fundo0)
@@ -589,6 +621,8 @@ class Painelgameplay(Cena):
         camera.adicionaFilho(fundo3)
         camera.adicionaFilho(simulador)
         simulador.adicionaFilho(aviaoInimigo)
+        simulador.adicionaFilho(torreInimiga)
+        simulador.adicionaFilho(aviaoInimigo2)
         self.adicionaFilho(camera)
         self.even.escutar("K_p",self.pausar)
     def pausar(self,chamada):
