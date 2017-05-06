@@ -5,7 +5,9 @@ Created on Thu Apr  6 21:23:16 2017
 
 @author: gabrui
 """
-
+from IA import IA
+from aviao import Jogador
+from Simulador import Simulador
 from motor import Camada, Ponto, Figura
 import math
 
@@ -44,7 +46,12 @@ class Camera(Camada):
         if isinstance(filho, FundoParalaxeInfinito):
             self.fundosParalaxeInfinita.remove(filho)
     
-    
+    def ativarEscuta(self):
+        for filho in self.filhos:
+            if isinstance(filho,Simulador) or isinstance(filho,Jogador) or \
+                isinstance(filho,IA):
+                filho.ativarEscuta()
+                
     def atualiza(self, dt):
         super().atualiza(dt)
         self.posAntiga.setXY(self.pos.getX(), self.pos.getY())

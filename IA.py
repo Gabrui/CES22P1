@@ -8,16 +8,13 @@ import motor
 import math
 from Vida import Vida 
 velPadrao = -100 #constante de valor padrao de velocidade para IA
-distanciaManobra = 400 #valor constante para distancia minima para realizar Manobra180V
-distanciaPerseguir = 200#distancia maxima no qual IA comeca diminuir velocidade
-aceleracaoAngular = 0.01#velocidade com que IA rotaciona
-aceleracao = 1#rapidez com que IA aumenta a sua velocidade em X
-desaceleracao = 1#rapidez com que IA diminui a sua velocidade em X
+distanciaManobra = 400 #valor constante para distancia minima para
+                       # realizar Manobra180V
 erro = 5 #erro angular aceitavel para atirar
 
 class IA(motor.Renderizavel, Vida):
     def __init__(self,arma, PV, pos, vel, alvoPos,
-                 alvoVel, ang, angUni, 
+                 alvoVel,
                  deltaAngTol,string_som_disparo = None,string_som_fallShell=None):
         motor.Renderizavel.__init__(self)
         Vida.__init__(self,PV)
@@ -27,13 +24,7 @@ class IA(motor.Renderizavel, Vida):
         arma:    Objeto do tipo Arma
         pos:     tupla de posicao do IA
         vel:     tupla de velocidade do IA
-        ang:     inclinacao angular da reta definida 
-                 pelo vetor velocidade de IA
-        angUni:  inclinacao angular da reta que uni
-                 o alvo e a IA
         velAng:  velocidade angular de IA
-        distanciaPerseguir: distancia minima para o qual o IA 
-                          tenta estabelecer a mesma velocidade que a do Jogador
         deltaAngTol: angulo de tolerancia para disparo
         string_som_disparo: nome do arquivo do som do disparo
         """
@@ -46,26 +37,18 @@ class IA(motor.Renderizavel, Vida):
             alvoPos = motor.Ponto(0,0)
         if alvoVel is None:
             alvoVel = motor.Ponto(0,0)
-        if ang is None:
-            ang = motor.Angulo(0)
-        if angUni is None:
-            angUni = motor.Angulo(0)
         if deltaAngTol is None:
             deltaAngTol = motor.Angulo(erro)
             
         self.Pos = pos
         self.Vel = vel
-        self.ang = ang
-        self.ang.setAngulo(math.atan2(vel.getY(),vel.getX()))
         self.velAng = 0
         self.deltaAngTol = deltaAngTol
         self.arma = arma
-        self.distanciaPerseguir = distanciaPerseguir
         self.distanciaManobra = distanciaManobra
         self._string_som_fallShell = string_som_fallShell
         self.alvoPos = alvoPos
         self.alvoVel = alvoVel
-        self.angUni = angUni
         
         self.dtAtirar = 0
         self.dtAtirarMin = 1
@@ -75,6 +58,10 @@ class IA(motor.Renderizavel, Vida):
         
         self.distanciaMira = 300 #distancia em que IA ajusta a mira
         
+        #ativa a escuta de eventos
+        self.ativarEscuta()
+    
+    def ativarEscuta(self):
         #escuta o evento e chama a funcao
         #PlayerLocation: é o evento da posicao do player
         self.even.escutar("PlayerLocation", self.localizar)
@@ -88,6 +75,26 @@ class IA(motor.Renderizavel, Vida):
         self.alvoPos.setXY(alvo[0],alvo[1])
         self.alvoVel.setXY(alvo[2],alvo[3])
         
+    def mira(self, dt):
+        visada = motor.Angulo(math.atan2(self.pos.getY() - self.alvoPos.getY(),
+                            self.alvoPos.getX() - self.pos.getX()), False)
+        dif = self.rot.getDiferenca(visada).getAngulo()
+        self.velMax = 56
+        
+        # Cálculo da velocidade
+        if abs(dif) < self.velMax:
+            vel = dif
+        elif dif > 0:
+            vel = self.velMax
+        else:
+            vel = -self.velMax
+        if abs(dif) < self.deltaAngTol.getAngulo():
+            self.dtAtirar +=dt
+            if self.dtAtirar> self.dtAtirarMin:
+                self.shoot(dt)
+            
+        # Runge-Kutta de primeira ordem :D
+        self.rot.incrementa(vel*dt)    
 
     def shoot(self,dt):
         """
@@ -101,7 +108,7 @@ class IA(motor.Renderizavel, Vida):
                             math.cos(self.rot.getAngulo(False))*self.velo*dt,
                                  posInicialProjetil.getY() - 
                       math.sin(self.rot.getAngulo(False))*self.velo*dt)
-        projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
+        projetil.Disparo(posInicialProjetil,self.rot.getAngulo())
         self.even.lancar("Atirar",projetil)
         self.even.lancar("tocarEfeito",self._string_som_disparo)
         self.even.lancar("tocarEfeito",self._string_som_fallShell)
@@ -111,10 +118,10 @@ class AviaoInimigo(IA,motor.Figura):
     
     def __init__(self,img1,img2, audio, arma, pos,PV,string_som_disparo,
                  string_som_explosao,string_som_fallShell, vel, alvoPos,
-                 alvoVel, ang, angUni, 
+                 alvoVel,  
                  deltaAngTol): 
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
-                 alvoVel, ang, angUni, 
+                 alvoVel,
                  deltaAngTol,string_som_disparo,string_som_fallShell)
         motor.Figura.__init__(self,img1, centro = motor.Ponto(32,20))
         """
@@ -123,15 +130,9 @@ class AviaoInimigo(IA,motor.Figura):
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
         arma:    Objeto do tipo Arma
-        pos:     tupla de posicao do IA
-        vel:     tupla de velocidade do IA
-        ang:     inclinacao angular da reta definida 
-                 pelo vetor velocidade de IA
-        angUni:  inclinacao angular da reta que uni
-                 o alvo e a IA
-        velAng:  velocidade angular de IA
-        distanciaPerseguir: distancia minima para o qual o IA 
-                            tenta estabelecer a mesma velocidade que a do Jogador
+        pos:     tupla de posicao do aviao inimigo
+        vel:     tupla de velocidade do aviao inimigo
+        velAng:  velocidade angular do aviao inimigo
         deltaAngTol: angulo de tolerancia para disparo
         imgX:        A imagem 1 é para esquerda, e a 2 para direita.
         """
@@ -144,10 +145,6 @@ class AviaoInimigo(IA,motor.Figura):
             alvoPos = motor.Ponto(0,0)
         if alvoVel is None:
             alvoVel = motor.Ponto(0,0)
-        if ang is None:
-            ang = motor.Angulo(0)
-        if angUni is None:
-            angUni = motor.Angulo(0)
         if deltaAngTol is None:
             deltaAngTol = motor.Angulo(erro)
             
@@ -174,31 +171,7 @@ class AviaoInimigo(IA,motor.Figura):
             self.setString(self.img1)
             #Troca o estado da manobra
             #voando pra esquerda
-
-        
-        
-    def mira(self, dt):
-        visada = motor.Angulo(math.atan2(self.pos.getY() - self.alvoPos.getY(),
-                            self.alvoPos.getX() - self.pos.getX()), False)
-        dif = self.rot.getDiferenca(visada).getAngulo()
-        self.velMax = 56
-        
-        # Cálculo da velocidade
-        if abs(dif) < self.velMax:
-            vel = dif
-        elif dif > 0:
-            vel = self.velMax
-        else:
-            vel = -self.velMax
-        if abs(dif) < self.deltaAngTol.getAngulo():
-            self.dtAtirar +=dt
-            if self.dtAtirar> self.dtAtirarMin:
-                self.shoot(dt)
-            
-        # Runge-Kutta de primeira ordem :D
-        self.rot.incrementa(vel*dt) 
-        
-    
+ 
     def voarSimples(self, dt):
         # 140 é a velocidade em pixel/s
         self.velo = 140
@@ -220,8 +193,8 @@ class AviaoInimigo(IA,motor.Figura):
         self.even.lancar("tocarEfeito",self._string_som_explosao)
     
         
-    
     def atualiza(self,dt):
+    
         self.mira(dt)
         self.voarSimples(dt)
         """if self.Pos.distancia2(self.alvoPos) > self.distanciaReacao:
@@ -235,28 +208,25 @@ class AviaoInimigo(IA,motor.Figura):
 
 class TorreInimiga(IA,motor.Figura):
     
-    def __init__(self,img,audio, arma,PV, pos, vel, alvoPos,
-                 alvoVel, ang, angUni, 
+    def __init__(self,img,string_som_disparo,string_som_fallShell,
+                 arma,PV, pos, vel, alvoPos,
+                 alvoVel,
                  deltaAngTol): 
         IA.__init__(self,arma, PV, pos, vel, alvoPos,
-                 alvoVel, ang, angUni, 
-                 deltaAngTol)
+                 alvoVel,
+                 deltaAngTol, string_som_disparo,string_som_fallShell)
         motor.Figura.__init__(self,img)
         """
-        img:     É a string do nome do arquivo imagem do aviao
-        audio:   É a string do nome do arquivo audio do aviao
+        img:     É a string do nome do arquivo imagem da Torre inimiga
+        string_som_disparo:   É a string do nome do arquivo audio do disparo
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
         arma:    Objeto do tipo Arma
-        pos:     tupla de posicao do IA
-        vel:     tupla de velocidade do IA
+        pos:     tupla de posicao da Torre Inimiga
+        vel:     tupla de velocidade da Torre inimiga. No caso é sempre zero.
         ang:     inclinacao angular da reta definida 
-                 pelo vetor velocidade de IA
-        angUni:  inclinacao angular da reta que uni
-                 o alvo e a IA
-        velAng:  velocidade angular de IA
-        distanciaPerseguir: distancia minima para o qual o IA 
-                            tenta estabelecer a mesma velocidade que a do Jogador
+                 pelo vetor velocidade da Torre Inimiga
+        velAng:  velocidade angular da Torre inimiga
         deltaAngTol: angulo de tolerancia para disparo
         """
         
@@ -268,20 +238,9 @@ class TorreInimiga(IA,motor.Figura):
             alvoPos = motor.Ponto(0,0)
         if alvoVel is None:
             alvoVel = motor.Ponto(0,0)
-        if ang is None:
-            ang = motor.Angulo(0)
-        if angUni is None:
-            angUni = motor.Angulo(0)
         if deltaAngTol is None:
             deltaAngTol = motor.Angulo(erro)
-            
-        self._audio = audio
-        self.even.lancar("tocar_efeito",self._audio)
-       
-        def apontar(self):
-            #atualiza novo angulo
-            novoAng = self.ang.getAngulo(False) + self.velAng
-            if novoAng >=0:#para garantir que a turreta nao aponte para baixo
-                self.ang.setAngulo(novoAng)#atualiza o angulo
-                self.rot.setAngulo(self.ang.getAngulo())#atualiza angulo da FIgura
-            
+
+        def atualiza(self,dt):
+            self.mira(dt)
+           

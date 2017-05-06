@@ -146,11 +146,7 @@ class Jogador(Aviao):
         self.hArrastoRotacionalMax = (self.hForcaMotorMax +self.hArrFrontRotMax
         - self.hAtritoMotor)
         
-        self.even.escutar("K_up", self._cCima)
-        self.even.escutar("K_down", self._cBaixo)
-        self.even.escutar("K_right", self._cDireita)
-        self.even.escutar("K_left", self._cEsquerda)
-        self.even.escutar("K_space", self._cVirar)
+        self.ativarEscuta()
         self.cima = False
         self.baixo = False
         self.direita = False
@@ -159,7 +155,14 @@ class Jogador(Aviao):
         self.dtVirar = 2
         self.dtVirarMin = 1
     
-    
+    def ativarEscuta(self):
+        #lancar pedido de escuta
+        self.even.escutar("K_up", self._cCima)
+        self.even.escutar("K_down", self._cBaixo)
+        self.even.escutar("K_right", self._cDireita)
+        self.even.escutar("K_left", self._cEsquerda)
+        self.even.escutar("K_space", self._cVirar)
+        
     def _cCima(self, eventoTeclado):
         self.cima = True
         

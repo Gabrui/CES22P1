@@ -11,7 +11,7 @@ import time
 from cenario import FundoParalaxeInfinito, Camera
 from aviao import Jogador
 from Simulador import Simulador
-from IA import AviaoInimigo
+from IA import AviaoInimigo,IA
 from Arma import Arma
 from Projetil import Projetil
 t20 = 50/1000
@@ -578,7 +578,7 @@ class Painelgameplay(Cena):
                                         "imgTeste/Explosion_6.ogg",
                                         "imgTeste/Shells_falls.ogg",
                                         None,None,
-                                        None,None,None,None)
+                                        None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
     
         simulador = Simulador(alturaTela)
@@ -593,6 +593,11 @@ class Painelgameplay(Cena):
         self.even.escutar("K_p",self.pausar)
     def pausar(self,chamada):
         self.even.lancar("MenuPause","gameplay")
+    def ativarEscuta(self):
+        for filho in self.filhos:
+            if isinstance(filho,Simulador) or isinstance(filho,Jogador) or \
+                isinstance(filho,IA):
+                filho.ativarEscuta()
 
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
@@ -640,6 +645,7 @@ class Jogo():
            
         else:
            self.cenaAtual = self.cenaAnterior
+           self.cenaAtual.ativarEscuta()
     
     
     def MenuPrincipal(self,chamada):

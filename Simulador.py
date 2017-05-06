@@ -21,11 +21,18 @@ class Simulador(motor.Camada):
             posChao: é a posicao do chao (int).
         """
         self.posChao = posChao
+        #Ativa a escuta de eventos
+        self.ativarEscuta()
+        
+        
+        
+        
+    def ativarEscuta(self):
+        #escuta o evento do disparo e adiciona o filho que é um projetil
         self.even.escutar("Atirar",self.adicionaFilho)
-        self.jogador = None
-        
-        
-        
+        for filho in self.filhos:
+            if isinstance(filho,aviao.Jogador) or isinstance(filho,IA.IA):
+                filho.ativarEscuta()
         
     def atualiza(self, dt):
         #verificando colisoes 
