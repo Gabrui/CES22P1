@@ -798,12 +798,56 @@ class Figura(Renderizavel):
 class Animacao(Figura):
     """Classe base para uma animação de spritesheet"""
     
-    def __init__(self, string_imagem, larg, alt, pos = None, centro = None, 
-                 escala = None, rot = None, cor = None):
+    def __init__(self, string_imagem, corte, largu, altu, pos = None, 
+                 centro = None, escala = None, rot = None, cor = None):
         """Suponho cortes regulares, igualmentes distribuidos"""
-        super().__init__(string_imagem, Retangulo(Ponto(0,0), Ponto(larg,alt)),
+        super().__init__(string_imagem, Retangulo(
+                corte.getTopoEsquerdo(), larg = largu, alt = altu),
               pos, centro, escala, rot, cor)
+        self.ponto0 = corte.getTopoEsquerdo()
+        self.largu = largu
+        self.altu = altu
+        self.larguraSS = corte.getLargura()
+        self.alturaSS = corte.getAltura()
+        self.colunas = self.larguraSS//self.largu
+        self.linhas = self.alturaSS//self.altu
+        self.numTotal = (self.colunas + 1) * (self.linhas + 1)
+        self.numCorte = 0
+        self.vezes = 0
+        self.dtAnim = 0
+        self.T = 1
         
+        
+        
+    def setNumCorte(self, num):
+        """Começa do 0"""
+        if num < 0 or num >= self.numTotal:
+            raise IndexError("Número de corte inválido")
+        self.numCorte = num
+        linha = num // self.colunas
+        coluna = num % self.colunas
+        ponto = self.ponto0 + Ponto(coluna*self.largu, linha*self.altu)
+        self.corte.setRetangulo(ponto, ponto + Ponto(self.largu, self.altu))
+        
+    
+    def getNumCorte(self):
+        return self.numCorte
+    
+    
+    def rodarAnimacao(self, tempo_de_cada, vezes):
+        self.dtAnim = 0
+        self.numCorte = 0
+        self.vezes = vezes
+        self.T = tempo_de_cada
+        
+    
+    def atualizar(self, dt):
+        if self.vezes > 0:
+            self.setNumCorte(int(self.dtAnim*self.numTotal/self.T))
+            self.dtAnim += dt
+            while self.dtAnim >= self.T:
+                self.vezes -= 1
+                self.dtAnim -= self.T
 
 
 
