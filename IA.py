@@ -67,6 +67,9 @@ class IA(motor.Renderizavel, Vida):
         self.alvoVel = alvoVel
         self.angUni = angUni
         
+        self.dtAtirar = 0
+        self.dtAtirarMin = 1
+        
         self.PV = PV
         self._string_som_disparo = string_som_disparo 
         
@@ -91,12 +94,13 @@ class IA(motor.Renderizavel, Vida):
         lanca evento de disparo.
         tupla_tiro: (PosicaodaIA, direcaoDeDIsparo,ObjetoProjetil)
         """
+        self.dtAtirar =0
         projetil = self.arma.getProjetil()
         posInicialProjetil = self.pos.clonar()
         posInicialProjetil.setXY(posInicialProjetil.getX()+
-                            math.cos(self.rot.getAngulo(False))*self.velo*dt*100,
+                            math.cos(self.rot.getAngulo(False))*self.velo*dt*50,
                                  posInicialProjetil.getY()+- 
-                      math.sin(self.rot.getAngulo(False))*self.velo*dt*100)
+                      math.sin(self.rot.getAngulo(False))*self.velo*dt*50)
         projetil.Disparo(posInicialProjetil,self.ang.getAngulo())
         self.even.lancar("Atirar",projetil)
         self.even.lancar("tocarEfeito",self._string_som_disparo)
@@ -112,7 +116,7 @@ class AviaoInimigo(IA,motor.Figura):
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel, ang, angUni, 
                  deltaAngTol,string_som_disparo,string_som_fallShell)
-        motor.Figura.__init__(self,img1)
+        motor.Figura.__init__(self,img1, centro = motor.Ponto(32,20))
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao
@@ -186,8 +190,10 @@ class AviaoInimigo(IA,motor.Figura):
             vel = self.velMax
         else:
             vel = -self.velMax
-        #if abs(dif) < self.deltaAngTol.getAngulo():
-           # self.shoot(dt)
+        if abs(dif) < self.deltaAngTol.getAngulo():
+            self.dtAtirar +=dt
+            if self.dtAtirar> self.dtAtirarMin:
+                self.shoot(dt)
             
         # Runge-Kutta de primeira ordem :D
         self.rot.incrementa(vel*dt) 
