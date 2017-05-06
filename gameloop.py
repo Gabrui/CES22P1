@@ -11,7 +11,7 @@ import time
 from cenario import FundoParalaxeInfinito, Camera
 from aviao import Jogador
 from Simulador import Simulador
-from IA import AviaoInimigo,IA
+from IA import AviaoInimigo
 from Arma import Arma
 from Projetil import Projetil
 t20 = 50/1000
@@ -594,6 +594,7 @@ class Painelgameplay(Cena):
     def pausar(self,chamada):
         self.even.lancar("MenuPause","gameplay")
     def ativarEscuta(self):
+        self.even.escutar("K_p",self.pausar)
         for filho in self.filhos:
             filho.ativarEscuta()
 

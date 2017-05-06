@@ -11,7 +11,7 @@ class Projetil(motor.Figura):
     """
      Representa a ideia abstrata de projetil
     """
-    def __init__(self,Imagem,Som,Dano,pos, veli = 0,Dono = None):
+    def __init__(self,Imagem,Som,Dano,pos, veli = 400,Dono = None):
         motor.Figura.__init__(self,Imagem,None,pos)
         """
         Imagem: referencia a imagem do projetil
@@ -62,7 +62,7 @@ class Projetil(motor.Figura):
             VelocidadeY = VelocidadeY-1
         #calcula nova posicao
         posX = self.Pos.getX() + VelocidadeX
-        posY = self.Pos.getY() + VelocidadeY
+        posY = self.Pos.getY() - VelocidadeY
         #atualiza posicao
         self.Pos.setXY( posX, posY)
     def fisicaDeImpacto(self):
