@@ -106,7 +106,39 @@ class EventoTeste(unittest.TestCase):
         self.assertEqual(t, [2, 3])
         self.even3.lancar('ola', t)
         self.assertEqual(t, [2, 3, 1])
+        self.even1.escutar('ola', callback2)
+        self.even3.lancar('ola', t)
+        self.assertEqual(t, [2, 3, 1, 1, 2])
+        self.even1.escutar('ola', callback3)
+        self.even3.lancar('ola', t)
+        self.assertEqual(t, [2, 3, 1, 1, 2, 1, 2, 3])
+        self.even3.lancar('olasssss', t)
+        self.even1.pararDeEscutarTudo()
+        self.even1.lancar('ok', t)
+        self.even1.lancar('ola', t)
+        self.even1.lancar('blz', t)
+        self.assertEqual(t, [2, 3, 1, 1, 2, 1, 2, 3])
     
+    
+    def testaPararDeEscutar(self):
+        t = []
+        callback1 = lambda lista: lista.append(1)
+        callback2 = lambda lista: lista.append(2)
+        self.even1.escutar('ola', callback1)
+        self.even1.escutar('ola', callback2)
+        self.even1.escutar('ola', callback1)
+        self.even1.pararDeEscutar('ola', callback1)
+        self.even1.lancar('ola', t)
+        self.assertEqual(t, [2])
+        self.even1.pararDeEscutarTudo()
+        self.even1.lancar('ola', t)
+        self.assertEqual(t, [2])
+        self.even1.escutar('ola', callback1)
+        self.even1.escutar('ola', callback2)
+        self.even1.lancar('ola', t)
+        self.assertEqual(t, [2, 1, 2])
+    
+
 
 
 class RetanguloTeste(unittest.TestCase):

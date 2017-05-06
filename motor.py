@@ -104,7 +104,7 @@ class Evento:
         contendo informações sobre esse evento."""
         if self._escutaveis.get(string_evento) is None:
             self._escutaveis[string_evento] = [callback]
-        else:
+        elif callback not in self._escutaveis[string_evento]:
             self._escutaveis[string_evento].append(callback)
     
     
