@@ -511,9 +511,9 @@ class PainelMenuPause(Cena):
         #-------------Constantes-----------------------------------------------
         
         self._PosbackGround = Ponto(190,41)
-        self._PosTextResumir = Ponto(250,200)
-        self._PosTextJogosSalvos = Ponto(250,220)
-        self._PosTextAbortar = Ponto(250,270)
+        self._PosTextResumir = Ponto(400,200)
+        self._PosTextJogosSalvos = Ponto(380,300)
+        self._PosTextAbortar = Ponto(400,400)
         
         self._string_imagem_background = "imgTeste/c01_Background_pause.png"
         self._string_imagem_textResumir = "imgTeste/c02_Text_Resumir.png"
@@ -533,6 +533,7 @@ class PainelMenuPause(Cena):
         Botao_JogosSalvos = Botao("MenuJogoSalvo","MenuPause",
                                   self._string_imagem_textJogosSalvos,
                                   self._string_imagem_textJogosSalvos,
+                                  self._string_som_buttonClick,
                                   self._PosTextJogosSalvos)
         Botao_Abortar = Botao("sair","MenuPause",self._string_imagem_textAbortar,
                               self._string_imagem_textAbortar,
