@@ -55,9 +55,9 @@ class Aux:
                     -(altura - Cy)*math.cos(angulo.getAngulo(False))
                     + (largura - Cx)*math.sin(angulo.getAngulo(False)))
         elif angulo.getQuadrante() == 3:
-            return(-Cx*math.cos(angulo.getAngulo(False))
+            return(-(largura - Cx)*math.cos(angulo.getAngulo(False))
                    - (altura - Cy)*math.sin(angulo.getAngulo(False)),
-                   -Cy*math.cos(angulo.getAngulo(False)) 
+                   - (altura - Cy)*math.cos(angulo.getAngulo(False)) 
                    - Cx*math.sin(angulo.getAngulo(False)))
         elif angulo.getQuadrante() == 4:
             return (Cx*math.cos(angulo.getAngulo(False)) 
