@@ -59,31 +59,31 @@ class PainelMenuPrincipal(Cena):
         #----------------Fim das Constantes do Meneu Principal----------------
         
         #Criando Botoes do Menu
-        botaoNovoJogo = Botao("Tutorial",
+        botaoNovoJogo = Botao("Tutorial","MenuPrincipal",
                               self._string_imagem1_botaoNovoJogo,
                               self._string_imagem2_botaoNovoJogo,
                               self._string_som_buttonClick,
                               Ponto(self._PosXBotaoMenuPrincipal,
                                     self._PosYBotaoJogoNovo))
-        botaoJogoSalvo = Botao("MenuJogoSalvo",
+        botaoJogoSalvo = Botao("MenuJogoSalvo","MenuPrincipal",
                               self._string_imagem1_botaoJogoSalvo,
                               self._string_imagem2_botaoJogoSalvo,
                               self._string_som_buttonClick,
                               Ponto(self._PosXBotaoMenuPrincipal,
                                     self._PosYBotaoJogoSalvo))
-        botaoOpcoes = Botao("MenuOpcoes",
+        botaoOpcoes = Botao("MenuOpcoes","MenuPrincipal",
                               self._string_imagem1_botaoOpcoes,
                               self._string_imagem2_botaoOpcoes,
                               self._string_som_buttonClick,
                               Ponto(self._PosXBotaoMenuPrincipal,
                                     self._PosYBotaoOpcoes))
-        botaoCreditos = Botao("Creditos",
+        botaoCreditos = Botao("Creditos","MenuPrincipal",
                               self._string_imagem1_botaoCreditos,
                               self._string_imagem2_botaoCreditos,
                               self._string_som_buttonClick,
                               Ponto(self._PosXBotaoMenuPrincipal,
                                     self._PosYBotaoCreditos))
-        botaoSair = Botao("sair",
+        botaoSair = Botao("sair","MenuPrincipal",
                           self._string_imagem1_botaoSair,
                           self._string_imagem2_botaoSair,
                           self._string_som_buttonClick,
@@ -241,13 +241,13 @@ class PainelMenuOperacoes(Cena):
         img_TextGuerraGraBret = Figura(self._string_imagem_TextGuerraGraBret,None,
                                        self._PosText_GueraGraBret)
         
-        botao_TextRetornar = Botao("MenuPrincipal",
+        botao_TextRetornar = Botao("MenuPrincipal","MenuOperacoes",
                                    self._string_imagem_TextRetornar,
                                    self._string_imagem_TextRetornar,
                                    self._string_som_buttonClick,
                                    self._PosTextRetornar)
         
-        botao_PlayOperacao1 = Botao("MenuMissao1",
+        botao_PlayOperacao1 = Botao("MenuMissao1","MenuOperacoes",
                                     self._string_imagem_BotaoPlay,
                                     self._string_imagem_BotaoPlay,
                                     self._string_som_buttonClick,
@@ -304,35 +304,43 @@ class PainelMissoes1(Cena):
                                 self._Posbackground)
         img_fundo = Figura(self._string_imagem_fundo)
         #criando botoes
-        botao_Missao1 = Botao("Play",self._string_imagem_BotaoMissao1,
+        botao_Missao1 = Botao("Play","MenuMissoes",
+                              self._string_imagem_BotaoMissao1,
                               self._string_imagem_BotaoMissao1,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao1)
-        botao_Missao2 = Botao("Play", self._string_imagem_BotaoMissao2,
+        botao_Missao2 = Botao("Play","MenuMissoes",
+                              self._string_imagem_BotaoMissao2,
                               self._string_imagem_BotaoMissao2,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao2)
-        botao_Missao3 = Botao("Play",self._string_imagem_BotaoMissao3,
+        botao_Missao3 = Botao("Play","MenuMissoes",
+                              self._string_imagem_BotaoMissao3,
                               self._string_imagem_BotaoMissao3,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao3)
-        botao_Missao4 = Botao("Play", self._string_imagem_BotaoMissao4,
+        botao_Missao4 = Botao("Play","MenuMissoes" ,
+                              self._string_imagem_BotaoMissao4,
                               self._string_imagem_BotaoMissao4,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao4)
-        botao_Missao5 = Botao("Play",self._string_imagem_BotaoMissao5,
+        botao_Missao5 = Botao("Play","MenuMissoes",
+                              self._string_imagem_BotaoMissao5,
                               self._string_imagem_BotaoMissao5,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao5)
-        botao_Missao6 = Botao("Play", self._string_imagem_BotaoMissao6,
+        botao_Missao6 = Botao("Play", "MenuMissoes",
+                              self._string_imagem_BotaoMissao6,
                               self._string_imagem_BotaoMissao6,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao6)
-        botao_Missao7 = Botao("Play",self._string_imagem_BotaoMissao7,
+        botao_Missao7 = Botao("Play","MenuMissoes",
+                              self._string_imagem_BotaoMissao7,
                               self._string_imagem_BotaoMissao7,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao7)
-        botao_Missao8 = Botao("Play", self._string_imagem_BotaoMissao8,
+        botao_Missao8 = Botao("Play", "MenuMissoes",
+                              self._string_imagem_BotaoMissao8,
                               self._string_imagem_BotaoMissao8,
                               self._string_som_buttonClick,
                               self._PosBotaoMissao8)
@@ -481,7 +489,7 @@ class PainelJogosSalvos(Cena):
                                 self._PosTextJogo3)
         img_TextJogosSalvo = Figura(self._string_imagem_TextJogosSalvos,None,
                                        self._PosTextJogoSalvo)
-        Botao_TextRetornar = Botao("MenuPrincipal",
+        Botao_TextRetornar = Botao("MenuPrincipal","MenuJogoSalvo",
                                    self._string_imagem_TextRetornar,
                                    self._string_imagem_TextRetornar,
                                    self._string_som_buttonClick,
@@ -503,30 +511,32 @@ class PainelMenuPause(Cena):
         #-------------Constantes-----------------------------------------------
         
         self._PosbackGround = Ponto(190,41)
-        self._PosTextResumir = Ponto(400,200)
-        self._PosTextJogosSalvos = Ponto(374,220)
-        self._PosTextAbortar = Ponto(400,270)
+        self._PosTextResumir = Ponto(250,200)
+        self._PosTextJogosSalvos = Ponto(250,220)
+        self._PosTextAbortar = Ponto(250,270)
         
-        self._string_imagem_background = "c01_Background_pause.png"
-        self._string_imagem_textResumir = "c02_Text_Resumir.png"
-        self._string_imagem_textJogosSalvos = "c02_Text_JogosSalvos.png"
-        self._string_imagem_textAbortar = "c02_Text_Abortar.png"
-        
+        self._string_imagem_background = "imgTeste/c01_Background_pause.png"
+        self._string_imagem_textResumir = "imgTeste/c02_Text_Resumir.png"
+        self._string_imagem_textJogosSalvos = "imgTeste/c02_Text_JogosSalvos.png"
+        self._string_imagem_textAbortar = "imgTeste/c02_Text_Abortar.png"
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #--------------Fim das constantes--------------------------------------
         
         #CRIAR imagens
         img_background = Figura(self._string_imagem_background,None,
                                 self._PosbackGround)
         #Criar botoes
-        Botao_resumir = Botao("Play",self._string_imagem_textResumir,
+        Botao_resumir = Botao("Play","MenuPause",self._string_imagem_textResumir,
                               self._string_imagem_textResumir,
+                              self._string_som_buttonClick,
                               self._PosTextResumir)
-        Botao_JogosSalvos = Botao("MenuJogoSalvo",
+        Botao_JogosSalvos = Botao("MenuJogoSalvo","MenuPause",
                                   self._string_imagem_textJogosSalvos,
                                   self._string_imagem_textJogosSalvos,
                                   self._PosTextJogosSalvos)
-        Botao_Abortar = Botao("sair",self._string_imagem_textAbortar,
+        Botao_Abortar = Botao("sair","MenuPause",self._string_imagem_textAbortar,
                               self._string_imagem_textAbortar,
+                              self._string_som_buttonClick,
                               self._PosTextAbortar)
         #montar cena
         self.adicionaFilho(img_background)
@@ -535,12 +545,69 @@ class PainelMenuPause(Cena):
         self.adicionaFilho(Botao_Abortar)
     
 #----------------Fim da classe PainelMenuPause---------------------------------    
+
+class Painelgameplay(Cena):
     
+    def __init__(self,audio,entrada,renderizador,larguraTela,alturaTela,
+                 string_musica_fundo=None):
+        Cena.__init__(self,audio,entrada,renderizador,string_musica_fundo)
+        
+        fundo0 = FundoParalaxeInfinito(larguraTela,alturaTela, 
+                         "imgTeste/estFundo.png", Retangulo(Ponto(0,0), 
+                         Ponto(800, 132)), Ponto(0, 80), Ponto(-1, -0.4))
+        fundo1 = FundoParalaxeInfinito(larguraTela, alturaTela, 
+                         "imgTeste/movFundo.png", Retangulo(Ponto(0,0), 
+                         Ponto(800, 225)), Ponto(0,0), Ponto(0,0))
+        fundo3 = Figura("imgTeste/nuvem.png")
+        avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
+                     Ponto(100, 100), Ponto(28, 10),
+                     [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
+                     [5, 50000, 5000/3, 100], [5000, 150])
+
+        projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
+                                                "imgTeste/MetalHit1.ogg",10,
+                                                Ponto(0,0),10)
+        armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
+                                    projetilArmaAviaoInimigo)
+        aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
+                                        "imgTeste/aviaoInimigo em -y.png",
+                                        "imgTeste/airplane_b25-1.ogg",
+                                        armaAviaoInimigo,Ponto(300,100),100,
+                                        "imgTeste/MP5_SMG_auto.ogg",
+                                        "imgTeste/Explosion_6.ogg",
+                                        "imgTeste/Shells_falls.ogg",
+                                        None,None,
+                                        None,None,None,None)
+        armaAviaoInimigo.setDono(aviaoInimigo)
+    
+        simulador = Simulador(alturaTela)
+        simulador.adicionaFilho(avi)
+        camera = Camera(larguraTela, alturaTela, avi, 0)
+        camera.adicionaFilho(fundo0)
+        camera.adicionaFilho(fundo1)
+        camera.adicionaFilho(fundo3)
+        camera.adicionaFilho(simulador)
+        simulador.adicionaFilho(aviaoInimigo)
+        self.adicionaFilho(camera)
+        self.even.escutar("K_p",self.pausar)
+    def pausar(self,chamada):
+        self.even.lancar("MenuPause","gameplay")
+
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
     
     def __init__(self):
-        """Ainda é só um esboço"""
+        """
+            larguraTela:   é a largura da Tela.
+            alturaTela:    é a altura da Tela.
+            CorBlit:       é a cor do fundo da Tela
+            audio:         objeto audio da cena
+            renderizador:  objeto renderizador da cena
+            entrada:       objeto entrada que verifica entradas
+            continuarloop: variavel booleana que mantém o loop do jogo
+            cenaAtual:     é a cena que está sendo exibida na Tela.
+            cenaAnterior:  é a cena anterior do gameplay.
+        """
         self.larguraTela = 1000
         self.alturaTela  = 700
         self.CorBlit     = (200,200,255)
@@ -552,6 +619,7 @@ class Jogo():
         self.even = Evento()
         self.continuarLoop = True
         self.cenaAtual = None
+        self.cenaAnterior = None
         
         self.limparEventos()
         
@@ -562,45 +630,15 @@ class Jogo():
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self,chamada):
         self.limparEventos()
-        fundo0 = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, 
-                     "imgTeste/estFundo.png", Retangulo(Ponto(0,0), 
-                     Ponto(800, 132)), Ponto(0, 80), Ponto(-1, -0.4))
-        fundo1 = FundoParalaxeInfinito(self.larguraTela, self.alturaTela, 
-                     "imgTeste/movFundo.png", Retangulo(Ponto(0,0), 
-                     Ponto(800, 225)), Ponto(0,0), Ponto(0,0))
-        fundo3 = Figura("imgTeste/nuvem.png")
-        avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
-                 Ponto(100, 100), Ponto(28, 10),
-                 [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
-                 [5, 50000, 5000/3, 100], [5000, 150])
-        
-        
-        self.cenaAtual = Cena(self.audio,self.entrada,self.renderizador,"imgTeste/NowOrNever.ogg")
-        
-        projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
-                                            "imgTeste/MetalHit1.ogg",10,Ponto(0,0),10)
-        armaAviaoInimigo = Arma("imgTeste/gun1Light.ogg",
-                                projetilArmaAviaoInimigo)
-        aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
-                                    "imgTeste/aviaoInimigo em -y.png",
-                                    "imgTeste/airplane_b25-1.ogg",
-                                    armaAviaoInimigo,Ponto(300,100),100,
-                                    "imgTeste/MP5_SMG_auto.ogg",
-                                    "imgTeste/Explosion_6.ogg",
-                                    "imgTeste/Shells_falls.ogg",
-                                    None,None,
-                                    None,None,None,None)
-        armaAviaoInimigo.setDono(aviaoInimigo)
-
-        simulador = Simulador(self.alturaTela)
-        simulador.adicionaFilho(avi)
-        camera = Camera(self.larguraTela, self.alturaTela, avi, 0)
-        camera.adicionaFilho(fundo0)
-        camera.adicionaFilho(fundo1)
-        camera.adicionaFilho(fundo3)
-        camera.adicionaFilho(simulador)
-        simulador.adicionaFilho(aviaoInimigo)
-        self.cenaAtual.adicionaFilho(camera)
+        if chamada == "MenuMissoes":
+            self.cenaAtual = Painelgameplay(self.audio,self.entrada,
+                                            self.renderizador,self.larguraTela,
+                                            self.alturaTela,
+                                            "imgTeste/NowOrNever.ogg")
+            self.cenaAnterior = self.cenaAtual
+           
+        else:
+           self.cenaAtual = self.cenaAnterior
     
     
     def MenuPrincipal(self,chamada):
@@ -644,6 +682,7 @@ class Jogo():
         self.even.escutar("MenuOperacoes",self.MenuOperacoes)
         self.even.escutar("Play", self.gameplay)
         self.even.escutar("MenuMissao1", self.MenuMissao1)
+        self.even.escutar("MenuPause",self.MenuPause)
         self.audio.escutas()
         self.renderizador.escutas()
     

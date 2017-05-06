@@ -139,7 +139,7 @@ K_vazio
 K_desfocado
 Play		      Jogar (chamada ao gameplay)
 MenuPause             Pausar o jogo (chamada ao Pause Menu)
-Quit		      Sair do jogo
+sair		      Sair do jogo
 GameOver              Fim de jogo (morte do jogador)
 Vitoria               Missao completada
 Return		      Voltar ao menu anterior
