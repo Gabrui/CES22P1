@@ -240,5 +240,6 @@ class TorreInimiga(IA,motor.Figura):
         self.pos.setXY(pos.getX(),pos.getY())
         
         def atualiza(self,dt):
+            print("Mirando!!!")
             self.mira(dt)
            

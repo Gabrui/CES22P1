@@ -672,6 +672,7 @@ class Jogo():
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self,chamada):
+        self.audio.pararMusicaFundo()
         self.limparEventos()
         if chamada == "MenuMissoes":
             self.cenaAtual = Painelgameplay(self.audio,self.entrada,
@@ -689,7 +690,8 @@ class Jogo():
         self.limparEventos()
         #trocando de transparencias
         self.cenaAtual = PainelMenuPrincipal(self.audio,self.entrada,
-                                             self.renderizador)
+                                             self.renderizador,
+                                             "imgTeste/World_War_II_Soundtrack.ogg")
     
     
     def Tutorial(self,chamada):
