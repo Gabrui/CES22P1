@@ -53,7 +53,7 @@ class PainelMenuPrincipal(Cena):
         self._string_imagem_AviaoDireita2 = "imgTeste/c02_AviaoDireita2.png"
         self._string_imagem_AviaoEsquerda = "imgTeste/c02_AviaoEsquerda.png" 
         self._string_imagem_TituloMenuPrincipal = "imgTeste/c03_Text_AsDaAviacao.png"
-        self._string_imagem_Fundo = "imgTeste/sky.png"
+        self._string_imagem_Fundo = "imgTeste/sky1_menor.png"
         
         self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #----------------Fim das Constantes do Meneu Principal----------------
@@ -150,7 +150,7 @@ class PainelTutorial(Cena):
         self._string_imagem_TextCoin = "imgTeste/c(X)_Text_Coin.png"
         self._string_imagem_TextHealth = "imgTeste/c(X)_Text_Missao3.png"
         self._string_imagem_TextMissao3 ="imgTeste/c(X)_Text_Missao3.png" 
-        self._string_imagem_Fundo = "imgTeste/sky.png"
+        self._string_imagem_Fundo = "imgTeste/sky1_menor.png"
         #--------------------------Fim das COnstates-------------------------
        
         #Criando as imagens do tutorial
@@ -183,7 +183,7 @@ class PainelTutorial(Cena):
         self.adicionaFilho(img_HP1)
         self.adicionaFilho(img_TextCoin)
         self.adicionaFilho(img_TextHealthPoint)
-        self.adicionaFilho(img_TextMissao3)
+        #self.adicionaFilho(img_TextMissao3)
         
         self.even.escutar("M_fclick",self.Proximo)
         
@@ -210,7 +210,7 @@ class PainelMenuOperacoes(Cena):
         self._PosText_GueraGraBret = Ponto(180,300)
         self._PosTextRetornar = Ponto(660,485)
         
-        self._string_imagem_fundo = "imgTeste/sky.png"
+        self._string_imagem_fundo = "imgTeste/sky1_menor.png"
         self._string_imagem_Background = "imgTeste/c01_Background.png"
         self._string_imagem_Operacao1 = "imgTeste/c02_Operacao1.png"
         self._string_imagem_Operacao2 = "imgTeste/c02_Operacao2.png"
@@ -284,7 +284,7 @@ class PainelMissoes1(Cena):
         self._PosBotaoMissao8 = Ponto(660,320)
         self._PosBotaoRetornar = Ponto(660,490)
         
-        self._string_imagem_fundo = "imgTeste/sky.png"
+        self._string_imagem_fundo = "imgTeste/sky1_menor.png"
         self._string_imagem_background = "imgTeste/c01_Background._missao.png"
         self._string_imagem_BotaoMissao1 = "imgTeste/c02_Missao1.png"
         self._string_imagem_BotaoMissao2 = "imgTeste/c02_Missao2.png"
