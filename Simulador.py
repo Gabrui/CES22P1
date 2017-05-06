@@ -19,9 +19,10 @@ class Simulador(motor.Camada):
         motor.Camada.__init__(self)
         """
             posChao: é a posicao do chao (int).
-            larguraTela: é a dimensao x maxima da tela.
+            meialarguraTela: é a metade da largura da tela.
         """
-        self.larguraTela = larguraTela
+        self.PosXCentroTela = larguraTela/2
+        self.meialarguraTela = larguraTela/2
         self.posChao = posChao
         #Ativa a escuta de eventos
         self.ativarEscuta()
@@ -42,6 +43,7 @@ class Simulador(motor.Camada):
         #lancando a posicao do Jogador
         for filho in self.filhos:
             if isinstance(filho, aviao.Jogador):
+                self.PosXCentroTela = filho.pos.getX()
                 self.even.lancar("PlayerLocation",(filho.pos.getX(),
                                                    filho.pos.getY(),
                                                    filho.xVel,filho.yVel))
@@ -147,7 +149,8 @@ class Simulador(motor.Camada):
                                  self.removeFilho(filhos)
                                  
             if isinstance(filhos, Projetil.Projetil):
-                if filhos.pos.getX()<0 or filhos.pos.getX()>= self.larguraTela\
+                if filhos.pos.getX()<self.PosXCentroTela-self.meialarguraTela or\
+                   filhos.pos.getX() > self.PosXCentroTela + self.meialarguraTela\
                    or filhos.pos.getY() >= self.posChao:
                    #Se for projetil ou IA, remove do gameplay
                    self.removeFilho(filhos)
