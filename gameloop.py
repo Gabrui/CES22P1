@@ -612,7 +612,7 @@ class Painelgameplay(Cena):
                                 projetilTorreInimiga)
         torreInimiga = TorreInimiga("imgTeste/turret_1_default.png",
                                     "imgTeste/Shells_falls.ogg",
-                                    armaTorreInimiga,1000,Ponto(500,580),
+                                    armaTorreInimiga,1000,Ponto(800,580),
                                     None,None,
                                     None,None)
         armaTorreInimiga.setDono(torreInimiga)

@@ -26,9 +26,7 @@ class Simulador(motor.Camada):
         self.posChao = posChao
         #Ativa a escuta de eventos
         self.ativarEscuta()
-        
-        
-        
+               
         
     def ativarEscuta(self):
         #escuta o evento do disparo e adiciona o filho que é um projetil
@@ -39,7 +37,7 @@ class Simulador(motor.Camada):
         
     def atualiza(self, dt):
         #verificando colisoes 
-        self.verificarColisao()
+        self.verificarColisao(dt)
         #lancando a posicao do Jogador
         for filho in self.filhos:
             if isinstance(filho, aviao.Jogador):
@@ -50,7 +48,7 @@ class Simulador(motor.Camada):
         super().atualiza(dt)
         
     
-    def verificarColisao(self):
+    def verificarColisao(self,dt):
         
         """
             Verifica colisoes.
@@ -156,7 +154,7 @@ class Simulador(motor.Camada):
                 elif isinstance(filhos, IA.AviaoInimigo):
                     #Se houver colisao entre aviaoInimigo e chao
                     #Chama o metodo de animacao da explosao
-                    filhos.explosao()
+                    filhos.explosao(dt)
                     #retira da lista de filhos
                     self.removeFilho(filhos)
                     

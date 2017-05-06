@@ -196,8 +196,12 @@ class AviaoInimigo(IA,motor.Figura):
                self.Manobra180V = True
                self.realizarManobra180H()
     
-    def explosao(self):
+    def explosao(self,dt):
         self.rot.setAngulo(-self.rot.getAngulo())
+        explosao = motor.Animacao("imgTeste/explosion17.png", motor.Retangulo(motor.Ponto(0, 0),
+                   motor.Ponto(320,320)), 64, 64, self.pos.clonar())
+        explosao.rodarAnimacao(dt)
+        explosao.atualiza(dt)
         self.even.lancar("tocarEfeito",self._string_som_explosao)
     
         
@@ -239,7 +243,6 @@ class TorreInimiga(IA,motor.Figura):
             deltaAngTol = motor.Angulo(10)
         self.pos.setXY(pos.getX(),pos.getY())
         
-        def atualiza(self,dt):
-            print("Mirando!!!")
-            self.mira(dt)
+    def atualiza(self,dt):
+        self.mira(dt)
            
