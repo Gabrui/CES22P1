@@ -49,11 +49,6 @@ class Simulador(motor.Camada):
                                                    filho.xVel,filho.yVel))
         super().atualiza(dt)
         
-     
-        
-        
-    
-    
     
     def verificarColisao(self):
         
@@ -101,7 +96,6 @@ class Simulador(motor.Camada):
                               #chama animacao de fisica de impacto do projetil
                               filhos.fisicaDeImpacto()
                                #remove o projetil do gameplay
-                              print("remove filho projetil/ colisao com aviao")
                               self.removeFilho(filhos)
                               #verifica se o Jogador esta vivo
                               #if irmao[10].getPV() <= 0:
@@ -113,7 +107,6 @@ class Simulador(motor.Camada):
                                #o mesmo que a anterior
                                # filhos[10].reduzPV(filhos[10].getDano())
                               irmao.fisicaDeImpacto()
-                              print("remove irmao projetil/colisao com Aviao")
                               self.removeFilho(irmao)
                                 #if filhos[10].getPV() <= 0:
                                 #    if isinstance(filhos,aviao.Jogador):
@@ -129,7 +122,6 @@ class Simulador(motor.Camada):
                                 
                             filhos.fisicaDeImpacto()
                             #remove o projetil do gameplay
-                            print("remove filho projetil")
                             self.removeFilho(filhos)
                             if irmao.getPV() <= 0:
                                 
@@ -142,7 +134,6 @@ class Simulador(motor.Camada):
                                 #o mesmo que a anterior
                             filhos.reduzPV(irmao.getDano())
                             irmao.fisicaDeImpacto()
-                            print("remove irmao projetil")
                             self.removeFilho(irmao)
                             if filhos.getPV() <= 0:
                                 #   filhos[10].explosao()

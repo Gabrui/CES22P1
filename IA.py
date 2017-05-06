@@ -131,7 +131,8 @@ class AviaoInimigo(IA,motor.Figura):
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol,string_som_fallShell)
-        motor.Figura.__init__(self,img1, centro = motor.Ponto(32,20))
+        motor.Figura.__init__(self,img1,pos = pos)
+
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao

@@ -21,7 +21,7 @@ class Aviao(Figura):
         """
         lanca evento de disparo.
         """
-        print("shoot!!!")
+
         #zera o contador
         self.dtAtirar =0
         self.disparar = False
@@ -197,9 +197,8 @@ class Jogador(Aviao):
         self.even.escutar("K_left", self._cEsquerda)
         self.even.escutar("K_space", self._cVirar)
         self.even.escutar("K_f",self.disparo)
-        print("escutando")
+        
     def disparo(self,dt):
-        print("ouvido")
         self.disparar = True
     
     def _cCima(self, eventoTeclado):
