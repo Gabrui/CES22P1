@@ -11,9 +11,38 @@ import math
 
 class Aviao(Figura):
     
-    def __init__(self, string_imagem, pos0, c0):
+    def __init__(self, string_imagem, pos0, c0,arma,string_som_fallShell):
         super().__init__(string_imagem, pos = pos0, centro = c0)
-
+        
+        self.arma = arma
+        self._string_som_fallShell = string_som_fallShell
+        
+    def shoot(self,dt):
+        """
+        lanca evento de disparo.
+        """
+        print("shoot!!!")
+        #zera o contador
+        self.dtAtirar =0
+        self.disparar = False
+        #copia o projetil
+        projetil = self.arma.getProjetil()
+        #copia a posicao
+        posInicialProjetil = self.pos.clonar()
+        #ajusta a posicao inicial do projetil
+        posInicialProjetil.setXY(posInicialProjetil.getX()+
+                            math.cos(self.rot.getAngulo(False))*50,
+                                 posInicialProjetil.getY() - 
+                      math.sin(self.rot.getAngulo(False))*50)
+        #coloca a posicao inicial no projetil
+        projetil.Disparo(posInicialProjetil,self.rot.getAngulo())
+        #Pegar nome do arquivo do som do disparo
+        self._string_som_disparo = self.arma.getSom()
+        #lanca para ser adicionado no simulador
+        self.even.lancar("Atirar",projetil)
+        #lanca para tocar sons
+        self.even.lancar("tocarEfeito",self._string_som_disparo)
+        self.even.lancar("tocarEfeito",self._string_som_fallShell)
 
 class Jogador(Aviao):
     
@@ -30,8 +59,9 @@ class Jogador(Aviao):
     [5, 50000, 5000/3, 100], [5000, 150])
     """
     def __init__(self, string_imagem, string_imagem_invertida, pos0, c0, 
-                 aerMacro, empuxoMacro, rotMacro, inerciaMacro):
-        super().__init__(string_imagem, pos0, c0)
+                 aerMacro, empuxoMacro, rotMacro, inerciaMacro,arma,
+                 string_som_fallShell):
+        super().__init__(string_imagem, pos0, c0,arma,string_som_fallShell)
         self.img1 = string_imagem
         self.img2 = string_imagem_invertida
         
@@ -154,7 +184,11 @@ class Jogador(Aviao):
         self.virar = False
         self.dtVirar = 2
         self.dtVirarMin = 1
-    
+        
+        self.disparar = False
+        self.dtAtirar = 1
+        self.dtAtirarMin = 2
+        
     def ativarEscuta(self):
         #lancar pedido de escuta
         self.even.escutar("K_up", self._cCima)
@@ -162,7 +196,12 @@ class Jogador(Aviao):
         self.even.escutar("K_right", self._cDireita)
         self.even.escutar("K_left", self._cEsquerda)
         self.even.escutar("K_space", self._cVirar)
-        
+        self.even.escutar("K_f",self.disparo)
+        print("escutando")
+    def disparo(self,dt):
+        print("ouvido")
+        self.disparar = True
+    
     def _cCima(self, eventoTeclado):
         self.cima = True
         
@@ -360,6 +399,11 @@ class Jogador(Aviao):
     
     
     def atualiza(self, dt):
+        
+        self.dtAtirar +=dt
+        if self.disparar and self.dtAtirar >= self.dtAtirarMin:
+            self.shoot(dt)
+        self.disparar = False
         self.calculus(dt)
         self.pos.soma(Ponto(self.dx, self.dy))
         self.rot.setAngulo(-self.rotacao)

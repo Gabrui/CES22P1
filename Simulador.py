@@ -15,11 +15,13 @@ class Simulador(motor.Camada):
     """
         Realiza operacoes de fundo do gameplay, como verificar colisoes.
     """
-    def __init__(self, posChao):
+    def __init__(self, posChao, larguraTela):
         motor.Camada.__init__(self)
         """
             posChao: é a posicao do chao (int).
+            larguraTela: é a dimensao x maxima da tela.
         """
+        self.larguraTela = larguraTela
         self.posChao = posChao
         #Ativa a escuta de eventos
         self.ativarEscuta()
@@ -143,14 +145,16 @@ class Simulador(motor.Camada):
                             if filhos.getPV() <= 0:
                                 #   filhos[10].explosao()
                                  self.removeFilho(filhos)
-           
-            if filhos.pos.getY() >= self.posChao:
-                
-                #verifica colisao com o chao
-                if isinstance(filhos, Projetil.Projetil):
+                                 
+            if isinstance(filhos, Projetil.Projetil):
+                if filhos.pos.getX()<0 or filhos.pos.getX()>= self.larguraTela\
+                   or filhos.pos.getY() >= self.posChao:
                    #Se for projetil ou IA, remove do gameplay
                    self.removeFilho(filhos)
-                elif isinstance(filhos, aviao.Aviao):
+            
+            if filhos.pos.getY() >= self.posChao:
+                
+                if isinstance(filhos, aviao.Aviao):
                     #Se for Jogador, chama tela de G.O.
                     #filhos[10].explosao()
                     filhos.yVel *= -1
