@@ -6,7 +6,7 @@ Created on Sat Apr  1 19:29:56 2017
 """
 
 from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, \
-                  Retangulo, Ponto, Botao
+                  Retangulo, Ponto, Botao, Animacao
 import time
 from cenario import FundoParalaxeInfinito, Camera
 from aviao import Jogador
@@ -104,6 +104,9 @@ class PainelMenuPrincipal(Cena):
                                         Ponto(self._PosXTituloMenuPrincipal,
                                               self._PosYTituloMenuPrincipal))
         img_fundo = Figura(self._string_imagem_Fundo)
+        explosao = Animacao("imgTeste/explosion17.png", Retangulo(Ponto(0, 0),
+                   Ponto(320,320)), 64, 64)
+        explosao.rodarAnimacao(3, 100)
         #montando a cena do menu principal
         self.adicionaFilho(img_fundo)
         self.adicionaFilho(botaoNovoJogo)
@@ -115,6 +118,7 @@ class PainelMenuPrincipal(Cena):
         self.adicionaFilho(imgAviaoDireita2)
         self.adicionaFilho(imgAviaoEsquerda)
         self.adicionaFilho(imgTituloMenuPrincipal)
+        self.adicionaFilho(explosao)
 #---------------------------------Fim da Classe Menu Principal-----------------
 
 class PainelTutorial(Cena):

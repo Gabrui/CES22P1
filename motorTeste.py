@@ -141,12 +141,35 @@ class EventoTeste(unittest.TestCase):
 
 
 
+class PontoTeste(unittest.TestCase):
+    
+    def setUp(self):
+        self.p1 = Ponto(0, 0)
+        self.p2 = Ponto(44, 32)
+        self.p3 = Ponto(400, 200)
+    
+    
+    def testeSoma(self):
+        self.assertEqual(444, (self.p2 + self.p3).getX())
+        self.assertEqual(232, (self.p2 + self.p3).getY())
+
+
+
+
+
 class RetanguloTeste(unittest.TestCase):
     
     def setUp(self):
         self.r1 = Retangulo(Ponto(0,0), Ponto(6,6))
         self.r2 = Retangulo(Ponto(3,2), Ponto(-2, 3))
         self.r3 = Retangulo(Ponto(-14,3), Ponto(231,3))
+    
+    
+    def testeGetEsquerda(self):
+        self.assertEqual(self.r1.getEsquerda(), 0)
+        self.assertEqual(self.r2.getEsquerda(), -2)
+        self.assertEqual(self.r3.getEsquerda(), -14)
+    
     
     def testaGetTopoEsquerdo(self):
         self.assertEqual(self.r1.getTopoEsquerdo().getX(), 0)

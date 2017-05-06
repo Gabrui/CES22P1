@@ -786,7 +786,7 @@ class Figura(Renderizavel):
         indentificador único. O corte representa um retângulo que corta a
         imagem original, no caso dela ser um conjunto de imagens."""
         super().__init__(pos, centro, escala, rot, cor)
-        self.setString(string_imagem, corte)
+        Figura.setString(self, string_imagem, corte)
     
     
     def getString(self):
@@ -798,56 +798,64 @@ class Figura(Renderizavel):
 class Animacao(Figura):
     """Classe base para uma animação de spritesheet"""
     
+    def setString(self, string_imagem, corte, largu, altu):
+        """Redefine a string imagem dessa figura"""
+        super().setString(string_imagem, Retangulo(
+                corte.getTopoEsquerdo(), largura = largu, altura = altu))
+        self._ponto0 = corte.getTopoEsquerdo()
+        self._largu = largu
+        self._altu = altu
+        self._larguraSS = corte.getLargura()
+        self._alturaSS = corte.getAltura()
+        self._colunas = self._larguraSS//self._largu
+        self._linhas = self._alturaSS//self._altu
+        self._numTotal = self._colunas * self._linhas
+        self._numCorte = 0
+        self._vezes = 0
+        self._dtAnim = 0
+        self._T = 1
+        print(self._numTotal)
+    
+    
     def __init__(self, string_imagem, corte, largu, altu, pos = None, 
                  centro = None, escala = None, rot = None, cor = None):
         """Suponho cortes regulares, igualmentes distribuidos"""
         super().__init__(string_imagem, Retangulo(
-                corte.getTopoEsquerdo(), larg = largu, alt = altu),
+                corte.getTopoEsquerdo(), largura = largu, altura = altu),
               pos, centro, escala, rot, cor)
-        self.ponto0 = corte.getTopoEsquerdo()
-        self.largu = largu
-        self.altu = altu
-        self.larguraSS = corte.getLargura()
-        self.alturaSS = corte.getAltura()
-        self.colunas = self.larguraSS//self.largu
-        self.linhas = self.alturaSS//self.altu
-        self.numTotal = (self.colunas + 1) * (self.linhas + 1)
-        self.numCorte = 0
-        self.vezes = 0
-        self.dtAnim = 0
-        self.T = 1
+        self.setString(string_imagem, corte, largu, altu)
         
         
         
     def setNumCorte(self, num):
         """Começa do 0"""
-        if num < 0 or num >= self.numTotal:
+        if num < 0 or num >= self._numTotal:
             raise IndexError("Número de corte inválido")
-        self.numCorte = num
-        linha = num // self.colunas
-        coluna = num % self.colunas
-        ponto = self.ponto0 + Ponto(coluna*self.largu, linha*self.altu)
-        self.corte.setRetangulo(ponto, ponto + Ponto(self.largu, self.altu))
+        self._numCorte = num
+        linha = num // self._colunas
+        coluna = num % self._colunas
+        ponto = (self._ponto0 + Ponto(coluna*self._largu, linha*self._altu))
+        self.corte.setRetangulo(ponto, ponto + Ponto(self._largu, self._altu))
         
     
     def getNumCorte(self):
-        return self.numCorte
+        return self._numCorte
     
     
-    def rodarAnimacao(self, tempo_de_cada, vezes):
-        self.dtAnim = 0
-        self.numCorte = 0
-        self.vezes = vezes
-        self.T = tempo_de_cada
+    def rodarAnimacao(self, tempo_de_cada, vezes = 1):
+        self._dtAnim = 0
+        self._numCorte = 0
+        self._vezes = vezes
+        self._T = tempo_de_cada
         
     
-    def atualizar(self, dt):
-        if self.vezes > 0:
-            self.setNumCorte(int(self.dtAnim*self.numTotal/self.T))
-            self.dtAnim += dt
-            while self.dtAnim >= self.T:
-                self.vezes -= 1
-                self.dtAnim -= self.T
+    def atualiza(self, dt):
+        if self._vezes > 0:
+            self.setNumCorte(int(self._dtAnim*self._numTotal/self._T))
+            self._dtAnim += dt
+            while self._dtAnim >= self._T:
+                self._vezes -= 1
+                self._dtAnim -= self._T
 
 
 
@@ -974,7 +982,7 @@ class Camada(Renderizavel):
                 y = filho.pos.getY()
                 figuras.append((filho.getString(), 
                  (filho.corte.getEsquerda(), filho.corte.getTopo(),
-                  filho.corte.getDireita(), filho.corte.getFundo()),
+                  filho.corte.getLargura(), filho.corte.getAltura()),
                   x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
                   filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A, filho))
             elif isinstance(filho, Texto):
