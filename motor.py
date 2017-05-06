@@ -795,6 +795,17 @@ class Figura(Renderizavel):
     
 
 
+class Animacao(Figura):
+    """Classe base para uma animação de spritesheet"""
+    
+    def __init__(self, string_imagem, larg, alt, pos = None, centro = None, 
+                 escala = None, rot = None, cor = None):
+        """Suponho cortes regulares, igualmentes distribuidos"""
+        super().__init__(string_imagem, Retangulo(Ponto(0,0), Ponto(larg,alt)),
+              pos, centro, escala, rot, cor)
+        
+
+
 
 
 class Texto(Renderizavel):
