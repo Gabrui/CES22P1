@@ -46,7 +46,7 @@ class Aux:
             'elem'
         @param {list} lista Uma lista de tuplas
         @param {type} elem O primeiro elemento da tupla a ser comparado
-        @returns {boolean} Se existe ou não essa tupla na lista
+        @returns {bool} Se existe ou não essa tupla na lista
         """
         for tupla in lista:
             if tupla[0] == elem:
@@ -557,7 +557,7 @@ class Retangulo:
         Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro \
             do retângulo
         @param {Ponto} ponto Ponto a ser analisado
-        @returns {boolean} Se o ponto está dentro ou não
+        @returns {bool} Se o ponto está dentro ou não
         """
         if ponto.getX() > self.getTopoEsquerdo().getX() and ponto.getY() > \
         self.getTopoEsquerdo().getY() and \
@@ -591,18 +591,31 @@ class Angulo:
     """
     @staticmethod
     def grausParaRadianos(angulo):
-        from math import radians
-        return radians(angulo)
+        """
+        @function grausParaRadianos
+        Converte um ângulo em graus para radianos
+        @param {float} angulo O ângulo em graus
+        @returns {float} O ângulo em radianos
+        """
+        return math.radians(angulo)
     
     
     @staticmethod
     def radianosParaGraus(angulo):
-        from math import degrees
-        return degrees(angulo)
+        """
+        @function radianosParaGraus
+        Converte um ângulo de radianos para graus
+        @param {float} angulo O ângulo em radianos
+        @returns {float} O ângulo em graus
+        """
+        return math.degrees(angulo)
     
     
     def _validaAngulo(self):
-        """Faz com que o ângulo fique entre 180 (inclusive) e -180 graus"""
+        """
+        @function _validaAngulo
+        Faz com que o ângulo fique entre 180 (inclusive) e -180 graus
+        """
         while self._angulo <= -180:
             self._angulo += 360
         while self._angulo > 180:
@@ -610,7 +623,12 @@ class Angulo:
     
     
     def __init__ (self, angulo, emGraus = True):
-        """Se não estiver em graus suponho radianos"""
+        """
+        @function __init__
+        Inicializa o ângulo, se não estiver em graus suponho radianos
+        @param {float} angulo
+        @param {bool} emGraus Se está em graus
+        """
         if emGraus:
             self._angulo =  angulo
         else: #Suponho que esteja em radianos
@@ -619,14 +637,24 @@ class Angulo:
     
     
     def getAngulo(self, emGraus = True):
-        """Retorna o ângulo em graus"""
+        """
+        @function getAngulo
+        Retorna o ângulo em graus ou radianos
+        @param {bool} emGraus Se o ângulo a ser retornado é em graus, opcional
+        @returns {float} Ângulo
+        """
         if emGraus:
             return self._angulo
         return Angulo.grausParaRadianos(self._angulo)
     
     
     def setAngulo(self, angulo, emGraus = True):
-        """Modifica o valor do angulo, mantendo a sua consistência"""
+        """
+        @function setAngulo
+        Modifica o valor do angulo
+        @param {bool} emGraus Se o ângulo a ser retornado é em graus, é \
+            opcional, o padrão é verdadeiro
+        """
         if emGraus:
             self._angulo =  angulo
         else: #Suponho que caso contrário esteja em radianos
@@ -635,15 +663,34 @@ class Angulo:
         
     
     def incrementa(self, angulo, emGraus = True):
-        """Incrementa um valor de angulo ao atual"""
+        """
+        @function incrementa
+        Incrementa um valor de angulo ao atual, isto é, a si próprio
+        @param {float} angulo Ângulo a ser somado
+        @param {bool} emGraus Se o ângulo está em graus, opcional
+        """
         if emGraus:
             self.setAngulo(self._angulo + angulo)
         else:
             self.setAngulo(self._angulo + Angulo.radianosParaGraus(angulo))
     
     
+    def __add__(self, outro):
+        """
+        @function __add__
+        Retorna um novo Ãngulo resultado da soma deste com outro
+        @param {Angulo} angulo Ângulo a ser somado
+        @returns {Angulo} Resultado da soma
+        """
+        return Angulo(self._angulo + outro._angulo)
+    
+    
     def getQuadrante(self):
-        """Retorna o quadrante do ângulo"""
+        """
+        @function getQuadrante
+        Retorna o quadrante do ângulo
+        @returns {int} Quadrante do ângulo
+        """
         #raise NotImplementedError("Você deveria ter programado aqui!")
         if 0 <= self._angulo < 90:
             return 1
@@ -656,9 +703,15 @@ class Angulo:
     
     
     def getDiferenca(self, outro):
-        """Retorna um angulo que é a diferença entre o outro ângulo, isto é, 
-        o que é necessário somar a este ângulo para atingir o outro"""
+        """
+        @function getDiferenca
+        Retorna um angulo que é a diferença entre o outro ângulo, isto é, \
+            o que é necessário somar a este ângulo para atingir o outro
+        @param {Angulo} outro Um objeto do tipo ângulo
+        @returns {Angulo} Um novo ângulo resultado da operação
+        """
         return Angulo(outro.getAngulo() - self.getAngulo())
+
 
 
 
@@ -771,7 +824,7 @@ class Renderizador:
         fonte = pygame.font.SysFont(name,size,bold,italic)
         self._listaFontes[tupla_fonte] = fonte
         
-    def getSizeText(self,string_texto,tupla_fonte):
+    def getSizeTexto(self,string_texto,tupla_fonte):
         fonte = self._bancoFontes(tupla_fonte)
         return fonte.size(string_texto)
     
