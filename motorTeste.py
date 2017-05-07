@@ -148,9 +148,21 @@ class PontoTeste(unittest.TestCase):
         self.p3 = Ponto(400, 200)
     
     
+    def testeSomaSi(self):
+        self.p2 += self.p3
+        self.assertEqual(self.p2.getXY(), (444, 232))
+    
+    
     def testeSoma(self):
         self.assertEqual(444, (self.p2 + self.p3).getX())
         self.assertEqual(232, (self.p2 + self.p3).getY())
+    
+    
+    def testeMultiplicacao(self):
+        self.assertEqual((self.p1 * self.p2).getX(), 0)
+        self.assertEqual((self.p1 * self.p2).getY(), 0)
+        self.assertEqual((self.p1 * self.p3).getX(), 0)
+        self.assertEqual((self.p1 * self.p3).getY(), 0)
 
 
 
