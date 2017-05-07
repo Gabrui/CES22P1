@@ -717,10 +717,18 @@ class Angulo:
 
 
 class Cor:
-    """Classe que representa a opacidade e a tintura aplicada a um 
-    renderizável"""
-    
+    """
+    Classe que representa a opacidade e a tintura aplicada a um 
+    renderizável
+    """
     def _validaAlpha(self, alpha):
+        """
+        @function _validaAlpha
+        Verifica se um valor de alpha (ou opacidade) está dentro do padrão, \
+            retornando o seu valor validado
+        @param {float} alpha
+        @returns {float} O valor de alpha validado
+        """
         if alpha > 1:
             alpha = 1
         elif alpha < 0:
@@ -729,6 +737,13 @@ class Cor:
     
             
     def _validaRGB(self, RGB):
+        """
+        @function _validaRGB
+        Verifica se o valor de uma variável está dentro do padrão RGB, \
+            retornando o seu valor validado
+        @param {int}
+        @returns {int} Valor validado
+        """
         RGB = int(RGB)
         if RGB > 255:
             RGB = 255
@@ -738,6 +753,15 @@ class Cor:
     
     
     def __init__(self, opacidade, R, G, B, A):
+        """
+        @function __init__
+        Inicializa uma cor
+        @param {float} opacidade É a opacidade (ou alpha) da textura original
+        @param {int} R Valor de R da tintura a ser aplicada
+        @param {int} G Valor de G da tintura a ser aplicada
+        @param {int} B Valor de B da tintura a ser aplicada
+        @param {float} alpha É a opacidade (ou alpha) da tintura a ser aplicada
+        """
         self.opacidade = self._validaAlpha(opacidade)
         self.R = self._validaRGB(R)
         self.G = self._validaRGB(G)
@@ -746,6 +770,14 @@ class Cor:
     
     
     def setRGBA(self, R, G, B, A):
+        """
+        @function setRGBA
+        Modifica a tintura da cor
+        @param {int} R Valor de R da tintura a ser aplicada
+        @param {int} G Valor de G da tintura a ser aplicada
+        @param {int} B Valor de B da tintura a ser aplicada
+        @param {float} alpha É a opacidade (ou alpha) da tintura a ser aplicada
+        """
         self.R = self._validaRGB(R)
         self.G = self._validaRGB(G)
         self.B = self._validaRGB(B)
@@ -753,6 +785,11 @@ class Cor:
     
     
     def setOpacidade(self, opacidade):
+        """
+        @function setOpacidade
+        Modifica a opacidade (ou alpha) da textura original
+        @param {float} opacidade É a opacidade (ou alpha) da textura original
+        """
         self.opacidade = self._validaAlpha(opacidade)
 
 
