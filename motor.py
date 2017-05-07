@@ -795,13 +795,30 @@ class Cor:
 
 
 
+
 class Renderizador:
+    """
+    @class Renderizador
+    Classe que faz a interface com a pygames de funções relacionadas à \
+    renderização
+    """
     #Variável de Classe que contém todas as imagem já carregadas pelo pygames
     _listaImagens = {}
     _listaFontes = {}
     
-    def __init__(self, nome_tela, 
-                 largura, altura, corFundo = (0, 0, 0)):
+    def __init__(self, nome_tela, largura, altura, corFundo = (0, 0, 0), 
+                 icone_tela = ""):
+        """
+        @function __init__
+        Só deve existir apenas um renderizador
+        @param {string} nome_tela O nome da janela
+        @param {int} largura A largura da janela
+        @param {int} altura A altura da janela
+        @param {tuple} corFundo Uma tupla de 3 inteiros que define a cor de \
+            fundo da renderização
+        @param {string} icone_tela A string com o caminho para a imagem a ser \
+            utilizado como ícone da tela
+        """
         pygame.init()
         self.tela = pygame.display.set_mode((largura, altura))
         pygame.display.set_caption(nome_tela)
@@ -811,11 +828,21 @@ class Renderizador:
     
     
     def escutas(self):
+        """
+        @function escutas
+        Inicializa as escutas que essa classe faz
+        """
         self.even.escutar("imagem_nova", self.inicializaImagem)
         self.even.escutar("texto_novo", self.inicializaTexto)
     
     
     def inicializaImagem(self, figura):
+        """
+        @function inicializaImagem
+        Função que manda carregar a imagem no banco de imagens e inicializar \
+            o corte da Figura, caso ela não tenha um já definido.
+        @param {Figura} figura O objeto Figura a ser inicializado
+        """
         img = self._bancoImagens(figura.getString())
         if img is None:
             lar, alt = self._carregaImagem(figura.getString())
@@ -826,18 +853,33 @@ class Renderizador:
             
     
     def inicializaTexto(self, texto):
+        """
+        @function inicializaTexto
+        Função responsável por atribuir os valores para o tamanho do texto
+        @param {Texto} texto Um objeto do tipo Texto a ser inicializado
+        """
         largura,altura = self.getSizeTexto(texto.getString(),
                                                         texto.tupla_fonte)
         texto.size = (largura,altura)
     
     
     def _bancoImagens(self, string_imagem):
-        """Retorna um objeto imagem do pygame dado a string"""
+        """
+        @function _bancoImagens
+        Retorna um objeto imagem do pygame dado a string
+        @param {string} string_imagem Localiza a imagem
+        @returns {pygame.Surface} Um objeto de superfície do pygames
+        """
         return self._listaImagens.get(string_imagem)
     
     
     def _carregaImagem(self, string_imagem):
-        """Carrega a imagem na memória e retorna o tamanho dela"""
+        """
+        @function _carregaImagem
+        Carrega a imagem na memória e retorna o tamanho dela
+        @param {string} Localiza a imagem
+        @returns {tuple} Tupla com a largura e a altura da imagem
+        """
         from os import sep
         # Dependendo do sistema operacional o separador pode ser / ou \\
         caminho = string_imagem.replace('/', sep)
@@ -847,25 +889,42 @@ class Renderizador:
     
     
     def _carregaFonte(self, tupla_fonte):
-        """Carrega a fonte na memória
-            tupla_fonte = (string_fonte,int tamanho
-                           ,bold = True or False,italic = True or False)
-            return int tamanho
         """
-        
+        @function _carregaFonte
+        Armazena a fonte na memória
+        @param {tuple} tupla_fonte Define o estado da fonte, é organizada da \
+            seguinte forma: \
+            tupla_fonte = (string_fonte,int tamanho \
+                           ,bold = True or False,italic = True or False)
+        """
         # Dependendo do sistema operacional o separador pode ser / ou \\
         name = tupla_fonte[0]
         size = tupla_fonte[1]
         bold = tupla_fonte[2]
         italic = tupla_fonte[3]
-        fonte = pygame.font.SysFont(name,size,bold,italic)
+        fonte = pygame.font.SysFont(name, size, bold, italic)
         self._listaFontes[tupla_fonte] = fonte
         
-    def getSizeTexto(self,string_texto,tupla_fonte):
+        
+    def getSizeTexto(self, string_texto, tupla_fonte):
+        """
+        @function getSizeTexto
+        Função que retorna a largura e altura da fonte
+        @param {string} string_texto É o texto a ser renderizado
+        @param {tuple} tupla_fonte Define o estado da fonte
+        @returns {tuple} Tupla com a largura e a altura da fonte
+        """
         fonte = self._bancoFontes(tupla_fonte)
         return fonte.size(string_texto)
-    
+
+
     def _bancoFontes(self, tupla_fonte):
+        """
+        @function _bancoFontes
+        Carrega a fonte na memória
+        @param {tuple} tupla_fonte Define o estado 
+        @returns {pygame.font} Objeto de fonte do pygame
+        """
         fonte = self._listaFontes.get(tupla_fonte)
         if fonte is None:
             self._carregaFonte(tupla_fonte)
@@ -874,18 +933,28 @@ class Renderizador:
     
     
     def renderiza(self, imagens, textos):
-        """Renderiza tudo, a partir da lista de imagens e de texto: 
+        """
+        @function renderiza
+        Renderiza tudo, a partir da lista de tuplas de imagens e de texto. \
+            Nessa renderização ele desenha todo o quadro de uma só vez, com \
+            base na lista de imagens e textos recebidos. Retorna uma lista de \
+            retangulos com as dimensões reais e posição na tela.
+        @param {list} imagens Lista de tuplas de imagens, definidas da \
+            seguinte forma:
             (string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
              R, G, B, A, self)
+            Onde a tupla_corte é (posX, posY, largura, altura) referentes ao \
+            retangulo de corte da imagem
+        @param {list} textos Lista de tuplas de textos, definidas da seguinte \
+            forma:
             (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
              R, G, B, A, self)
-            tupla_corte = (posX, posY, largura, altura) referentes ao retangulo
-                                                          de corte
-        Nessa renderização ele desenha todo o quadro de uma só vez, com base na
-        lista de imagens e textos recebidos
-        Gabriel: Essas tuplas podem ser melhoradas de acordo com o que vocês 
-        acharem conveniente
-        Ele retorna uma lista de retangulos com as dimensões reais
+            Onde a tupla_fonte é definida da seguinte forma:
+                tupla_fonte = (string_fonte,int tamanho \
+                           ,bold = True or False,italic = True or False)
+        @returns {list} Lista com tuplas definidas da seguinte forma:
+            (objeto, posX, posY, larg, alt) que são os retângulos que \
+            definem o objeto renderizável em questão
         """
         self.tela.fill(self.corFundo)
         retangs = []
@@ -920,6 +989,8 @@ class Renderizador:
             
         pygame.display.flip()
         return retangs
+
+
 
 
 
