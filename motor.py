@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+@package motor
+Biblioteca arquitetada para servir como base para o jogo em si.
+
 Created on Mon Mar 27 08:25:06 2017
 
 @author: gabrui
@@ -1069,33 +1072,54 @@ class Entrada:
 
 
 class Audio:
-    """Faz a interface com o audio do pygames"""
-    
+    """
+    @class Audio
+    Faz a interface com o audio do pygames
+    """
     #Variável de classe dos arquivos carregados pelo pygames
     _arquivos = {}
     
     def __init__ (self):
+        """
+        @function __init__
+        Inicializa o Audio, só deve haver uma instância do audio
+        """
         self.musicaFundo = None
         self.even = Evento()
         self.escutas()
     
     
     def escutas(self):
+        """
+        @function escutas
+        Inicializa as escutas do audio
+        """
         self.even.escutar("tocarEfeito", self.tocarEfeito)
         
     
     def _carregarAudio(self, string_musica):
-        import os
+        """
+        @function _carregarAudio
+        Carrega o arquivo de audio na memória, retornando-o
+        @param {string} string_musica Caminho do arquivo de música
+        @returns {pygame.Sound} Objeto de música do pygame
+        """
+        from os import sep
         # Dependendo do sistema operacional o separador pode ser / ou \\
-        caminho = string_musica.replace('/', os.sep)
+        caminho = string_musica.replace('/', sep)
         musica = pygame.mixer.Sound(caminho)
         self._arquivos[string_musica] = musica
         return musica
     
     
     def _bancoAudio(self, string_musica):
-        """Retorna o objeto de música a partir da string, e se não tiver
-        carregado a música, carrega"""
+        """
+        @function _bancoAudio
+        Retorna o objeto de música a partir da string, e se não tiver \
+            carregado a música, carrega
+        @param {string} string_musica Caminho do arquivo de música
+        @returns {pygame.Sound} O objeto de música carregado
+        """
         musica = self._arquivos.get(string_musica)
         if musica is None:
             musica = self._carregarAudio(string_musica)
@@ -1103,32 +1127,52 @@ class Audio:
     
     
     def setMusicaFundo(self, string_musica, volume = 0.5):
-        """A música de fundo a ser tocada"""
-        
+        """
+        @function setMusicaFundo
+        Determina a música de fundo a ser tocada
+        @param {string} string_musica Caminho do arquivo de música
+        @param {float} volume O volume da música a ser tocada
+        """
         self.musicaFundo = self._bancoAudio(string_musica)
         self.musicaFundo.set_volume(volume)
         self.musicaFundo.play(-1)
     
     
     def setVolumeMusicaFundo(self, volume):
-        """Modifica apenas o volume da música de fundo, sem interferir nela"""
-       
+        """
+        @function setVolumeMusicaFundo
+        Modifica apenas o volume da música de fundo, sem interferir nela
+        @param {float} volume O volume da música a ser tocada
+        """
         self.musicaFundo.set_volume(volume)
     
     
     def tocarEfeito(self, string_efeito):
-        """Toca um efeito sonoro apenas uma vez"""
+        """
+        @function tocarEfeito
+        Toca um efeito sonoro apenas uma vez
+        @param {string} string_efeito O caminho do efeito sonoro a ser tocado
+        """
         self.efeito = self._bancoAudio(string_efeito)
         self.efeito.play()
     
     
-    def pararMusicaFundo(self):  
+    def pararMusicaFundo(self):
+        """
+        @function pararMusicaFundo
+        Para a música de fundo
+        """
         self.musicaFundo.stop()
         
         
     def verificarMusicaFundo(self):
-        """Retorna verdadeiro se esta tocando."""
+        """
+        @function verificarMusicaFundo
+        Verifica o estado da música de fundo
+        @returns {bool} Retorna verdadeiro se esta tocando
+        """
         return self.musicaFundo.get_busy()
+
 
 
 
