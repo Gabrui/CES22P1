@@ -93,19 +93,34 @@ class Aux:
 
 
 
+
 class Singleton:
     """
     Decorador para criação de Slingletons
     """
     def __init__(self, classe):
+        """
+        @function __init__
+        Decorador de Slingletons, tem como argumento a classe a ser decorada
+        @param {class} classe Classe a ser decorada
+        """
         self.classe = classe
         self.objeto = None
     
     
     def __call__(self,*args, **kwargs):
+        """
+        @function __call__
+        Função mágica, chamada quando qualquer método é chamada, em  \
+            particular, o __init__
+        @param {list} *args Lista de argumentos recebidos
+        @param {list} **kwargs Dicionário de argumentos recebidos
+        @returns {object} Instância da classe
+        """
         if self.objeto == None:
             self.objeto = self.classe(*args,**kwargs)
         return self.objeto
+
 
 
 
@@ -120,15 +135,24 @@ class Evento:
     
     
     def __init__(self):
-        """Variáveis de instância _escutaveis"""
+        """
+        @fuction __init__
+        Inicialização do gerenciador de eventos
+        """
         self._escutaveis = {} # Podem ser vistos como aparáveis
     
     
     def escutar(self, string_evento, callback):
-        """Começar a escutar determinado evento, isto é, a função de callback
-        será executada quando acontecer o evento em questão. 
-        Será passado um objeto para a função de callback como parâmetro, 
-        contendo informações sobre esse evento."""
+        """
+        @function escutar
+        Começar a escutar determinado evento, isto é, a função de callback \
+            será executada quando acontecer o evento em questão. \
+            Será passado um objeto para a função de callback como parâmetro, \
+            contendo informações sobre esse evento.
+        @param {string} string_evento Identificador do evento em questão
+        @param {function} callback Função a ser chamada quando o evento for \
+            disparado, ela recebe um objeto como parâmetro quando chamada
+        """
         if self._escutaveis.get(string_evento) is None:
             self._escutaveis[string_evento] = [callback]
         elif callback not in self._escutaveis[string_evento]:
@@ -136,7 +160,13 @@ class Evento:
     
     
     def pararDeEscutar(self, string_evento, callback = None):
-        """Para de escutar determinado evento"""
+        """
+        @function pararDeEscutar
+        Para de escutar determinado evento
+        @param {string} string_evento Identificador do evento em questão
+        @param {function} callback Se não for passada a função de chamada, \
+            todos as escutas com a mesma string_evento serão removidas
+        """
         if callback is None or len(self._escutaveis[string_evento]) == 1:
             del self._escutaveis[string_evento]
         else:
@@ -144,15 +174,25 @@ class Evento:
     
     
     def pararDeEscutarTudo(self):
+        """
+        @function pararDeEscutarTudo
+        Apaga todas as escutas, de forma a zerar o gerenciador de eventos
+        """
         self._escutaveis.clear()
     
     
     def lancar(self, string_evento, objeto_do_evento):
-        """Lançar um determinado evento, isto é, gera um evento no qual outros
-        objetos podem escutar.
-        Para tal, é necessário o indentificador do evento e o objeto
-        relacionado ao evento, que será passado como parâmetro para a função de
-        callback"""
+        """
+        @function lancar
+        Lançar um determinado evento, isto é, gera um evento no qual outros \
+            objetos podem escutar.
+            Para tal, é necessário o indentificador do evento e o objeto \
+            relacionado ao evento, que será passado como parâmetro para a \
+            função de callback
+        @param {string} string_evento Identificador do evento em questão
+        @param {object} objeto_do_evento Objeto a ser passado como parâmetro \
+            para  a função de callback associado ao evento em questao
+        """
         if self._escutaveis.get(string_evento) is not None:
             for callback in self._escutaveis[string_evento]:
                 callback(objeto_do_evento)
@@ -160,80 +200,167 @@ class Evento:
 
 
 
+
 class Ponto:
     """Classe que representa um ponto 2d do tipo (x, y)"""
     def __init__ (self, x = 0, y = 0):
+        """
+        @function __init__
+        Inicializa o ponto
+        @param {float} x Posição x do ponto
+        @param {float} y Posição y do ponto
+        """
         self._x = x
         self._y = y
     
     
     def setXY(self, x, y):
+        """
+        @function setXY
+        Reinicializa o ponto com nova posição x e y
+        @param {float} x Posição x do ponto
+        @param {float} y Posição y do ponto
+        """
         self._x = x
         self._y = y
     
     
     def setX(self, x):
+        """
+        @function setX
+        Atualiza o ponto com nova posição x
+        @param {float} x Posição x do ponto
+        """
         self._x = x
     
     
     def setY(self, y):
+        """
+        @function setY
+        Atualiza o ponto com nova posição y
+        @param {float} y Posição y do ponto
+        """
         self._y = y
     
     
     def getX(self):
+        """
+        @function getX
+        Retorna a posição x do ponto
+        @returns {float} Posição x do ponto
+        """
         return self._x
     
     
     def getY(self):
+        """
+        @function getY
+        Retorna a posição y do ponto
+        @returns {float} Posição y do ponto
+        """
         return self._y
     
     
     def getXY(self):
+        """
+        @function getXY
+        Retorna a posição x e y do ponto
+        @returns {tuple} Tupla com as posições x e y do ponto
+        """
         return (self._x, self._y)
     
     
     def distancia2(self, ponto):
+        """
+        @function distancia2
+        Retorna a distância entre este ponto e outro, ao quadrado
+        @returns {float} Distância dos dois pontos ao quadrado
+        """
         return ((self._x-ponto._x)*(self._x-ponto._x) + 
                 (self._y-ponto._y)*(self._y-ponto._y) )
     
     
     def distancia(self, ponto):
-        from math import sqrt
-        return sqrt(self.distancia2(ponto))
+        """
+        @function distancia
+        Retorna a distância entre este ponto e outro
+        @returns {float} Distância dos dois pontos
+        """
+        return math.sqrt(self.distancia2(ponto))
     
     
     def __mul__(self, escalar):
-        return Ponto(self._x * escalar, self._y * escalar)
+        """
+        @function __mul__
+        Retorna um novo Ponto resultado da multiplicação deste ponto por um \
+            outro ponto.
+        @param {Ponto} Ponto a ser multiplicado
+        @returns {Ponto} Novo ponto resultado da operação
+        """
+        return Ponto(self._x * escalar._x, self._y * escalar._y)
     
     
     def retornaMultEscalar(self, escalar):
-        return Ponto(self._x * escalar, self._y * escalar)
+        """
+        @function retornaMultEscalar
+        Retorna um novo Ponto resultado da multiplicação deste ponto por um \
+            outro ponto.
+        @param {Ponto} Ponto a ser multiplicado
+        @returns {Ponto} Novo ponto resultado da operação
+        """
+        return Ponto(self._x * escalar._x, self._y * escalar._y)
     
     
     def __iadd__(self, ponto):
-        """Soma um outro ponto a si próprio"""
+        """
+        @function __iadd__
+        Soma um outro ponto a si próprio
+        @param {Ponto} Ponto a ser somado
+        @returns {Ponto} Si próprio
+        """
         self._x = self._x + ponto._x
         self._y = self._y + ponto._y
+        return self
     
     
     def soma(self, ponto):
-        """Soma um outro ponto a si próprio"""
+        """
+        @function soma
+        Soma um outro ponto a si próprio
+        @param {Ponto} Ponto a ser somado
+        """
         self._x = self._x + ponto._x
         self._y = self._y + ponto._y
     
     
     def __add__(self, ponto):
+        """
+        @function __add__
+        Retorna um novo ponto resultado da soma de si por outro, sem alterar \
+            o seu próprio valor
+        @param {Ponto} Ponto a ser somado
+        @returns {Ponto} Novo ponto resultado da operação
+        """
         return Ponto(self._x + ponto._x, self._y + ponto._y)
     
     
     def retornaSoma(self, ponto):
-        """Retorna um novo ponto resultado da soma de si por outro, sem alterar
-        o seu próprio valor"""
+        """
+        @function retornaSoma
+        Retorna um novo ponto resultado da soma de si por outro, sem alterar \
+            o seu próprio valor
+        @param {Ponto} Ponto a ser somado
+        @returns {Ponto} Novo ponto resultado da operação
+        """
         return Ponto(self._x + ponto._x, self._y + ponto._y)     
     
     
     def clonar(self):
-        """Retorna uma cópia de si mesmo"""
+        """
+        @function clonar
+        Retorna um novo ponto que é uma cópia de si próprio
+        @returns {Ponto} Novo ponto clonado
+        """
         return Ponto(self._x, self._y)
 
 
