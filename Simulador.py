@@ -123,9 +123,9 @@ class Simulador(motor.Camada):
                             self.removeFilho(filhos)
                             if irmao.getPV() <= 0:
                                 
-                                 #     irmao[10].explosao()
+                                barra_vida = irmao.explosao(dt)
                                 #Se IA esvier morta, remove do gameplay
-                                self.removeFilho(irmao)
+                                self.removeFilho(barra_vida)
                         elif(isinstance(filhos, IA.IA) and \
                              isinstance(irmao,Projetil.Projetil)):
                             
@@ -134,8 +134,8 @@ class Simulador(motor.Camada):
                             irmao.fisicaDeImpacto()
                             self.removeFilho(irmao)
                             if filhos.getPV() <= 0:
-                                #   filhos[10].explosao()
-                                 self.removeFilho(filhos)
+                                barra_vida = filhos.explosao(dt)
+                                self.removeFilho(barra_vida)
                                  
             if isinstance(filhos, Projetil.Projetil):
                 if filhos.pos.getX()<self.PosXCentroTela-self.meialarguraTela or\

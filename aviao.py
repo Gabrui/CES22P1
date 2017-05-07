@@ -63,7 +63,7 @@ class Jogador(Aviao):
     [5, 50000, 5000/3, 100], [5000, 150])
     """
     def __init__(self, string_imagem, string_imagem_invertida, pos0, c0, 
-                 aerodinamicas, arma, string_som_fallShell):
+                 aerodinamicas, arma, string_som_fallShell, PV):
         super().__init__(string_imagem, pos0, c0,arma,string_som_fallShell)
         self.img1 = string_imagem
         self.img2 = string_imagem_invertida
@@ -83,7 +83,15 @@ class Jogador(Aviao):
         self.dtAtirarMin = 2
         
         self.vivo = True
-    
+        
+        self.barra_vida = PV
+        self.barra_vida.setDono(self)
+        self.barra_vida.pos.setXY(self.pos.getX(),self.pos.getY())
+        
+    def reduzPV(self,dano):
+        self.barra_vida.reduzPV(dano)
+    def getPV(self):
+        self.barra_vida.getPV()
     
     def inicializaCalculus(self,aerMacro, empuxoMacro, rotMacro, inerciaMacro):
         #Constantes matemáticas
