@@ -14,6 +14,8 @@ from Simulador import Simulador
 from IA import AviaoInimigo,TorreInimiga
 from Arma import Arma
 from Projetil import Projetil
+from Vida import Vida
+
 t20 = 50/1000
 FPS = 60
 td = 1/FPS
@@ -559,6 +561,13 @@ class Painelgameplay(Cena):
                          "imgTeste/movFundo.png", Ponto(0,0), Ponto(0,0))
         fundo3 = Figura("imgTeste/nuvem.png")
         
+        #criando jogador
+        string_imagem_PV_Jogador = ["imgTeste/c(X+5)_HP1.png",
+                               "imgTeste/c(X+4)_HP1.png",
+                               "imgTeste/c(X+3)_HP1.png",
+                               "imgTeste/c(X+2)_HP1.png",
+                               "imgTeste/c(X+1)_HP1.png"]
+        Barra_Vida_Jogador = Vida(1000,string_imagem_PV_Jogador)
         projetilJogador = Projetil("imgTeste/BulletEnemies.png","imgTeste/MetalHit1.ogg",
                                    1,Ponto(0,0),10)
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
@@ -566,9 +575,16 @@ class Painelgameplay(Cena):
                      Ponto(100, 100), Ponto(28, 10),
                      [[8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                      [5, 50000, 5000/3, 100], [5000, 150]], arma = armaJogador,
-                     string_som_fallShell="imgTeste/Shells_falls.ogg")
+                     string_som_fallShell="imgTeste/Shells_falls.ogg",
+                     PV = Barra_Vida_Jogador)
         armaJogador.setDono(avi)
         #Criando aviao inimigo
+        string_imagem_PV_AI = ["imgTeste/c(X+5)_HP1.png",
+                               "imgTeste/c(X+4)_HP1.png",
+                               "imgTeste/c(X+3)_HP1.png",
+                               "imgTeste/c(X+2)_HP1.png",
+                               "imgTeste/c(X+1)_HP1.png"]
+        Barra_Vida_AviaoInimigo = Vida(100,string_imagem_PV_AI)
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",10,
                                                 Ponto(0,0),10)
@@ -577,13 +593,20 @@ class Painelgameplay(Cena):
         aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
                                         "imgTeste/aviaoInimigo em -y.png",
                                         "imgTeste/airplane_b25-1.ogg",
-                                        armaAviaoInimigo,Ponto(300,100),100,
+                                        armaAviaoInimigo,Ponto(300,100),
+                                        Barra_Vida_AviaoInimigo,
                                         "imgTeste/Explosion_6.ogg",
                                         "imgTeste/Shells_falls.ogg",
                                         None,None,
                                         None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
         #Criando outro aviao inimigo
+        string_imagem_PV_AI2 = ["imgTeste/c(X+5)_HP1.png",
+                               "imgTeste/c(X+4)_HP1.png",
+                               "imgTeste/c(X+3)_HP1.png",
+                               "imgTeste/c(X+2)_HP1.png",
+                               "imgTeste/c(X+1)_HP1.png"]
+        Barra_Vida_AviaoInimigo2 = Vida(100,string_imagem_PV_AI2)
         projetilArmaAviaoInimigo2 = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",10,
                                                 Ponto(0,0),10)
@@ -592,13 +615,20 @@ class Painelgameplay(Cena):
         aviaoInimigo2 = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
                                         "imgTeste/aviaoInimigo em -y.png",
                                         "imgTeste/airplane_b25-1.ogg",
-                                        armaAviaoInimigo2,Ponto(300,50),100,
+                                        armaAviaoInimigo2,Ponto(300,50),
+                                        Barra_Vida_AviaoInimigo2,
                                         "imgTeste/Explosion_6.ogg",
                                         "imgTeste/Shells_falls.ogg",
                                         None,None,
                                         None,None)
         armaAviaoInimigo2.setDono(aviaoInimigo2)
         #Criando Torre Inimiga
+        string_imagem_PV_TI = ["imgTeste/c(X+5)_HP1.png",
+                               "imgTeste/c(X+4)_HP1.png",
+                               "imgTeste/c(X+3)_HP1.png",
+                               "imgTeste/c(X+2)_HP1.png",
+                               "imgTeste/c(X+1)_HP1.png"]
+        Barra_Vida_TorreInimiga = Vida(1000,string_imagem_PV_TI)
         projetilTorreInimiga = Projetil("imgTeste/Bullet_3.png",
                                         "imgTeste/MetalHit1.ogg",
                                         10,Ponto(0,0))
@@ -606,7 +636,8 @@ class Painelgameplay(Cena):
                                 projetilTorreInimiga)
         torreInimiga = TorreInimiga("imgTeste/turret_1_default.png",
                                     "imgTeste/Shells_falls.ogg",
-                                    armaTorreInimiga,1000,Ponto(800,580),
+                                    armaTorreInimiga,
+                                    Barra_Vida_TorreInimiga,Ponto(800,580),
                                     None,None,
                                     None,None)
         armaTorreInimiga.setDono(torreInimiga)
@@ -621,6 +652,10 @@ class Painelgameplay(Cena):
         simulador.adicionaFilho(aviaoInimigo)
         #simulador.adicionaFilho(torreInimiga)
         simulador.adicionaFilho(aviaoInimigo2)
+        simulador.adicionaFilho(Barra_Vida_AviaoInimigo)
+        simulador.adicionaFilho(Barra_Vida_AviaoInimigo2)
+        simulador.adicionaFilho(Barra_Vida_TorreInimiga)
+        simulador.adicionaFilho(Barra_Vida_Jogador)
         self.adicionaFilho(camera)
         self.even.escutar("K_p",self.pausar)
         

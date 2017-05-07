@@ -6,19 +6,19 @@ Created on Sun Apr  9 12:00:23 2017
 """
 import motor
 import math
-from Vida import Vida 
+
 velPadrao = -100 #constante de valor padrao de velocidade para IA
 distanciaManobra = 400 #valor constante para distancia minima para
                        # realizar Manobra180V
 erro = 5 #erro angular aceitavel para atirar
 
-class IA(motor.Renderizavel, Vida):
-    def __init__(self,arma, PV, pos, vel, alvoPos,
+class IA(motor.Renderizavel):
+    def __init__(self,arma,Barra_Vida, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol,string_som_fallShell=None):
         motor.Renderizavel.__init__(self)
-        Vida.__init__(self,PV)
         """
+        Barra_Vida: é um objeto do tipo Vida
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
         arma:    Objeto do tipo Arma
@@ -40,6 +40,10 @@ class IA(motor.Renderizavel, Vida):
         if deltaAngTol is None:
             deltaAngTol = motor.Angulo(erro)
             
+        self.Barra_Vida = Barra_Vida
+        self.Barra_Vida.setDono(self)
+        self.Barra_Vida.pos.setXY(self.pos.getX(),self.pos.getY())
+        
         self.Pos = pos
         self.Vel = vel
         self.velAng = 0
@@ -53,12 +57,16 @@ class IA(motor.Renderizavel, Vida):
         self.dtAtirar = 0
         self.dtAtirarMin = 1
         
-        self.PV = PV
-        
         self.distanciaMira = 300 #distancia em que IA ajusta a mira
         
         #ativa a escuta de eventos
         self.ativarEscuta()
+    
+    def reduzPV(self,dano):
+        self.Barra_Vida.reduzPV(dano)
+    def getPV(self):
+        return self.Barra_Vida.getPV()
+        
     
     def ativarEscuta(self):
         #escuta o evento e chama a funcao
@@ -207,7 +215,7 @@ class AviaoInimigo(IA,motor.Animacao):
             self.rodarAnimacao(3, 5)
             self.even.lancar("tocarEfeito",self._string_som_explosao)
         self.vivo = False
-    
+        return self.Barra_Vida
         
     def atualiza(self,dt):
         motor.Animacao.atualiza(self, dt)
