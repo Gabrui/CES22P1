@@ -9,9 +9,10 @@ Created on Mon Mar 27 08:25:06 2017
 import pygame
 import math
 
-pygame.init()
 
-""" Gabriel:
+""" 
+Gabriel:
+São 80 caracteres
 #OBS: NÃO EXCEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI -------------->
 #OBS: NÃO EXCEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI -------------->
 #POIS EU ESTOU USANDO VÁRIAS JANELAS ABERTAS COM ESSE TAMANHO BEM AQUI ------->
@@ -19,7 +20,9 @@ pygame.init()
 
 
 class Aux:
-    """Classes com funções auxiliares para mexer com listas etc..."""
+    """
+    Classes com funções auxiliares para mexer com listas etc...
+    """
     @staticmethod
     def removeTuplas1Elem(lista, elem):
         """
@@ -132,8 +135,6 @@ class Evento:
     A performance foi muito prejudicada por várias instâncias de evento e o
     modelo de propagação arquitetado anteriormente
     """
-    
-    
     def __init__(self):
         """
         @fuction __init__
@@ -202,7 +203,9 @@ class Evento:
 
 
 class Ponto:
-    """Classe que representa um ponto 2d do tipo (x, y)"""
+    """
+    Classe que representa um ponto 2d do tipo (x, y)
+    """
     def __init__ (self, x = 0, y = 0):
         """
         @function __init__
@@ -366,14 +369,24 @@ class Ponto:
 
 
 
+
 class Retangulo:
-    """Classe que representa um retângulo horizontal"""
-
-
-    def __init__(self, ponto1 = None, ponto2 = None,
-                 largura = 0, altura = 0):
-        """Inicializa o retângulo com dois pontos ou com um ponto e uma largura
-        e uma altura"""
+    """
+    Classe que representa um retângulo horizontal
+    """
+    def __init__(self, ponto1 = None, ponto2 = None, largura = 0, altura = 0):
+        """
+        @function __init__
+        Inicializa o retângulo com dois pontos ou com um ponto e uma largura \
+            e uma altura. O retângulo é horizontal e não pode ser rotacionado.\
+            O retângulo utiliza as coordenadas cartesianas com x positivo \ 
+            para direita e y positivo para baixo.
+        @param {Ponto} ponto1 Representa um vértice do retângulo. Ele é usado \
+            como ponto superior esquerdo se não houver
+        @param {Ponto} ponto2 Representa o outro vértice diametralmente oposto
+        @param {float} largura É ignorado se houver ponto2
+        @param {float} altura É ignorado se houver ponto2
+        """
         if ponto1 is not None:
             self._p1 = ponto1
         else:
@@ -383,11 +396,14 @@ class Retangulo:
         else:
             self._p2 = self._p1.retornaSoma(Ponto(largura, altura))
     
-    # As funções do tipo get SEMPRE devem retornar um NOVO objeto e não uma
-    # referência a objetos que ele já tem
+
     def getLargura(self):
-        """"Retorna o valor da largura do retângulo, um valor SEMPRE positivo,
-        independentemente da posição dos pontos"""
+        """
+        @function getLargura
+        Retorna o valor da largura do retângulo, um valor SEMPRE positivo,\
+            independentemente da posição dos pontos
+        @returns {float} Largura do retângulo
+        """
         larg = self._p1.getX()-self._p2.getX()
         if larg>0:
             return larg
@@ -396,7 +412,11 @@ class Retangulo:
     
     
     def getAltura(self):
-        """Retorna o valor da altura do retângulo, um valor SEMPRE positivo"""
+        """
+        @function getAltura
+        Retorna o valor da altura do retângulo, um valor SEMPRE positivo
+        @returns {float} Altura do retângulo
+        """
         alt = self._p1.getY()-self._p2.getY()
         if alt>0:
             return alt
@@ -405,35 +425,55 @@ class Retangulo:
     
     
     def getTopo(self):
-        """Retorna o valor de y do ponto no topo do retângulo (menor y)"""
+        """
+        @function getTopo
+        Retorna o valor de y do ponto no topo do retângulo (menor y)
+        @returns {float} Valor de y da aresta do topo
+        """
         if self._p1.getY() < self._p2.getY():
             return self._p1.getY()
         return self._p2.getY()
     
     
     def getFundo(self):
-        """Retorna o valor de y do ponto no fundo do retângulo (maior y)"""
+        """
+        @function getFundo
+        Retorna o valor de y do ponto no fundo do retângulo (maior y)
+        @returns {float} Valor de y da aresta do fundo
+        """
         if self._p1.getY() > self._p2.getY():
             return self._p1.getY()
         return self._p2.getY()
     
     
     def getEsquerda(self):
-        """Retorna o valor de x do ponto na esquerda do retângulo (menor x)"""
+        """
+        @function getEsquerda
+        Retorna o valor de x do ponto na esquerda do retângulo (menor x)
+        @returns {float} Valor de x da aresta da esquerda
+        """
         if self._p1.getX() < self._p2.getX():
             return self._p1.getX()
         return self._p2.getX()
     
     
     def getDireita(self):
-        """Retorna o valor de x do ponto na direita do retângulo (maior x)"""
+        """
+        @function getDireita
+        Retorna o valor de x do ponto na direita do retângulo (maior x)
+        @returns {float} Valor de x da aresta da direita
+        """
         if self._p1.getX() > self._p2.getX():
             return self._p1.getX()
         return self._p2.getX()
 
     
     def getTopoEsquerdo(self):
-        """Retorna um ponto que representa o ponto superior esquerdo"""
+        """
+        @function getTopoEsquerdo
+        Retorna um ponto que representa o ponto superior esquerdo
+        @returns {Ponto} Novo ponto do topo esquerdo do retângulo
+        """
         if self._p1.getX() < self._p2.getX():
             if self._p1.getY() < self._p2.getY():
                 return self._p1.clonar()
@@ -447,50 +487,78 @@ class Retangulo:
     
     
     def getTopoDireito(self):
-        """Retorna um ponto que representa o ponto superior direito"""
+        """
+        @function getTopoDireito
+        Retorna um ponto que representa o ponto superior direito
+        @returns {Ponto} Novo ponto que representa o ponto superior direito
+        """
         return Ponto(self.getTopoEsquerdo()._x + self.getLargura(), \
                      self.getTopoEsquerdo()._y)
     
     
     def getFundoEsquerdo(self):
-        """Retorna um ponto que representa o ponto inferior esquerdo"""
+        """
+        @function getFundoEsquerdo
+        Retorna um ponto que representa o ponto inferior esquerdo
+        @returns {Ponto} Novo ponto que representa o ponto inferior esquerdo
+        """
         return Ponto(self.getTopoEsquerdo()._x, self.getTopoEsquerdo()._y + \
                      self.getAltura())
     
     
     def getFundoDireito(self):
-        """Retorna um ponto que representa o ponto inferior direito"""
+        """
+        @function getFundoDireito
+        Retorna um ponto que representa o ponto inferior direito
+        @returns {Ponto} Novo ponto que representa o ponto inferior direito
+        """
         return Ponto(self.getTopoDireito()._x, self.getTopoDireito()._y + \
                      self.getAltura())
     
     
     def setRetangulo(self, ponto1, ponto2):
-        """Modifica o retângulo, definindo-o com relação aos pontos"""
+        """
+        @function setRetangulo
+        Modifica o retângulo, definindo-o com relação aos pontos
+        @param {Ponto} ponto1 Objeto do tipo ponto que define um vértice
+        @param {Ponto} ponto2 Outro objeto do tipo ponto do vértice \
+            diametralmente oposto
+        """
         self._p1 = ponto1
         self._p2 = ponto2
     
     
     def setRetanguloQueContem(self, lista_retangulos):
-        """Modifica o retângulo, definindo-o como o menor retângulo que contém
-        todos os outros retângulos da lista de retângulos."""
+        """
+        @function setRetanguloQueContem
+        Modifica o retângulo, definindo-o como o menor retângulo que contém \
+            todos os outros retângulos da lista de retângulos.
+        @param {list} lista_retangulos Lista de retângulos
+        """
         x_esquerda = lista_retangulos[0].getTopoEsquerdo().getX()
-        y_esquerda = lista_retangulos[0].getTopoEsquerdo().getY()
+        y_topo = lista_retangulos[0].getTopoEsquerdo().getY()
         x_direita = lista_retangulos[0].getFundoDireito().getX()
-        y_direita = lista_retangulos[0].getTopoDireito().getY()
+        y_fundo = lista_retangulos[0].getTopoDireito().getY()
         for retangulo in lista_retangulos:
             if x_esquerda > retangulo.getTopoEsquerdo().getX():
                 x_esquerda = retangulo.getTopoEsquerdo().getX()
-            if y_esquerda > retangulo.getTopoEsquerdo().getY():
-                y_esquerda = retangulo.getTopoEsquerdo().getY()
+            if y_topo > retangulo.getTopoEsquerdo().getY():
+                y_topo = retangulo.getTopoEsquerdo().getY()
             if x_direita < retangulo.getFundoDireito().getX():
                 x_direita = retangulo.getFundoDireito().getX()
-            if y_direita < retangulo.getFundoDireito().getY():
-                y_direita = retangulo.getFundoDireito().getY()
+            if y_fundo < retangulo.getFundoDireito().getY():
+                y_fundo = retangulo.getFundoDireito().getY()
+        self.setRetangulo(Ponto(x_esquerda, y_topo), Ponto(x_direita, y_fundo))
             
     
     def estaDentro(self, ponto):
-        """Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro
-        do retângulo"""
+        """
+        @function estaDentro
+        Dado um objeto do tipo Ponto, retorna verdadeiro se ele está dentro \
+            do retângulo
+        @param {Ponto} ponto Ponto a ser analisado
+        @returns {boolean} Se o ponto está dentro ou não
+        """
         if ponto.getX() > self.getTopoEsquerdo().getX() and ponto.getY() > \
         self.getTopoEsquerdo().getY() and \
         ponto.getY() < self.getFundoDireito().getY() and\
@@ -501,17 +569,26 @@ class Retangulo:
     
     
     def setDimensoes(self, posX, posY, largura, altura):
-        """Parecido com o setRetangulo, mas utiliza largura e altura"""
+        """
+        @function setDimensoes
+        Parecido com o setRetangulo, mas utiliza largura e altura
+        @param {float} posX Posição x da aresta esquerda
+        @param {float} posY Posição y da aresta superior
+        @param {float} largura Largura do retângulo
+        @param {float} altura Altura do retângulo
+        """
         self._p1.setXY(posX, posY)
         self._p2 = self._p1.retornaSoma(Ponto(largura, altura))
 
 
 
 
+
 class Angulo:
-    """Classe que cuida dos ângulos, armazenados em graus, que devem estar 
-    entre 180 (inclusive) e -180"""
-    
+    """
+    Classe que cuida dos ângulos, armazenados em graus, que devem estar 
+    entre 180 (inclusive) e -180
+    """
     @staticmethod
     def grausParaRadianos(angulo):
         from math import radians
@@ -635,6 +712,7 @@ class Renderizador:
     
     def __init__(self, nome_tela, 
                  largura, altura, corFundo = (0, 0, 0)):
+        pygame.init()
         self.tela = pygame.display.set_mode((largura, altura))
         pygame.display.set_caption(nome_tela)
         self.corFundo = corFundo
