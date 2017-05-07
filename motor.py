@@ -22,27 +22,52 @@ class Aux:
     """Classes com funções auxiliares para mexer com listas etc..."""
     @staticmethod
     def removeTuplas1Elem(lista, elem):
-        """Remove as tuplas de uma lista cujo primeiro elemento é o 'elem'"""
+        """
+        @function removeTuplas1Elem
+        Remove as tuplas de uma lista cujo primeiro elemento é o 'elem'
+        @param {list} lista Uma lista de tuplas
+        @param {type} elem O primeiro elemento da tupla a ser comparado
+        """
         i = 0
         while i < len(lista):
             if lista[i][0] == elem:
                 del lista[i]
             i += 1
     
+    
     @staticmethod
     def existeTupla1Elem(lista, elem):
-        """Verifica se existe uma tupla em uma lista cujo primeiro elemento é o
-        'elem' """
+        """
+        @function existeTupla1Elem
+        Verifica se existe uma tupla em uma lista cujo primeiro elemento é o \
+            'elem'
+        @param {list} lista Uma lista de tuplas
+        @param {type} elem O primeiro elemento da tupla a ser comparado
+        @returns {boolean} Se existe ou não essa tupla na lista
+        """
         for tupla in lista:
             if tupla[0] == elem:
                 return True
         return False
     
+    
     @staticmethod
     def coordsInscrito(angulo, Cx, Cy, largura, altura):
-        """Retorna as coordenadas de um ponto (Cx, Cy) dentro de um retângulo 
-        rotacionado em relação a um retangulo horizontal que o circunscreve
-        OBS: ver a fórmula que eu já deduzi, conforme a imagem rotacoes.svg"""
+        """
+        @function coordsInscrito
+        Retorna as coordenadas de um ponto (Cx, Cy) dentro de um retângulo \
+            rotacionado em relação a um retangulo horizontal que o \
+            circunscreve \
+            OBS: ver a fórmula que eu já deduzi, conforme a imagem rotacoes.svg
+        @param {Angulo} angulo Um objeto do tipo Angulo que informa o ângulo \
+            de rotação
+        @param {float} Cx A posição x do ponto a ser transformado
+        @param {float} Cy A posição y do ponto a ser transformado
+        @param {float} largura A largura do retângulo original
+        @param {float} altura A Altura do retângulo original
+        @returns {tuple} (x, y) Posição do ponto transformado com relação ao \
+            ponto superior esquerdo do retângulo que o circunscreve
+        """
         #raise NotImplementedError("Você deveria ter programado aqui!")
         if angulo.getQuadrante() == 1:
             return (Cx*math.cos(angulo.getAngulo(False))
@@ -65,6 +90,8 @@ class Aux:
                       Cy*math.cos(angulo.getAngulo(False)) 
                       - Cx*math.sin(angulo.getAngulo(False)))
         
+
+
 
 class Singleton:
     """

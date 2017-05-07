@@ -79,7 +79,6 @@ class AuxTeste(unittest.TestCase):
 
 
 
-#Gabriel: Sugou escrever os testes do que eu já programei, vou fazer dos outros
 class EventoTeste(unittest.TestCase):
     
     def setUp(self):
@@ -156,7 +155,6 @@ class PontoTeste(unittest.TestCase):
 
 
 
-
 class RetanguloTeste(unittest.TestCase):
     
     def setUp(self):
@@ -203,7 +201,9 @@ class RetanguloTeste(unittest.TestCase):
         self.assertEqual(self.r3.getFundoDireito().getX(), 231)
         self.assertEqual(self.r3.getFundoDireito().getY(), 3)
         
-        
+
+
+
 class AnguloTeste(unittest.TestCase):
     
     def setUp(self):
