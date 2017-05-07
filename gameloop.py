@@ -655,9 +655,9 @@ class Jogo():
         self.alturaTela  = 700
         self.CorBlit     = (200,200,255)
         
-        self.audio = Audio()
         self.renderizador = Renderizador('As da Aviacao',self.larguraTela,
                                          self.alturaTela,self.CorBlit)
+        self.audio = Audio()
         self.entrada = Entrada()
         self.even = Evento()
         self.continuarLoop = True
