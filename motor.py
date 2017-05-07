@@ -1178,20 +1178,24 @@ class Audio:
 
 
 class Renderizavel:
-    """Classe abstrata que contém os atributos básicos de um objeto 
-    renderizável"""
-    
+    """
+    @class Renderizavel
+    Classe abstrata que contém os atributos básicos de um objeto 
+    renderizável
+    """
     def __init__(self, pos = None, centro = None, escala = None,
                  rot = None, cor = None):
         """
-        Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o 
-        seu centro de rotação 'centro', relativo a si próprio, sua escala de 
-        tamanho, seu ângulo de rotação e sua coloração
-        pos: Ponto Posição do renderizável com relação ao seu pai
-        centro: Ponto Posição do seu centro de rotação com relação ao pos
-        escala: Ponto Escala x e y, seu tamanho relativo
-        rot: Angulo Angulo de rotação com relação ao seu pai
-        cor: Cor Tintura e opacidade
+        @function __init__
+        Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o \
+            seu centro de rotação 'centro', relativo a si próprio, sua escala \ 
+            de tamanho, seu ângulo de rotação e sua coloração
+        @param {Ponto} pos Posição do renderizável com relação ao seu pai
+        @param {Ponto} centro Posição do seu centro de rotação com relação a \
+            si próprio, isto é, com relação ao pos
+        @param {Ponto} escala Escala x e y, seu tamanho relativo
+        @param {Angulo} rot Angulo de rotação com relação ao seu pai
+        @param {Cor} cor Tintura e opacidade
         """
         if pos is not None:
             self.pos = pos
@@ -1217,20 +1221,31 @@ class Renderizavel:
         self.retang = Retangulo(Ponto(0, 0), Ponto(0, 0))
         
     
-    
     def atualiza(self, dt):
-        """Método a ser sobreposto pelos herdeiros, dt representa o tempo 
-        não precisa escrever nada aqui"""
+        """
+        @function atualiza
+        Método a ser sobreposto pelos herdeiros, dt representa o tempo
+        @param {float} dt O tempo desde a última execução
+        """
         pass
 
 
 
 
+
 class Figura(Renderizavel):
-    """Representa uma imagem na árvore de renderização"""
-    
+    """
+    @class Figura
+    Representa uma imagem na árvore de renderização
+    """
     def setString(self, string_imagem, corte = None):
-        """Redefine a string imagem dessa figura"""
+        """
+        @function setString
+        Redefine a string imagem dessa figura, lançando um evento
+        @param {string} string_imagem Caminho do arquivo de imagem
+        @param {Retangulo} corte Opcional, é o corte da imagem, isto é, um \
+            retângulo que define a área renderizável da imagem
+        """
         self._string_imagem = string_imagem
         self.corte = corte
         self.even.lancar("imagem_nova", self)
@@ -1238,24 +1253,55 @@ class Figura(Renderizavel):
     
     def __init__(self, string_imagem, corte = None, pos = None, centro = None, 
                  escala = None, rot = None, cor = None):
-        """A string_imagem representa o caminho da imagem e é seu 
-        indentificador único. O corte representa um retângulo que corta a
-        imagem original, no caso dela ser um conjunto de imagens."""
+        """
+        @function __init__
+        A string_imagem representa o caminho da imagem e é seu \
+            indentificador único. O corte representa um retângulo que corta a \
+            imagem original, no caso dela ser um conjunto de imagens.
+        @param {string} string_imagem Caminho do arquivo de imagem
+        @param {Retangulo} corte Opcional, é o corte da imagem, isto é, um \
+            retângulo que define a área renderizável da imagem
+        @param {Ponto} pos Posição do renderizável com relação ao seu pai
+        @param {Ponto} centro Posição do seu centro de rotação com relação a \
+            si próprio, isto é, com relação ao pos
+        @param {Ponto} escala Escala x e y, seu tamanho relativo
+        @param {Angulo} rot Angulo de rotação com relação ao seu pai
+        @param {Cor} cor Tintura e opacidade
+        """
         super().__init__(pos, centro, escala, rot, cor)
         Figura.setString(self, string_imagem, corte)
     
     
     def getString(self):
-        """Retorna a string_imagem dessa figura"""
+        """
+        @function getString
+        Retorna a string_imagem dessa figura
+        @returns {string} O caminho do arquivo que essa Figura utiliza
+        """
         return self._string_imagem
-    
+
+
+
 
 
 class Animacao(Figura):
-    """Classe base para uma animação de spritesheet"""
-    
+    """
+    @class Animacao
+    Classe base para uma animação de spritesheet (folha de animações)
+    """
     def setString(self, string_imagem, largu = 0, altu = 0, corte = None):
-        """Redefine a string imagem dessa figura"""
+        """
+        @function setString
+        Redefine a string imagem dessa figura, isto é, redefinindo a sua \
+            folha de animações, e reinicializando-a
+        @param {string} string_imagem Caminho do arquivo de imagem
+        @param {int} largu Largura da imagem a ser extraída da folha de \
+            animações.
+        @param {int} altu Altura da imagem a ser extraída da folha de \
+            animações.
+        @param {Retangulo} corte Opcional, é o corte da imagem, isto é, um \
+            retângulo que define a área renderizável da imagem
+        """
         super().setString(string_imagem, corte)
         self._ponto0 = self.corte.getTopoEsquerdo()
         self._larguraSS = self.corte.getLargura()
@@ -1279,14 +1325,46 @@ class Animacao(Figura):
     def __init__(self, string_imagem, largu = 0, altu = 0, corte = None, 
                  pos = None, centro = None, escala = None, rot = None, 
                  cor = None):
-        """Suponho cortes regulares, igualmentes distribuidos"""
+        """
+        @function __init__
+        Suponho cortes regulares, igualmentes distribuidos
+        @param {string} string_imagem Caminho do arquivo de imagem
+        @param {int} largu Largura da imagem a ser extraída da folha de \
+            animações.
+        @param {int} altu Altura da imagem a ser extraída da folha de \
+            animações.
+        @param {Retangulo} corte Opcional, é o corte da imagem, isto é, um \
+            retângulo que define a área renderizável da imagem
+        @param {Ponto} pos Posição do renderizável com relação ao seu pai
+        @param {Ponto} centro Posição do seu centro de rotação com relação a \
+            si próprio, isto é, com relação ao pos
+        @param {Ponto} escala Escala x e y, seu tamanho relativo
+        @param {Angulo} rot Angulo de rotação com relação ao seu pai
+        @param {Cor} cor Tintura e opacidade
+        """
         super().__init__(string_imagem, corte, pos, centro, escala, rot, cor)
+        # Declaração de variáveis
+        self._ponto0 = None
+        self._larguraSS = 0
+        self._alturaSS = 0
+        self._largu = 0
+        self._altu = 0
+        self._colunas = 0
+        self._linhas = 0
+        self._numTotal = 0
+        self._numCorte = 0
+        self._vezes = 0
+        self._dtAnim = 0
+        self._T = 0
         self.setString(string_imagem, largu, altu, corte)
-        
-        
-        
+    
+    
     def setNumCorte(self, num):
-        """Começa do 0"""
+        """
+        @function setNumCorte
+        Determina o número de corte a ser utilizar, esse número começa do zero
+        @param {int} num É o número da figura a ser extraída da spritesheet
+        """
         if num < 0 or num >= self._numTotal:
             raise IndexError("Número de corte inválido")
         self._numCorte = num
@@ -1297,17 +1375,37 @@ class Animacao(Figura):
         
     
     def getNumCorte(self):
+        """
+        @function getNumCorte
+        Retorna o número de corte atual
+        @returns {int} Número de corte atual
+        """
         return self._numCorte
     
     
-    def rodarAnimacao(self, tempo_de_cada, vezes = 1):
+    def rodarAnimacao(self, tempo_de_cada_vez, vezes = 1):
+        """
+        @function rodarAnimacao
+        Função responsável por fazer a animação rodar, começando do 0 até o \
+            último, repetindo se necessário
+        @param {float} tempo_de_cada_vez É o tempo para rodar a animação uma \
+            única vez
+        @param {int} É o número de vezes que a animação deve ser repetida
+        """
         self._dtAnim = 0
         self._numCorte = 0
         self._vezes = vezes
-        self._T = tempo_de_cada
+        self._T = tempo_de_cada_vez
         
     
     def atualiza(self, dt):
+        """
+        @function atualiza
+        É quem de fato realiza a animação, deve ser chamada para que a \
+            animação ocorra, e não deve ser sobreposto, isto é, deve ser \
+            chamdo pela classe que a sobrepõe
+        @param {float} dt Tempo desde a última execução
+        """
         if self._vezes > 0:
             self.setNumCorte(int(self._dtAnim*self._numTotal/self._T))
             self._dtAnim += dt
@@ -1319,11 +1417,27 @@ class Animacao(Figura):
 
 
 class Texto(Renderizavel):
-    
-    """Representa um texto na aŕvore de renderização"""
-    
+    """
+    @class Texto
+    Representa um texto na aŕvore de renderização
+    """
     def __init__(self, string_texto, tupla_fonte, pos = None, centro = None, 
                  escala = None, rot = None, cor = None):
+        """
+        @function __init__
+        É um texto, com significado e estilo
+        @param {string} string_texto É o texto a ser renderizado
+        @param {tuple} tupla_fonte Contém o estado do texto, é definido por:
+            tupla_fonte = ({string} string_fonte, {int} tamanho \
+                           , {bool} bold , {bool} italic)
+            A string_fonte é o tipo de fonte (arial, helvetica, sans ...)
+        @param {Ponto} pos Posição do renderizável com relação ao seu pai
+        @param {Ponto} centro Posição do seu centro de rotação com relação a \
+            si próprio, isto é, com relação ao pos
+        @param {Ponto} escala Escala x e y, seu tamanho relativo
+        @param {Angulo} rot Angulo de rotação com relação ao seu pai
+        @param {Cor} cor Tintura e opacidade
+        """
         super().__init__(pos, centro, escala, rot, cor)
         self.tupla_fonte = tupla_fonte
         self.setString(string_texto)
@@ -1331,14 +1445,23 @@ class Texto(Renderizavel):
         
         
     def setString(self, string_texto):
-        """Redefine a string do texto dessa texto"""
+        """
+        @function setString
+        Redefine a string do texto dessa texto
+        @param {string} string_texto Novo texto a ser renderizado
+        """
         self._string_texto = string_texto
         self.even.lancar("texto_novo", self) 
         
         
     def getString(self):
-        """Retorna a string_texto dessa texto"""
+        """
+        @function getString
+        Retorna a string_texto dessa texto
+        @returns {string} O texto que está sendo renderizado
+        """
         return self._string_texto
+
 
 
 
