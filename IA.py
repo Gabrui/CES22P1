@@ -121,7 +121,7 @@ class IA(motor.Renderizavel, Vida):
         self.even.lancar("tocarEfeito",self._string_som_disparo)
         self.even.lancar("tocarEfeito",self._string_som_fallShell)
 
-class AviaoInimigo(IA,motor.Figura):
+class AviaoInimigo(IA,motor.Animacao):
     
     
     def __init__(self,img1,img2, audio, arma, pos,PV,string_som_explosao,
@@ -131,7 +131,7 @@ class AviaoInimigo(IA,motor.Figura):
         IA.__init__(self,arma,PV, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol,string_som_fallShell)
-        motor.Figura.__init__(self,img1,pos = pos)
+        motor.Animacao.__init__(self,img1,pos = pos)
 
         """
         img:     É a string do nome do arquivo imagem do aviao
@@ -163,7 +163,9 @@ class AviaoInimigo(IA,motor.Figura):
         self.Manobra180V = False
         self._string_som_explosao = string_som_explosao
         self._audio = audio
-       # self.even.lancar("tocarEfeito",self._audio)
+        # self.even.lancar("tocarEfeito",self._audio)
+        self.vivo = True
+       
  
         
     def realizarManobra180H(self):
@@ -180,6 +182,7 @@ class AviaoInimigo(IA,motor.Figura):
             #Troca o estado da manobra
             #voando pra esquerda
  
+    
     def voarSimples(self, dt):
         # 140 é a velocidade em pixel/s
         self.velo = 140
@@ -196,19 +199,22 @@ class AviaoInimigo(IA,motor.Figura):
                self.Manobra180V = True
                self.realizarManobra180H()
     
+    
     def explosao(self,dt):
-        self.rot.setAngulo(-self.rot.getAngulo())
-        explosao = motor.Animacao("imgTeste/explosion17.png", motor.Retangulo(motor.Ponto(0, 0),
-                   motor.Ponto(320,320)), 64, 64, self.pos.clonar())
-        explosao.rodarAnimacao(dt)
-        explosao.atualiza(dt)
-        self.even.lancar("tocarEfeito",self._string_som_explosao)
+        if self.vivo: # Se ficar atualizando, a explosão fica só no primeiro
+            self.velo = 0
+            self.setString("imgTeste/explosion17.png", 64, 64)
+            self.rodarAnimacao(3, 5)
+            self.even.lancar("tocarEfeito",self._string_som_explosao)
+        self.vivo = False
     
         
     def atualiza(self,dt):
-    
-        self.mira(dt)
-        self.voarSimples(dt)
+        motor.Animacao.atualiza(self, dt)
+        if self.vivo:
+            self.mira(dt)
+            self.voarSimples(dt)
+
 
 class TorreInimiga(IA,motor.Figura):
     
@@ -219,7 +225,7 @@ class TorreInimiga(IA,motor.Figura):
         IA.__init__(self,arma, PV, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol,string_som_fallShell)
-        motor.Figura.__init__(self,img, centro = motor.Ponto(32,20))
+        motor.Figura.__init__(self,img, centro = motor.Ponto(110,100))
         """
         img:     É a string do nome do arquivo imagem da Torre inimiga
         string_som_disparo:   É a string do nome do arquivo audio do disparo

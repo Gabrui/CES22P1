@@ -148,15 +148,15 @@ class Simulador(motor.Camada):
                 
                 if isinstance(filhos, aviao.Aviao):
                     #Se for Jogador, chama tela de G.O.
-                    #filhos[10].explosao()
-                    filhos.yVel *= -1
+                    filhos.explosao()
+                    #filhos.yVel *= -1
                     self.even.lancar("GameOver", True)
                 elif isinstance(filhos, IA.AviaoInimigo):
                     #Se houver colisao entre aviaoInimigo e chao
                     #Chama o metodo de animacao da explosao
                     filhos.explosao(dt)
                     #retira da lista de filhos
-                    self.removeFilho(filhos)
+                    #self.removeFilho(filhos)
                     
                                
                                

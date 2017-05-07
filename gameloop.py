@@ -104,9 +104,6 @@ class PainelMenuPrincipal(Cena):
                                         Ponto(self._PosXTituloMenuPrincipal,
                                               self._PosYTituloMenuPrincipal))
         img_fundo = Figura(self._string_imagem_Fundo)
-        explosao = Animacao("imgTeste/explosion17.png", Retangulo(Ponto(0, 0),
-                   Ponto(320,320)), 64, 64)
-        explosao.rodarAnimacao(3, 100)
         #montando a cena do menu principal
         self.adicionaFilho(img_fundo)
         self.adicionaFilho(botaoNovoJogo)
@@ -118,7 +115,6 @@ class PainelMenuPrincipal(Cena):
         self.adicionaFilho(imgAviaoDireita2)
         self.adicionaFilho(imgAviaoEsquerda)
         self.adicionaFilho(imgTituloMenuPrincipal)
-        self.adicionaFilho(explosao)
 #---------------------------------Fim da Classe Menu Principal-----------------
 
 class PainelTutorial(Cena):
@@ -558,11 +554,9 @@ class Painelgameplay(Cena):
         Cena.__init__(self,audio,entrada,renderizador,string_musica_fundo)
         
         fundo0 = FundoParalaxeInfinito(larguraTela,alturaTela, 
-                         "imgTeste/estFundo.png", Retangulo(Ponto(0,0), 
-                         Ponto(800, 132)), Ponto(0, 80), Ponto(-1, -0.4))
+                         "imgTeste/estFundo.png",Ponto(-1, -0.4), Ponto(0, 80))
         fundo1 = FundoParalaxeInfinito(larguraTela, alturaTela, 
-                         "imgTeste/movFundo.png", Retangulo(Ponto(0,0), 
-                         Ponto(800, 225)), Ponto(0,0), Ponto(0,0))
+                         "imgTeste/movFundo.png", Ponto(0,0), Ponto(0,0))
         fundo3 = Figura("imgTeste/nuvem.png")
         
         projetilJogador = Projetil("imgTeste/BulletEnemies.png","imgTeste/MetalHit1.ogg",
@@ -570,8 +564,8 @@ class Painelgameplay(Cena):
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
         avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
                      Ponto(100, 100), Ponto(28, 10),
-                     [8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
-                     [5, 50000, 5000/3, 100], [5000, 150], arma = armaJogador,
+                     [[8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
+                     [5, 50000, 5000/3, 100], [5000, 150]], arma = armaJogador,
                      string_som_fallShell="imgTeste/Shells_falls.ogg")
         armaJogador.setDono(avi)
         #Criando aviao inimigo
@@ -617,7 +611,7 @@ class Painelgameplay(Cena):
                                     None,None)
         armaTorreInimiga.setDono(torreInimiga)
         
-        simulador = Simulador(alturaTela,larguraTela)
+        simulador = Simulador(alturaTela-100,larguraTela)
         simulador.adicionaFilho(avi)
         camera = Camera(larguraTela, alturaTela, avi, 0)
         camera.adicionaFilho(fundo0)
@@ -625,16 +619,22 @@ class Painelgameplay(Cena):
         camera.adicionaFilho(fundo3)
         camera.adicionaFilho(simulador)
         simulador.adicionaFilho(aviaoInimigo)
-        simulador.adicionaFilho(torreInimiga)
+        #simulador.adicionaFilho(torreInimiga)
         simulador.adicionaFilho(aviaoInimigo2)
         self.adicionaFilho(camera)
         self.even.escutar("K_p",self.pausar)
+        
+        
     def pausar(self,chamada):
         self.even.lancar("MenuPause","gameplay")
+        
+        
     def ativarEscuta(self):
         self.even.escutar("K_p",self.pausar)
         for filho in self.filhos:
             filho.ativarEscuta()
+
+
 
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""

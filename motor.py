@@ -798,15 +798,18 @@ class Figura(Renderizavel):
 class Animacao(Figura):
     """Classe base para uma animação de spritesheet"""
     
-    def setString(self, string_imagem, corte, largu, altu):
+    def setString(self, string_imagem, largu = 0, altu = 0, corte = None):
         """Redefine a string imagem dessa figura"""
-        super().setString(string_imagem, Retangulo(
-                corte.getTopoEsquerdo(), largura = largu, altura = altu))
-        self._ponto0 = corte.getTopoEsquerdo()
+        super().setString(string_imagem, corte)
+        self._ponto0 = self.corte.getTopoEsquerdo()
+        self._larguraSS = self.corte.getLargura()
+        self._alturaSS = self.corte.getAltura()
+        if largu == 0:
+            largu = self._larguraSS
+        if altu == 0:
+            altu = self._alturaSS
         self._largu = largu
         self._altu = altu
-        self._larguraSS = corte.getLargura()
-        self._alturaSS = corte.getAltura()
         self._colunas = self._larguraSS//self._largu
         self._linhas = self._alturaSS//self._altu
         self._numTotal = self._colunas * self._linhas
@@ -814,16 +817,15 @@ class Animacao(Figura):
         self._vezes = 0
         self._dtAnim = 0
         self._T = 1
-        print(self._numTotal)
+        self.setNumCorte(0)
     
     
-    def __init__(self, string_imagem, corte, largu, altu, pos = None, 
-                 centro = None, escala = None, rot = None, cor = None):
+    def __init__(self, string_imagem, largu = 0, altu = 0, corte = None, 
+                 pos = None, centro = None, escala = None, rot = None, 
+                 cor = None):
         """Suponho cortes regulares, igualmentes distribuidos"""
-        super().__init__(string_imagem, Retangulo(
-                corte.getTopoEsquerdo(), largura = largu, altura = altu),
-              pos, centro, escala, rot, cor)
-        self.setString(string_imagem, corte, largu, altu)
+        super().__init__(string_imagem, corte, pos, centro, escala, rot, cor)
+        self.setString(string_imagem, largu, altu, corte)
         
         
         

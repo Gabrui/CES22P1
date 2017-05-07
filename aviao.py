@@ -6,17 +6,18 @@ Created on Wed Apr  5 12:40:42 2017
 @author: gabrui
 """
 
-from motor import Figura, Ponto
+from motor import Animacao, Ponto
 import math
 
-class Aviao(Figura):
+class Aviao(Animacao):
     
     def __init__(self, string_imagem, pos0, c0,arma,string_som_fallShell):
         super().__init__(string_imagem, pos = pos0, centro = c0)
         
         self.arma = arma
         self._string_som_fallShell = string_som_fallShell
-        
+    
+    
     def shoot(self,dt):
         """
         lanca evento de disparo.
@@ -44,6 +45,9 @@ class Aviao(Figura):
         self.even.lancar("tocarEfeito",self._string_som_disparo)
         self.even.lancar("tocarEfeito",self._string_som_fallShell)
 
+
+
+
 class Jogador(Aviao):
     
     """
@@ -59,12 +63,29 @@ class Jogador(Aviao):
     [5, 50000, 5000/3, 100], [5000, 150])
     """
     def __init__(self, string_imagem, string_imagem_invertida, pos0, c0, 
-                 aerMacro, empuxoMacro, rotMacro, inerciaMacro,arma,
-                 string_som_fallShell):
+                 aerodinamicas, arma, string_som_fallShell):
         super().__init__(string_imagem, pos0, c0,arma,string_som_fallShell)
         self.img1 = string_imagem
         self.img2 = string_imagem_invertida
+        self.inicializaCalculus(aerodinamicas[0], aerodinamicas[1], 
+                                aerodinamicas[2], aerodinamicas[3])
+        self.ativarEscuta()
+        self.cima = False
+        self.baixo = False
+        self.direita = False
+        self.esquerda = False
+        self.virar = False
+        self.dtVirar = 2
+        self.dtVirarMin = 1
         
+        self.disparar = False
+        self.dtAtirar = 1
+        self.dtAtirarMin = 2
+        
+        self.vivo = True
+    
+    
+    def inicializaCalculus(self,aerMacro, empuxoMacro, rotMacro, inerciaMacro):
         #Constantes matemáticas
         self.radianosParaGraus      = 180 / math.pi
         self.grausParaRadianos      = math.pi/180
@@ -164,7 +185,6 @@ class Jogador(Aviao):
         self.kArr              = 0
         self.kSust             = 0
         
-        
         self.velmVelmDm = self.veloMax * self.veloMax * self.DENSIDADEMAR
         self.hVelmDm = self.hVeloMax * self.hVeloMax * self.DENSIDADEMAR
         self.kArr = self.arrastoMax / self.velmVelmDm
@@ -176,18 +196,6 @@ class Jogador(Aviao):
         self.hArrastoRotacionalMax = (self.hForcaMotorMax +self.hArrFrontRotMax
         - self.hAtritoMotor)
         
-        self.ativarEscuta()
-        self.cima = False
-        self.baixo = False
-        self.direita = False
-        self.esquerda = False
-        self.virar = False
-        self.dtVirar = 2
-        self.dtVirarMin = 1
-        
-        self.disparar = False
-        self.dtAtirar = 1
-        self.dtAtirarMin = 2
         
     def ativarEscuta(self):
         #lancar pedido de escuta
@@ -198,8 +206,10 @@ class Jogador(Aviao):
         self.even.escutar("K_space", self._cVirar)
         self.even.escutar("K_f",self.disparo)
         
+        
     def disparo(self,dt):
         self.disparar = True
+    
     
     def _cCima(self, eventoTeclado):
         self.cima = True
@@ -398,12 +408,22 @@ class Jogador(Aviao):
     
     
     def atualiza(self, dt):
-        
+        super().atualiza(dt)
         self.dtAtirar +=dt
         if self.disparar and self.dtAtirar >= self.dtAtirarMin:
             self.shoot(dt)
         self.disparar = False
-        self.calculus(dt)
-        self.pos.soma(Ponto(self.dx, self.dy))
-        self.rot.setAngulo(-self.rotacao)
+        if self.vivo:
+            self.calculus(dt)
+            self.pos.soma(Ponto(self.dx, self.dy))
+            self.rot.setAngulo(-self.rotacao)
+    
+    
+    def explosao(self):
+        if self.vivo:
+            self.xVel = 0
+            self.yVel = 0
+            self.setString("imgTeste/explosion17.png", 64, 64)
+            self.rodarAnimacao(3, 5)
+        self.vivo = False
         

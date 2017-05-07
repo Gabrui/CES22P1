@@ -71,7 +71,8 @@ class Cenario(Camada):
 
 class FundoParalaxeInfinito(Camada):
     
-    def __init__(self, larguraTela, alturaTela, textura, corte, pos0, rel):
+    def __init__(self, larguraTela, alturaTela, textura, rel, pos0 = None, 
+                 corte = None):
         """
         Camada que instancia e gerencia um fundo de paralaxe infinito
         @param: textura string
@@ -82,10 +83,17 @@ class FundoParalaxeInfinito(Camada):
         super().__init__()
         self.larguraTela = larguraTela
         self.alturaTela = alturaTela
+        self.textura = textura
+        self.rel = rel
+        if pos0 is None:
+            pos0 = Ponto(0, 0)
+        self.pos0 = pos0
+        figura = Figura(textura, corte)
+        corte = figura.corte
         self.altura = alturaTela - corte.getAltura() - pos0.getY()
         self.largura = corte.getLargura()
         self.quant = int(math.ceil(self.larguraTela/self.largura))
-        self.rel = rel
+        
         
         if rel.getX() < 1:
             self.quant += 1
