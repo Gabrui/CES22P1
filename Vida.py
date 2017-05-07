@@ -63,8 +63,8 @@ class Vida(Figura):
             posY = self.Dono.pos.getY()-40
             self.pos.setXY(posX,posY)
         elif isinstance(self.Dono, Jogador):
-            posX = self.Dono.pos.getX() + 150
-            posY = self.Dono.pos.getY() - 350
+            posX = 700
+            posY = 0
             self.pos.setXY(posX,posY)
 
 class Velocimetro(Figura):
@@ -178,6 +178,6 @@ class Altimetro(Figura):
     def atualiza(self,dt):
         
         if isinstance(self.Dono, Jogador):
-            posX = self.Dono.pos.getX() - 100 
-            posY = self.Dono.pos.getY() + 350
+            posX = 100 
+            posY = 350
             self.pos.setXY(posX,posY)

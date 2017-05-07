@@ -88,6 +88,8 @@ class Jogador(Aviao):
         self.barra_vida.setDono(self)
         self.barra_vida.pos.setXY(self.pos.getX(),self.pos.getY())
         
+        self._string_som_explosao = "imgTeste/Explosion_6.ogg"
+        
     def reduzPV(self,dano):
         self.barra_vida.reduzPV(dano)
     def getPV(self):
@@ -433,5 +435,6 @@ class Jogador(Aviao):
             self.yVel = 0
             self.setString("imgTeste/explosion17.png", 64, 64)
             self.rodarAnimacao(3, 5)
+            self.even.lancar("tocarEfeito",self._string_som_explosao)
         self.vivo = False
         

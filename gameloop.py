@@ -642,7 +642,7 @@ class Painelgameplay(Cena):
                                     None,None)
         armaTorreInimiga.setDono(torreInimiga)
         
-        simulador = Simulador(alturaTela-100,larguraTela)
+        simulador = Simulador(alturaTela-50,larguraTela)
         simulador.adicionaFilho(avi)
         camera = Camera(larguraTela, alturaTela, avi, 0)
         camera.adicionaFilho(fundo0)
@@ -655,7 +655,7 @@ class Painelgameplay(Cena):
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo)
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo2)
         simulador.adicionaFilho(Barra_Vida_TorreInimiga)
-        simulador.adicionaFilho(Barra_Vida_Jogador)
+        self.adicionaFilho(Barra_Vida_Jogador)
         self.adicionaFilho(camera)
         self.even.escutar("K_p",self.pausar)
         
