@@ -995,16 +995,25 @@ class Renderizador:
 
 
 class Entrada:
-    """Classe que faz interface com o pygames e registra todos os eventos de 
-    entrada, seja de mouse ou teclado"""
-    
+    """
+    @class Entrada
+    Classe que faz interface com o pygames e registra todos os eventos de 
+    entrada, seja de mouse ou teclado
+    """
     def __init__(self):
+        """
+        @function __init__
+        Inicializa a entrada, só deve haver apenas um objeto de entrada.
+        """
         self.even = Evento()
         self.clickAntigo = False
     
     
     def _verTeclado(self):
-        """Observa quais teclas estão pressionadas e se está focado"""
+        """
+        @function _verTeclado
+        Observa quais teclas estão pressionadas e se está focado
+        """
         vazio = True
         for ide, val in enumerate(pygame.key.get_pressed()):
             if val == True:
@@ -1018,8 +1027,10 @@ class Entrada:
     
     
     def _verMouse(self):
-        """Observa a posição do ponteiro e se clica, lancando os eventos"""
-        
+        """
+        @function _verMouse
+        Observa a posição do ponteiro e se clica, lancando os eventos
+        """
         click = pygame.mouse.get_pressed() 
         mouse = pygame.mouse.get_pos()
         if click[0]:
@@ -1033,7 +1044,10 @@ class Entrada:
             
     
     def atualiza(self):
-        """Atualiza os seus eventos"""
+        """
+        @function atualiza
+        Atualiza os seus eventos
+        """
         self._verTeclado()
         self._verMouse()
         
@@ -1043,9 +1057,14 @@ class Entrada:
                 
     
     def sair(self):
-        print("bye bye")
+        """
+        @function sair
+        Fecha o jogo
+        """
         pygame.quit()
         quit()
+
+
 
 
 
