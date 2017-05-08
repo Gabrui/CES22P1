@@ -9,7 +9,7 @@ import aviao
 import motor
 import Projetil
 import IA
-
+from database import banco_dados
 
 class Simulador(motor.Camada):
     """
@@ -126,6 +126,15 @@ class Simulador(motor.Camada):
                                 barra_vida = irmao.explosao(dt)
                                 #Se IA esvier morta, remove do gameplay
                                 self.removeFilho(barra_vida)
+                                banco_dados.acrescimoSaldo(irmao.getValor())
+                                if isinstance(irmao,IA.AviaoInimigo):
+                                    #contabiliza o abate de aviao inimigo
+                                    banco_dados.contabilizarAbate("AviaoInimigo")
+                                elif isinstance(irmao,IA.TorreInimiga):
+                                    #contabiliza a destruicao de uma torre
+                                    banco_dados.contabilizarAbate("TorreInimiga")
+                                    
+                                
                         elif(isinstance(filhos, IA.IA) and \
                              isinstance(irmao,Projetil.Projetil)):
                             
@@ -136,7 +145,15 @@ class Simulador(motor.Camada):
                             if filhos.getPV() <= 0:
                                 barra_vida = filhos.explosao(dt)
                                 self.removeFilho(barra_vida)
-                                 
+                                #carteira do jogador recebe recompensa
+                                banco_dados.acrescimoSaldo(filhos.getValor())
+                                if isinstance(filhos,IA.AviaoInimigo):
+                                    #contabiliza o abate de aviao inimigo
+                                    banco_dados.contabilizarAbate("AviaoInimigo")
+                                elif isinstance(filhos,IA.TorreInimiga):
+                                    #contabiliza a destruicao de uma torre
+                                    banco_dados.contabilizarAbate("TorreInimiga")
+                                    
             if isinstance(filhos, Projetil.Projetil):
                 if filhos.pos.getX()<self.PosXCentroTela-self.meialarguraTela or\
                    filhos.pos.getX() > self.PosXCentroTela + self.meialarguraTela\
@@ -155,6 +172,8 @@ class Simulador(motor.Camada):
                     #Se houver colisao entre aviaoInimigo e chao
                     #Chama o metodo de animacao da explosao
                     filhos.explosao(dt)
+                    #carteira do jogador recebe recompensa
+                    banco_dados.acrescimoSaldo(filhos.getValor())
                     #retira da lista de filhos
                     #self.removeFilho(filhos)
                     

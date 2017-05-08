@@ -15,6 +15,7 @@ from IA import AviaoInimigo,TorreInimiga
 from Arma import Arma
 from Projetil import Projetil
 from Vida import Vida
+from database import banco_dados
 
 t20 = 50/1000
 FPS = 60
@@ -586,7 +587,7 @@ class Painelgameplay(Cena):
         Barra_Vida_AviaoInimigo.adicionaFilho(barra_vida_externa_IA)
         Barra_Vida_AviaoInimigo.adicionaFilho( barra_vida_interna_IA)
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
-                                                "imgTeste/MetalHit1.ogg",10,
+                                                "imgTeste/MetalHit1.ogg",100,
                                                 Ponto(0,0),10)
         armaAviaoInimigo = Arma("imgTeste/MP5_SMG_auto.ogg",
                                     projetilArmaAviaoInimigo)
@@ -609,7 +610,7 @@ class Painelgameplay(Cena):
         Barra_Vida_AviaoInimigo2.adicionaFilho(barra_vida_externa_IA2)
         Barra_Vida_AviaoInimigo2.adicionaFilho( barra_vida_interna_IA2)
         projetilArmaAviaoInimigo2 = Projetil("imgTeste/BulletEnemies.png",
-                                                "imgTeste/MetalHit1.ogg",10,
+                                                "imgTeste/MetalHit1.ogg",100,
                                                 Ponto(0,0),10)
         armaAviaoInimigo2 = Arma("imgTeste/MP5_SMG_auto.ogg",
                                     projetilArmaAviaoInimigo2)
@@ -652,7 +653,7 @@ class Painelgameplay(Cena):
         camera.adicionaFilho(fundo3)
         camera.adicionaFilho(simulador)
         simulador.adicionaFilho(aviaoInimigo)
-        #simulador.adicionaFilho(torreInimiga)
+        simulador.adicionaFilho(torreInimiga)
         simulador.adicionaFilho(aviaoInimigo2)
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo)
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo2)
@@ -670,8 +671,6 @@ class Painelgameplay(Cena):
         self.even.escutar("K_p",self.pausar)
         for filho in self.filhos:
             filho.ativarEscuta()
-
-
 
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""

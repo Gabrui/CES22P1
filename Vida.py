@@ -71,7 +71,10 @@ class Vida(Camada):
         else:
             self.pos.setXY(self.posX_barra_vida_jogador,self.posY_barra_vida_jogador)
         super().atualiza(dt)
-
+        
+    def ativarEscuta(self):
+        pass
+        
 class Velocimetro(Figura):
     
     """

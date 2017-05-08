@@ -61,10 +61,24 @@ class IA(motor.Renderizavel):
         
         #ativa a escuta de eventos
         self.ativarEscuta()
+        
+        self._valor = 10
+    
+    def getValor(self):
+        """
+            Retorna quanto que a IA vale em pontos de jogo
+        """
+        return self._valor
     
     def reduzPV(self,dano):
+        """
+            reduz a quantidade de pontos de vida da IA
+        """
         self.Barra_Vida.reduzPV(dano)
     def getPV(self):
+        """
+            retorna a quantidade de vida da IA
+        """
         return self.Barra_Vida.getPV()
         
     
@@ -83,7 +97,9 @@ class IA(motor.Renderizavel):
         self.alvoVel.setXY(alvo[2],alvo[3])
         
     def mira(self, dt):
-        
+        """
+            Ajusta a mira para acertar o jogador
+        """
         visada = motor.Angulo(math.atan2(self.pos.getY() - self.alvoPos.getY(),
                             self.alvoPos.getX() - self.pos.getX()), False)
         dif = self.rot.getDiferenca(visada).getAngulo()
@@ -174,8 +190,8 @@ class AviaoInimigo(IA,motor.Animacao):
         # self.even.lancar("tocarEfeito",self._audio)
         self.vivo = True
         
-        limiteEsquerdo = 300
-        limitedireito  = 300
+        limiteEsquerdo = 600
+        limitedireito  = 600
         self._iniciar_perseguicao = False
         self._posX_barrera_esquerda = pos.getX() - limiteEsquerdo
         self._posX_barrera_direita  = pos.getX() + limitedireito
@@ -183,7 +199,7 @@ class AviaoInimigo(IA,motor.Animacao):
                                      self._posX_barrera_direita)/2
         self._posY_barrera_centro = pos.getY()
        
- 
+        self._valor = 100
         
     def realizarManobra180H(self):
         
@@ -241,7 +257,7 @@ class AviaoInimigo(IA,motor.Animacao):
         if self.vivo: # Se ficar atualizando, a explosão fica só no primeiro
             self.velo = 0
             self.setString("imgTeste/explosion17.png", 64, 64)
-            self.rodarAnimacao(3, 5)
+            self.rodarAnimacao(3, 1)
             self.even.lancar("tocarEfeito",self._string_som_explosao)
         self.vivo = False
         return self.Barra_Vida
@@ -298,6 +314,8 @@ class TorreInimiga(IA,motor.Figura):
         if deltaAngTol is None:
             deltaAngTol = motor.Angulo(10)
         self.pos.setXY(pos.getX(),pos.getY())
+        
+        self._valor = 1000
         
     def atualiza(self,dt):
         self.mira(dt)
