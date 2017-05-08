@@ -173,6 +173,15 @@ class AviaoInimigo(IA,motor.Animacao):
         self._audio = audio
         # self.even.lancar("tocarEfeito",self._audio)
         self.vivo = True
+        
+        limiteEsquerdo = 300
+        limitedireito  = 300
+        self._iniciar_perseguicao = False
+        self._posX_barrera_esquerda = pos.getX() - limiteEsquerdo
+        self._posX_barrera_direita  = pos.getX() + limitedireito
+        self._posX_barrera_centro = (self._posX_barrera_esquerda  +\
+                                     self._posX_barrera_direita)/2
+        self._posY_barrera_centro = pos.getY()
        
  
         
@@ -206,7 +215,25 @@ class AviaoInimigo(IA,motor.Animacao):
            and self.pos.getX() < self.alvoPos.getX():
                self.Manobra180V = True
                self.realizarManobra180H()
-    
+   
+    def patrulhar(self,dt):
+        
+        visada = motor.Angulo(math.atan2(self.pos.getY() - self._posY_barrera_centro,
+                            self._posX_barrera_centro - self.pos.getX()), False)
+        dif = self.rot.getDiferenca(visada).getAngulo()
+        self.velMax = 56
+        
+        # Cálculo da velocidade
+        if abs(dif) < self.velMax:
+            vel = dif
+        elif dif > 0:
+            vel = self.velMax
+        else:
+            vel = -self.velMax
+            
+        # Runge-Kutta de primeira ordem :D
+        self.rot.incrementa(vel*dt) 
+        
     
     def explosao(self,dt):
         if self.vivo: # Se ficar atualizando, a explosão fica só no primeiro
@@ -218,10 +245,29 @@ class AviaoInimigo(IA,motor.Animacao):
         return self.Barra_Vida
         
     def atualiza(self,dt):
+        
         motor.Animacao.atualiza(self, dt)
         if self.vivo:
-            self.mira(dt)
-            self.voarSimples(dt)
+            if self._iniciar_perseguicao:
+                self.mira(dt)
+                self.voarSimples(dt)
+            elif not self._iniciar_perseguicao:
+                self.patrulhar(dt)
+                self.voarSimples(dt)
+            if self._posX_barrera_esquerda <= self.alvoPos.getX() <= \
+               self._posX_barrera_direita:
+                print(self._posX_barrera_esquerda)
+                print(self.alvoPos.getX())
+                print(self._posX_barrera_direita)
+                print("_________________________")
+                self._iniciar_perseguicao = True
+            elif self.alvoPos.getX() <= self._posX_barrera_esquerda or \
+                 self.alvoPos.getX() >= self._posX_barrera_direita:
+                print(self._posX_barrera_esquerda)
+                print(self.alvoPos.getX())
+                print(self._posX_barrera_direita)
+                print("_________________________")
+                self._iniciar_perseguicao = False
 
 
 class TorreInimiga(IA,motor.Figura):

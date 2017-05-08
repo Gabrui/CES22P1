@@ -63,7 +63,7 @@ class Vida(Figura):
             posY = self.Dono.pos.getY()-40
             self.pos.setXY(posX,posY)
         elif isinstance(self.Dono, Jogador):
-            posX = 700
+            posX = 600
             posY = 0
             self.pos.setXY(posX,posY)
 
