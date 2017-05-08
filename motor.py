@@ -1218,6 +1218,8 @@ class Renderizavel:
         else:
             self.cor = Cor(1, 0, 0, 0, 0)
         self.even = Evento()
+        """É um Retangulo que contém (circunscreve) todo o seu conteúdo, e só \
+        é atualizado na renderização"""
         self.retang = Retangulo(Ponto(0, 0), Ponto(0, 0))
         
     
@@ -1467,37 +1469,85 @@ class Texto(Renderizavel):
 
 
 class Camada(Renderizavel):
-    """Representa uma camada na árvore renderização"""
-    
+    """
+    @class Camada
+    Representa uma camada na árvore renderização
+    """
     def __init__(self, pos = None, centro = None, escala = None, rot = None, 
                  cor = None):
+        """
+        @function __init__
+        Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o \
+            seu centro de rotação 'centro', relativo a si próprio, sua escala \ 
+            de tamanho, seu ângulo de rotação e sua coloração
+        @param {Ponto} pos Posição do renderizável com relação ao seu pai
+        @param {Ponto} centro Posição do seu centro de rotação com relação a \
+            si próprio, isto é, com relação ao pos
+        @param {Ponto} escala Escala x e y, seu tamanho relativo
+        @param {Angulo} rot Angulo de rotação com relação ao seu pai
+        @param {Cor} cor Tintura e opacidade
+        """
         super().__init__(pos, centro, escala, rot, cor)
         self.filhos = []
     
     
     def adicionaFilho(self, filho):
+        """
+        @function adicionaFilho
+        Adiciona um filho (Renderizável) à camada, para que ele possa \
+            integrar a árvore de renderização. Os filhos adicionados \
+            primeiros ficam mais ao fundo.
+        @param {Renderizavel} filho Objeto do tipo Renderizavel, pode ser uma
+            outra Camada, uma Figura, um Texto por exemplo
+        """
         self.filhos.append(filho)
     
     
     def removeFilho(self, filho):
+        """
+        @function removeFilho
+        Remove o filho da camada, caso ele esteja presente
+        @param {Renderizavel} filho Objeto Renderizavel a ser removido
+        """
         if filho in self.filhos:
             self.filhos.remove(filho)
         
         
     def isFilho(self, filho):
+        """
+        @function isFilho
+        Verifica se um dado objeto é filho da camada
+        @returns {bool} Retorna verdadeiro se for filho
+        """
         return (filho in self.filhos)
     
     
     def atualiza(self, dt):
+        """
+        @function atualiza
+        Atualiza os seus filhos. Atenção, deve ser chamada caso ela seja \
+            sobreposta.
+        @param {float} dt O tempo em segundos desde a última execução
+        """
         for filho in self.filhos:
             filho.atualiza(dt)
     
     
     def _transformaFigura(self, camadaFilha, estado):
-        """Converte as coordenadas e transformações de uma figura representada
-        pela sua tupla (string_imagem, posX ....) que está no referencial da
-        camadaFilha para o seu próprio referencial, retornando a nova tupla"""
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        """
+        @function _transformaFigura
+        Converte as coordenadas e transformações de uma figura representada \
+            pela sua tupla (string_imagem, posX ....), que está no referencial\
+            da camadaFilha, para o seu próprio referencial, retornando a nova \
+            tupla, que é definida da mesma forma: \
+            (string_imagem, tupla_corte, posX, posY, rotação, opacidade, \
+             R, G, B, A, self) \
+            Onde a tupla_corte é (posX, posY, largura, altura) referentes ao \
+            retangulo de corte da imagem
+        @param {Camada} camadaFilha A camada que contém o estado
+        @param {tuple} estado A tupla que define o estado da Figura
+        @returns {tuple} O novo estado nas coordenadas desta camada
+        """
         ang = camadaFilha.rot.getAngulo()
         if ang != 0:
             Cx = camadaFilha.centro.getX()
@@ -1517,35 +1567,45 @@ class Camada(Renderizavel):
     
     
     def _transformaTexto(self, camadaFilha, estado):
-        """Converte as coordenadas e transformações de um texti representado
-        pela sua tupla (string_texto, posX ....) que está no referencial da
-        camadaFilha para o seu próprio referencial, retornando a nova tupla"""
+        """
+        @function _transformaTexto
+        Converte as coordenadas e transformações de um texto representado \
+            pela sua tupla que define o seu estado, que está no referencial \
+            da camadaFilha, para o seu próprio referencial, retornando a nova \
+            tupla, que é definida da mesma forma: \
+            (string_texto, tupla_fonte, posX, posY, rotação, opacidade, \
+             R, G, B, A, self) \
+            Onde a tupla_fonte é ({string} string_fonte, {int} tamanho, \
+                                  {bool} bold , {bool} italic)
+        @param {Camada} camadaFilha A camada que contém o estado
+        @param {tuple} estado A tupla que define o estado do Texto
+        @returns {tuple} O novo estado nas coordenadas desta camada
+        """
         return self._transformaFigura(camadaFilha, estado)
-        """#raise NotImplementedError("Você deveria ter programado aqui!")
-        Cx = camadaFilha.centro.getX()
-        Cy = camadaFilha.centro.getY()
-        alfa = math.atan2(Cy - estado[3],Cx - estado[2])
-        hipo = math.sqrt((Cy - estado[3])^2 + (Cx - estado[2])^2 )
-        teta = Angulo.GrausParaRadianos(estado[4])
-        posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta)
-        posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta)
-        return (estado[0],estado[1], posX, posY, estado[4], estado[5],
-                estado[6], estado[7],estado[8],estado[9],estado[10])"""
-        
     
     
     def _observaFilhos(self):
-        """Retorna os filhos que tem, na ordem, separando imagem de texto.
-        É uma tupla com uma lista de imagem e uma lista de texto, essas listas
-        contém tuplas que definem o estado da figura e texto, no estado mais
-        reduzido: atentar que a posX e posY se refere ao ponto superior
-        esquerdo do retângulo exterior.
-            (string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
-             R, G, B, A, self)
-            (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
-             R, G, B, A, self)
-        Gabriel: Essas tuplas podem ser melhoradas de acordo com o que vocês 
-        acharem conveniente"""
+        """
+        @function _observaFilhos
+        Retorna os filhos que tem, na ordem, separando imagem de texto. \
+            É uma tupla com uma lista de imagem e uma lista de texto, essas \
+            listas contém tuplas que definem o estado da figura e texto, no \
+            estado mais reduzido, assim definidas para Imagem e Texto: \
+            Para Imagem: \
+                (string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
+                 R, G, B, A, self)
+                Onde a tupla_corte é (posX, posY, largura, altura) referentes \
+                ao retangulo de corte da imagem. \
+            Para Texto: \
+                (string_texto, tupla_fonte, posX, posY, rotação, opacidade, \
+                R, G, B, A, self) \
+                Onde a tupla_fonte é definida da seguinte forma:
+                    tupla_fonte = ({string} string_fonte, {int} tamanho, \
+                                  {bool} bold , {bool} italic)
+        @returns {tuple} Uma tupla que contém uma lista de tuplas para os \
+            estados: (figuras, textos), onde figuras é uma lista de tuplas de \
+            estado de figuras e textos de textos.
+        """
         figuras = []
         textos = []
         for filho in self.filhos:
@@ -1581,8 +1641,16 @@ class Camada(Renderizavel):
         return (figuras, textos)
     
     
-    
     def _transformaFinal(self, figtex):
+        """
+        @function _transformaFinal
+        Realiza a transformação final de coordenadas para as coordenadas de \
+            renderização do Pygames, isto é, em relação ao canto superior \
+            direito do retângulo que o contém.
+        @param {tuple} Uma tupla do tipo (figuras, textos) que contém lista \
+            de estados (tuplas de estado) de figuras e textos.
+        @returns {tuple} O mesmo tipo de tupla com as coordenadas transformadas
+        """
         figs, texs = figtex
         for i in range(len(figs)):
             estado = figs[i]
@@ -1613,26 +1681,30 @@ class Camada(Renderizavel):
         return figtex
     
     
-    
     def _atualizaRetangs(self):
-        """Atualiza os retangs das camadas filhas e depois da sua"""
+        """
+        @function _atualizaRetangs
+        Atualiza os retangs das camadas filhas e depois o seu próprio retang. \
+        É importante notar que o retang é um retângulo horizontal (Retangulo) \
+        que circunscreve todo o seu conteúdo e que ele só é atualizado na \
+        renderização.
+        """
         for filho in self.filhos:
             if isinstance(filho, Camada):
                 filho._atualizaRetangs()
                 
         retangs = [filho.retang for filho in self.filhos]
         self.retang.setRetanguloQueContem(retangs)
-            
+
 
 
 
 
 class Botao(Camada):
     """
-        Representa um botão clicável que contém uma imagem de fundo e texto
-        A imagem do Botao já possui fundo e texto.
+    Representa um botão clicável que contém uma imagem de fundo e texto
+    A imagem do Botao já possui fundo e texto.
     """
-    
     def __init__(self,nome_evento,string_chamada, string_imagem1, string_imagem2, som_click,
                  pos = None, centro = None, escala = None, rot = None, 
                  cor = None):
