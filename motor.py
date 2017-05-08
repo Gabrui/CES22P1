@@ -6,24 +6,17 @@ Biblioteca arquitetada para servir como base para o jogo em si.
 
 Created on Mon Mar 27 08:25:06 2017
 
-@author: gabrui
+@author: gabrui Gabriel Adriano de Melo
 """
 
 import pygame
 import math
 
 
-""" 
-Gabriel:
-São 80 caracteres
-#OBS: NÃO EXCEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI -------------->
-#OBS: NÃO EXCEDER O TAMANHO DA LINHA DE 80 CARACTERES, BEM AQUI -------------->
-#POIS EU ESTOU USANDO VÁRIAS JANELAS ABERTAS COM ESSE TAMANHO BEM AQUI ------->
-"""
-
 
 class Aux:
     """
+    @class Aux
     Classes com funções auxiliares para mexer com listas etc...
     """
     @staticmethod
@@ -102,6 +95,7 @@ class Aux:
 
 class Singleton:
     """
+    @class Singleton
     Decorador para criação de Slingletons
     """
     def __init__(self, classe):
@@ -134,6 +128,7 @@ class Singleton:
 @Singleton
 class Evento:
     """
+    @class Evento
     É uma classe Singleton como de costume. 
     A performance foi muito prejudicada por várias instâncias de evento e o
     modelo de propagação arquitetado anteriormente
@@ -207,6 +202,7 @@ class Evento:
 
 class Ponto:
     """
+    @class Ponto
     Classe que representa um ponto 2d do tipo (x, y)
     """
     def __init__ (self, x = 0, y = 0):
@@ -1702,7 +1698,8 @@ class Camada(Renderizavel):
 
 class Botao(Camada):
     """
-    Representa um botão clicável que contém uma imagem de fundo e texto
+    @class Botao
+    Representa um botão clicável que contém uma imagem de fundo e texto \
     A imagem do Botao já possui fundo e texto.
     """
     def __init__(self,nome_evento,string_chamada, string_imagem1, string_imagem2, som_click,
