@@ -15,11 +15,12 @@ from IA import AviaoInimigo,TorreInimiga
 from Arma import Arma
 from Projetil import Projetil
 from Vida import Vida
-from database import banco_dados
+from database import banco_dados, arquivo
 
 t20 = 50/1000
 FPS = 60
 td = 1/FPS
+
 
 class PainelMenuPrincipal(Cena):
     """
@@ -466,26 +467,28 @@ class PainelJogosSalvos(Cena):
         #--------------------------Constantes----------------------------------
         
         self._Posbackground = Ponto(4,43)
-        self._PosTextJogo1  = Ponto(7,50)
-        self._PosTextJogo2  = Ponto(7,55)
-        self._PosTextJogo3  = Ponto(7,60)
-        self._PosTextJogoSalvo = Ponto(7,43)
-        self._PosTextRetornar  = Ponto(7,65)
+        self._PosTextJogo1  = Ponto(10,50)
+        self._PosTextJogo2  = Ponto(10,55)
+        self._PosTextJogo3  = Ponto(10,60)
+        self._PosTextJogoSalvo = Ponto(10,80)
+        self._PosTextRetornar  = Ponto(10,90)
         
-        self._string_imagem_background = "c01_Background.png"
-        self._string_imagem_TextJogo1  = "c02_Text_Jogo1.png"
-        self._string_imagem_TextJogo2  = "c02_Text_Jogo2.png"
-        self._string_imagem_TextJogo3  = "c02_Text_Jogo3.png"
-        self._string_imagem_TextJogosSalvos = "c02_Text_JogosSalvos.png"
-        self._string_imagem_TextRetornar = "c02_Text_Retornar.png"
+        self._string_imagem_background = "imgTeste/c01_Background.png"
+        self._string_imagem_TextJogo1  = "imgTeste/c02_Text_Jogo1.png"
+        self._string_imagem_TextJogo2  = "imgTeste/c02_Text_Jogo2.png"
+        self._string_imagem_TextJogo3  = "imgTeste/c02_Text_Jogo3.png"
+        self._string_imagem_TextJogosSalvos = "imgTeste/c02_Text_JogosSalvos2.png"
+        self._string_imagem_TextRetornar = "imgTeste/c02_Text_Retornar.png"
         
         self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #---------------------------Fim das constantes-------------------------
         
         img_background = Figura(self._string_imagem_background,None,
                                 self._Posbackground)
-        img_TextJogo1  = Figura(self._string_imagem_TextJogo1,None,
-                                self._PosTextJogo1)
+        img_TextJogo1  = Botao("ler","teste",self._string_imagem_TextJogo1,
+                               self._string_imagem_TextJogo1,
+                               self._string_som_buttonClick,
+                               self._PosTextJogo1)
         img_TextJogo2  = Figura(self._string_imagem_TextJogo2,None,
                                 self._PosTextJogo2)
         img_TextJogo3  = Figura(self._string_imagem_TextJogo3,None,
@@ -499,11 +502,24 @@ class PainelJogosSalvos(Cena):
                                    self._PosTextRetornar)
         #montando a cena
         self.adicionaFilho(img_background)
-        self.adicionaFIlho(img_TextJogo1)
-        self.adicionaFIlho(img_TextJogo2)
-        self.adicionaFIlho(img_TextJogo3)
+        self.adicionaFilho(img_TextJogo1)
+        self.adicionaFilho(img_TextJogo2)
+        self.adicionaFilho(img_TextJogo3)
         self.adicionaFilho(img_TextJogosSalvo)
         self.adicionaFilho(Botao_TextRetornar)
+    
+        self.even.escutar("ler",self.lerArquivo)
+    
+    def lerArquivo(self, nome):
+        """
+            Ler arquivo.
+        """
+        ler_arquivo = arquivo()
+        dadosSalvos = ler_arquivo.ler(nome)
+        banco_dados.setCarteira(dadosSalvos[1])
+        banco_dados.setProgresso(dadosSalvos[0])
+        self.even.lancar("MenuPrincipal","MenuJogoSalvo")
+        
 #------------------------------Fim da Classe Jogos Salvo-----------------------
 
 class PainelMenuPause(Cena):
@@ -755,6 +771,13 @@ class Jogo():
         #trocando de  transparencias
         self.cenaAtual = PainelMenuPause(self.audio,self.entrada,
                                          self.renderizador)
+    def MenuJogosSalvos(self,chamada):
+        
+        #limpando eventos
+        self.limparEventos()
+        #trocando de  transparencias
+        self.cenaAtual = PainelJogosSalvos(self.audio,self.entrada,
+                                         self.renderizador)
     
     def limparEventos(self):
         self.even.pararDeEscutarTudo()
@@ -765,6 +788,7 @@ class Jogo():
         self.even.escutar("Play", self.gameplay)
         self.even.escutar("MenuMissao1", self.MenuMissao1)
         self.even.escutar("MenuPause",self.MenuPause)
+        self.even.escutar("MenuJogoSalvo",self.MenuJogosSalvos)
         self.audio.escutas()
         self.renderizador.escutas()
     
@@ -795,6 +819,9 @@ class Jogo():
     
     
     def sair(self, cena):
+        
+        salva_dados = arquivo()
+        salva_dados.salvar("teste",banco_dados)
         self.entrada.sair()
     
     

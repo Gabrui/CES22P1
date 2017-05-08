@@ -7,28 +7,47 @@ Created on Mon May  8 14:52:53 2017
 import pickle
 
 class arquivo():
-    
+    """
+        É a classe que trabalha com arquivos.
+        Salvar arquivos e ler arquivos salvos.
+    """
     def salvar(self, nome_arquivo, banco_dados):
-        
+        """
+            Salvar arquivo com nome igual ao nome_arquivo sendo os dados do 
+            arquivo salvo, o saldo da carteira do jogador e seu progresso.
+        """
+        #abrir arquivos
         arquivo_saldo = open("imgTeste/"+nome_arquivo+"saldo","wb")
         arquivo_progresso = open("imgTeste/"+nome_arquivo+"progresso","wb")
+        #pegar saldo da carteira
         saldo = banco_dados.getCarteira()
+        #pegar progresso do jogo
         progresso = banco_dados.getProgresso()
+        #salvar saldo 
         pickle.dump(saldo,arquivo_saldo)
+        #salvar progresso
         pickle.dump(progresso,arquivo_progresso)
+        #fechar arquivos
         arquivo_saldo.close()
         arquivo_progresso.close()
         
     def ler(self, nome_arquivo):
-        
-        arquivo_saldo = open("imgTeste/"+nome_arquivo+"saldo","wb")
-        arquivo_progresso = open("imgTeste/"+nome_arquivo+"progresso","wb")
-        saldo = pickle.dump(arquivo_saldo)
-        progresso = pickle.dump(arquivo_progresso)
+        """
+            Ler o arquivo salvo que tem nome dado pela variavel nome_arquivo,
+            e retornar o valor do saldo e a lista de progresso.
+        """
+        #abrir arquivos
+        arquivo_saldo = open("imgTeste/"+nome_arquivo+"saldo","rb")
+        arquivo_progresso = open("imgTeste/"+nome_arquivo+"progresso","rb")
+        #pegar saldo da carteira salvo
+        saldo = pickle.load(arquivo_saldo)
+        #salvar progresso salvo
+        progresso = pickle.load(arquivo_progresso)
+        #fechar arquivos
         arquivo_saldo.close()
         arquivo_progresso.close()
-        
-        return BancoDados(progresso,saldo)
+        #retornar valor do saldo e do progresso
+        return (progresso,saldo)
         
 class BancoDados():
     """
@@ -49,7 +68,21 @@ class BancoDados():
         self._progresso_objetivo = {}
         self._progresso_objetivo["AviaoInimigo"] = 0
         self._progresso_objetivo["TorreInimiga"] = 0
-        
+    
+    def setCarteira(self,carteira):
+        """
+            Define uma nova carteira. 
+            Metodo usado quando ler um arquivo salvo.
+        """
+        self._carteira = carteira
+    
+    def setProgresso(self,progresso):
+        """
+            Define uma nova lista de progresso.
+            Metodo usado quando ler um arquivo salvo
+        """
+        self._progresso = progresso
+    
     def getCarteira(self):
         """
             retorna o saldo de pontos do jogador
