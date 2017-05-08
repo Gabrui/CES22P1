@@ -23,7 +23,7 @@ class Projetil(motor.Figura):
         if pos is None:
             pos = motor.Ponto(0,0)
         
-        self.direcao = motor.Angulo(0)
+        self.rot = motor.Angulo(0)
         self._string_imagem = Imagem
         self._Som = Som
         self._Dano = Dano
@@ -46,8 +46,8 @@ class Projetil(motor.Figura):
         Algoritmo da fisica de voo. Calcula posicao final
         """ 
         #Calula a velocidade X e Y
-        velX = math.cos(self.direcao.getAngulo(False))*self.veli
-        velY = math.sin(self.direcao.getAngulo(False))*self.veli
+        velX = math.cos(self.rot.getAngulo(False))*self.veli
+        velY = math.sin(self.rot.getAngulo(False))*self.veli
         #Truncamento
         VelocidadeX = int(velX)
         VelocidadeY = int(velY)
@@ -65,14 +65,18 @@ class Projetil(motor.Figura):
         posY = self.Pos.getY() - VelocidadeY
         #atualiza posicao
         self.Pos.setXY( posX, posY)
+    
+    
     def fisicaDeImpacto(self):
         """
         Algoritmo da fisica de impacto. 
         """
         self.even.lancar("tocarEfeito",self._Som)
-    def Disparo(self, posI,direcao):
+    
+    
+    def Disparo(self, posI,rot):
         self.Pos.setXY( posI.getX(), posI.getY())
-        self.direcao = motor.Angulo(direcao)
+        self.rot = motor.Angulo(rot)
         
         
         

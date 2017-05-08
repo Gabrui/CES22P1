@@ -13,26 +13,23 @@ distanciaManobra = 400 #valor constante para distancia minima para
 erro = 5 #erro angular aceitavel para atirar
 
 class IA(motor.Renderizavel):
-    def __init__(self,arma,Barra_Vida, pos, vel, alvoPos,
-                 alvoVel,
-                 deltaAngTol,string_som_fallShell=None):
-        motor.Renderizavel.__init__(self)
+    def __init__(self,arma,Barra_Vida, pos, centro, posTiro, alvoPos,
+                 alvoVel, deltaAngTol, string_som_fallShell = None):
+        motor.Renderizavel.__init__(self, pos, centro)
         """
         Barra_Vida: é um objeto do tipo Vida
-        alvoPos: (posXdoJogador,posYdoJogador)
-        alvoVel: (velXdoJogador,velYdoJogador)
+        alvoPos: Ponto(posXdoJogador,posYdoJogador)
+        alvoVel: Ponto(velXdoJogador,velYdoJogador)
         arma:    Objeto do tipo Arma
-        pos:     tupla de posicao do IA
-        vel:     tupla de velocidade do IA
+        pos:     Ponto de posicao do IA
+        centro:  Ponto do centro de rotação da IA
+        posTiro: Ponto de onde a bala é gerada, em relação ao centro
         velAng:  velocidade angular de IA
         deltaAngTol: angulo de tolerancia para disparo
         string_som_disparo: nome do arquivo do som do disparo
         """
-        
-        if pos is None:
-            pos = motor.Ponto(0,0)
-        if vel is None:
-            vel=motor.Ponto(velPadrao,0)
+        #Ponto de Tiro é com relação ao centro, devia ser inicializada
+        self.posTiro = posTiro
         if alvoPos is None:
             alvoPos = motor.Ponto(0,0)
         if alvoVel is None:
@@ -43,9 +40,6 @@ class IA(motor.Renderizavel):
         self.Barra_Vida = Barra_Vida
         self.Barra_Vida.setDono(self)
 
-        
-        self.Pos = pos
-        self.Vel = vel
         self.velAng = 0
         self.deltaAngTol = deltaAngTol
         self.arma = arma
@@ -112,13 +106,16 @@ class IA(motor.Renderizavel):
         self.dtAtirar =0
         #copia o projetil
         projetil = self.arma.getProjetil()
-        #copia a posicao
-        posInicialProjetil = self.pos.clonar()
         #ajusta a posicao inicial do projetil
-        posInicialProjetil.setXY(posInicialProjetil.getX()+
-                            math.cos(self.rot.getAngulo(False))*50,
-                                 posInicialProjetil.getY() - 
-                      math.sin(self.rot.getAngulo(False))*50)
+        Cx = self.centro.getX()
+        Cy = self.centro.getY()
+        alfa = math.atan2(Cy - self.posTiro.getY(),Cx - self.posTiro.getX())
+        hipo = math.sqrt((Cy - self.posTiro.getY())*(Cy - self.posTiro.getY())+ 
+                         (Cx - self.posTiro.getX())*(Cx - self.posTiro.getX()))
+        teta = self.rot.getAngulo(False)
+        posX = self.pos.getX() - hipo*math.cos(alfa + teta) + Cx
+        posY = self.pos.getY() - hipo*math.sin(alfa + teta) + Cy
+        posInicialProjetil = motor.Ponto(posX, posY)
         #coloca a posicao inicial no projetil
         projetil.Disparo(posInicialProjetil,self.rot.getAngulo())
         #Pegar nome do arquivo do som do disparo
@@ -132,13 +129,11 @@ class IA(motor.Renderizavel):
 class AviaoInimigo(IA,motor.Animacao):
     
     
-    def __init__(self,img1,img2, audio, arma, pos,PV,string_som_explosao,
-                 string_som_fallShell, vel, alvoPos,
-                 alvoVel,  
-                 deltaAngTol): 
-        IA.__init__(self,arma,PV, pos, vel, alvoPos,
-                 alvoVel,
-                 deltaAngTol,string_som_fallShell)
+    def __init__(self,img1,img2, audio, arma, pos, PV, string_som_explosao,
+                 string_som_fallShell, vel = None, alvoPos = None,
+                 alvoVel = None, deltaAngTol = None): 
+        IA.__init__(self,arma, PV, pos, motor.Ponto(32, 20),motor.Ponto(40, -5)
+            , alvoPos, alvoVel, deltaAngTol, string_som_fallShell)
         motor.Animacao.__init__(self,img1,pos = pos)
 
         """
@@ -174,8 +169,8 @@ class AviaoInimigo(IA,motor.Animacao):
         # self.even.lancar("tocarEfeito",self._audio)
         self.vivo = True
         
-        limiteEsquerdo = 300
-        limitedireito  = 300
+        limiteEsquerdo = 3000
+        limitedireito  = 3000
         self._iniciar_perseguicao = False
         self._posX_barrera_esquerda = pos.getX() - limiteEsquerdo
         self._posX_barrera_direita  = pos.getX() + limitedireito
@@ -241,7 +236,7 @@ class AviaoInimigo(IA,motor.Animacao):
         if self.vivo: # Se ficar atualizando, a explosão fica só no primeiro
             self.velo = 0
             self.setString("imgTeste/explosion17.png", 64, 64)
-            self.rodarAnimacao(3, 5)
+            self.rodarAnimacao(4, 1)
             self.even.lancar("tocarEfeito",self._string_som_explosao)
         self.vivo = False
         return self.Barra_Vida
@@ -272,7 +267,7 @@ class TorreInimiga(IA,motor.Figura):
                  arma,PV, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol): 
-        IA.__init__(self,arma, PV, pos, vel, alvoPos,
+        IA.__init__(self,arma, PV, pos, motor.Ponto(), motor.Ponto(), alvoPos,
                  alvoVel,
                  deltaAngTol,string_som_fallShell)
         motor.Figura.__init__(self,img, centro = motor.Ponto(110,100))

@@ -126,7 +126,7 @@ class Jogador(Aviao):
         self.hArrFrontRot           = 0
         self.empuxo                 = 0
         self.empuxoMax              = empuxoMacro[0] #Requer inicialização.
-        self.percMotor              = 0
+        self.percMotor              = 0.6
         #self.hArrFrontRotMax              #Requer inicialização
         self.hArrFrontRat           = empuxoMacro[4]   #Requer inicialização
         self.hForcaMotorMax         = empuxoMacro[2]   #Requer inicialização
