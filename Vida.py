@@ -4,11 +4,11 @@ Created on Sat Apr  1 19:14:38 2017
 
 @author: Dylan N. Sugimoto
 """
-from motor import Figura
+from motor import Camada,Figura,Ponto
 from IA import IA
 from aviao import Jogador
 
-class Vida(Figura):
+class Vida(Camada):
     """
     Representa os pontos de vida
     """
@@ -20,11 +20,12 @@ class Vida(Figura):
         Dono: é o objeto de qual a Vida vai representar a sua barra de vida.
         VidaAtual: é a quantidade de vida que o dono possui atualmente
         """
-        Figura.__init__(self,string_imagem[0])
+        Camada.__init__()
         self._MaxVida = Max
         self.VidaAtual = Max
+        self._proporcao = self.filhos[0].corte.getLargura() / self._MaxVida
         self.Dono = Dono
-        self.string_imagem = string_imagem
+
         
     def setDono(self, dono):
         """
@@ -47,13 +48,13 @@ class Vida(Figura):
                         imagens há na lista de string de imagens.
         """
         self.VidaAtual -=Dano
+        diminuirCorte = self.VidaAtual*self._proporcao
+        fundo = self.filhos[0].corte.getFundo()
+        novoFundoDireito = Ponto(diminuirCorte,fundo)
+        self.filhos[0].corte.setRetangulo(self.filhos[0].corte.getTopoEsquerdo(),novoFundoDireito)
         if self.VidaAtual <0:
             self.VidaAtual = 0
-        for i in range(1,len(self.string_imagem)):
-            fracao_vida = (len(self.string_imagem)-i)/len(self.string_imagem)
-            bloco_vida = self._MaxVida*fracao_vida
-            if self.VidaAtual <= bloco_vida:
-                self.setString(self.string_imagem[i])
+        
       
             
     def atualiza(self,dt):
