@@ -10,22 +10,23 @@ from aviao import Jogador
 
 class Vida(Camada):
     """
-    Representa os pontos de vida
+        Representa os pontos de vida
     """
-    def __init__(self, Max,string_imagem = None,Dono = None):
+    def __init__(self, Max,pos,Dono = None):
         """
         Max: Quantidade maxima de pontos de vida
-        pos: é um ponto com a posicao inicial da Vida
-        string_imagem: é uma lista de string com o caminho para a imagem da Barra de Vida
         Dono: é o objeto de qual a Vida vai representar a sua barra de vida.
         VidaAtual: é a quantidade de vida que o dono possui atualmente
+        filho[0]: é para ser a imagem interna da barra de vida.
+        posX_barra_vida_jogador: é a posicao X da barra de vida do jogador
+        posY_barra_vida_jogador: é a posicao Y da barra de vida do jogador
         """
-        Camada.__init__()
+        Camada.__init__(self, pos)
         self._MaxVida = Max
         self.VidaAtual = Max
-        self._proporcao = self.filhos[0].corte.getLargura() / self._MaxVida
         self.Dono = Dono
-
+        self.posX_barra_vida_jogador = pos.getX()
+        self.posY_barra_vida_jogador = pos.getY()
         
     def setDono(self, dono):
         """
@@ -41,32 +42,35 @@ class Vida(Camada):
     def reduzPV(self, Dano):
         """
             Diminuir a quantidade de vida atual.
+            
             Dano: Quantidade de dano sofrido
-            fracao_vida: é uma fração calculado a partir de quantas
-                         imagens há na lista de string de imagens.
-            bloco_vida: é uma parte da vida maxima calculado a partir de quantas
-                        imagens há na lista de string de imagens.
+            diminuirCorte: é a nova posicao X do canto direito inferior 
+                            do retangulo do corte.
+            fundo: é a posicao Y do canto direito inferior
+            novoFundoDireito: é o novo ponto do canto direito inferior
+            proporcao: relacao entre cada pixel e uma unidade de pontos de vida
         """
         self.VidaAtual -=Dano
-        diminuirCorte = self.VidaAtual*self._proporcao
-        fundo = self.filhos[0].corte.getFundo()
-        novoFundoDireito = Ponto(diminuirCorte,fundo)
-        self.filhos[0].corte.setRetangulo(self.filhos[0].corte.getTopoEsquerdo(),novoFundoDireito)
         if self.VidaAtual <0:
             self.VidaAtual = 0
+        self._proporcao = self.filhos[1].corte.getLargura() / self._MaxVida
+        diminuirCorte = self.VidaAtual*self._proporcao
+        fundo = self.filhos[1].corte.getFundo()
+        novoFundoDireito = Ponto(diminuirCorte,fundo)
+        #atualizando posicao do canto direito inferior do corte
+        self.filhos[1].corte.setRetangulo(self.filhos[1].corte.getTopoEsquerdo(),novoFundoDireito)
         
-      
-            
+    
     def atualiza(self,dt):
         
         if isinstance(self.Dono, IA):
+            #atualiza a posicao da barra de vida da IA
             posX = self.Dono.pos.getX()
             posY = self.Dono.pos.getY()-40
             self.pos.setXY(posX,posY)
-        elif isinstance(self.Dono, Jogador):
-            posX = 600
-            posY = 0
-            self.pos.setXY(posX,posY)
+        else:
+            self.pos.setXY(self.posX_barra_vida_jogador,self.posY_barra_vida_jogador)
+        super().atualiza(dt)
 
 class Velocimetro(Figura):
     

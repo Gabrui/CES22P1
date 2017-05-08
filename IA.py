@@ -42,7 +42,7 @@ class IA(motor.Renderizavel):
             
         self.Barra_Vida = Barra_Vida
         self.Barra_Vida.setDono(self)
-        self.Barra_Vida.pos.setXY(self.pos.getX(),self.pos.getY())
+
         
         self.Pos = pos
         self.Vel = vel
@@ -217,7 +217,9 @@ class AviaoInimigo(IA,motor.Animacao):
                self.realizarManobra180H()
    
     def patrulhar(self,dt):
-        
+        """
+            Aviao inimigo fica limitado a voar em uma determinada regiao
+        """
         visada = motor.Angulo(math.atan2(self.pos.getY() - self._posY_barrera_centro,
                             self._posX_barrera_centro - self.pos.getX()), False)
         dif = self.rot.getDiferenca(visada).getAngulo()
@@ -256,17 +258,11 @@ class AviaoInimigo(IA,motor.Animacao):
                 self.voarSimples(dt)
             if self._posX_barrera_esquerda <= self.alvoPos.getX() <= \
                self._posX_barrera_direita:
-                print(self._posX_barrera_esquerda)
-                print(self.alvoPos.getX())
-                print(self._posX_barrera_direita)
-                print("_________________________")
+                
                 self._iniciar_perseguicao = True
             elif self.alvoPos.getX() <= self._posX_barrera_esquerda or \
                  self.alvoPos.getX() >= self._posX_barrera_direita:
-                print(self._posX_barrera_esquerda)
-                print(self.alvoPos.getX())
-                print(self._posX_barrera_direita)
-                print("_________________________")
+               
                 self._iniciar_perseguicao = False
 
 
