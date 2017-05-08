@@ -434,7 +434,7 @@ class Jogador(Aviao):
             self.xVel = 0
             self.yVel = 0
             self.setString("imgTeste/explosion17.png", 64, 64)
-            self.rodarAnimacao(3, 5)
+            self.rodarAnimacao(3, 1)
             self.even.lancar("tocarEfeito",self._string_som_explosao)
         self.vivo = False
         
