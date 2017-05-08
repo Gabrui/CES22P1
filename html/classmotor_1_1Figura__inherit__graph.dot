@@ -1,0 +1,24 @@
+digraph "motor.Figura"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="motor.Figura",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="motor.Renderizavel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmotor_1_1Renderizavel.html",tooltip="Classe abstrata que contém os atributos básicos de um objeto renderizável. "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="IA.TorreInimiga",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classIA_1_1TorreInimiga.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="motor.Animacao",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmotor_1_1Animacao.html",tooltip="Classe base para uma animação de spritesheet (folha de animações) "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="aviao.Aviao",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classaviao_1_1Aviao.html"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="aviao.Jogador",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classaviao_1_1Jogador.html",tooltip="#Funciona com 1º: Condições aerodinâmicas macro: [arrastoMax, sustMax, veloMax,[gráficoDosCoeficiente..."];
+  Node4 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="IA.AviaoInimigo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classIA_1_1AviaoInimigo.html"];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Projetil.Projetil",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classProjetil_1_1Projetil.html",tooltip="Representa a ideia abstrata de projetil. "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Vida.Altimetro",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classVida_1_1Altimetro.html",tooltip="Representa o HUD Velocimetro. "];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Vida.Velocimetro",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classVida_1_1Velocimetro.html",tooltip="Representa o HUD Velocimetro. "];
+}

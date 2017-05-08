@@ -1,0 +1,7 @@
+digraph "Gráfico de Hierarquia de Classes"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="gameloop.Jogo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classgameloop_1_1Jogo.html",tooltip="Controla o loop principal do jogo, faz as transições de cena. "];
+}
