@@ -1767,7 +1767,7 @@ class item (Botao):
         Representa os itens da loja.
     """
     def __init__(self,nome_evento_compra,string_chamada, string_imagem1,
-                 string_imagem2, som_click,valor = None,pos = None,
+                 string_imagem2, som_click,valor = None,XP = None,pos = None,
                  centro = None, escala = None, rot = None, 
                  cor = None):
         """
@@ -1776,11 +1776,15 @@ class item (Botao):
             _valor: é o preco do item.
             _cadeado: True está com cadeado. False nao está com cadeado
             _img_cadeado: imagem do cadeado
+            _XP: é preco do item em pontos de experiencia.
         """
         super().__init__(nome_evento_compra,string_chamada, string_imagem1, 
                          string_imagem2, som_click, pos,centro,escala,rot,cor)
         if valor == None:
             valor = 100
+        if XP == None:
+            XP = 200
+        self._XP = XP
         self._valor = valor
         self._cadeado = True
         #escutar evento de compra. 
@@ -1796,9 +1800,9 @@ class item (Botao):
             verifica se este item esta disponivel para compra ou nao.
         """
         #pega o saldo da carteira do Jogador.
-        saldo = banco_dados.getCarteira()
+        reputacao = banco_dados.getXP()
         #verifica condicao de disponibilidade da compra
-        if saldo >= self._valor:
+        if reputacao >= self._valor:
             return True
         else:
             return False
