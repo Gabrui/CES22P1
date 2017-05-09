@@ -571,6 +571,51 @@ class PainelMenuPause(Cena):
     
 #----------------Fim da classe PainelMenuPause---------------------------------    
 
+class PainelGameOver(Cena):
+    
+    def __init__(self,audio,entrada,renderizador,string_musica_fundo=None):
+        Cena.__init__(self,audio,entrada,renderizador,string_musica_fundo)
+        
+        #-------------Constantes-----------------------------------------------
+        #posicoes
+        self._PosbackGround = Ponto(190,41)
+        self._PosTextResumir = Ponto(330,200)
+        self._PosTextGameOver = Ponto(360,60)
+        self._PosTextSair = Ponto(330,400)
+        #imagens
+        self._string_imagem_background = "imgTeste/c01_Background_vazio.png"
+        self._string_imagem_continuar = "imgTeste/c01_botao_continuar.png"
+        self._string_imagem_continuar2 = "imgTeste/c01_botao_continuar2.png"
+        self._string_imagem_textSair = "imgTeste/c04_Text_Sair.png"
+        self._string_imagem_textSair2 = "imgTeste/c03_Text_Sair.png"
+        self._string_imagem_textGameOVer = "imgTeste/text_Game_over.png"
+        #sons
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
+        #--------------Fim das constantes--------------------------------------
+        
+        #CRIAR imagens
+        img_background = Figura(self._string_imagem_background,
+                                pos = self._PosbackGround)
+        img_Text_gameOver = Figura(self._string_imagem_textGameOVer,
+                                   pos = self._PosTextGameOver)
+        #Criar botoes
+        Botao_continuar = Botao("Play","MenuGameOver",self._string_imagem_continuar,
+                              self._string_imagem_continuar2,
+                              self._string_som_buttonClick,
+                              self._PosTextResumir)
+        Botao_sair = Botao("sair","MenuGameOver",self._string_imagem_textSair,
+                              self._string_imagem_textSair2,
+                              self._string_som_buttonClick,
+                              self._PosTextSair)
+        #montar cena
+        self.adicionaFilho(img_background)
+        self.adicionaFilho(img_Text_gameOver)
+        self.adicionaFilho(Botao_continuar)
+        self.adicionaFilho(Botao_sair)
+#----------------Fim da Classe PainelGameOver----------------------------------------
+
+
+
 class Painelgameplay(Cena):
     
     def __init__(self,audio,entrada,renderizador,larguraTela,alturaTela,
@@ -702,7 +747,7 @@ class Painelgameplay(Cena):
         self.even.escutar("K_p",self.pausar)
         for filho in self.filhos:
             filho.ativarEscuta()
-
+#---------------------------------Fim da classe Painelgameplay-----------------
 class Jogo():
     """Controla o loop principal do jogo, faz as transições de cena"""
     
@@ -741,16 +786,18 @@ class Jogo():
     def gameplay(self,chamada):
         self.audio.pararMusicaFundo()
         self.limparEventos()
-        if chamada == "MenuMissoes":
+   
+        if chamada == "MenuPause":
+           self.cenaAtual = self.cenaAnterior
+           self.cenaAtual.ativarEscuta()
+           
+        else:
+            
             self.cenaAtual = Painelgameplay(self.audio,self.entrada,
                                             self.renderizador,self.larguraTela,
                                             self.alturaTela,
                                             "imgTeste/NowOrNever.ogg")
             self.cenaAnterior = self.cenaAtual
-           
-        else:
-           self.cenaAtual = self.cenaAnterior
-           self.cenaAtual.ativarEscuta()
     
     
     def MenuPrincipal(self,chamada):
@@ -800,7 +847,13 @@ class Jogo():
         #trocando de  transparencias
         self.cenaAtual = PainelHangar(self.audio,self.entrada,
                                          self.renderizador)
-    
+    def MenuGameOver(self, chamada):
+        
+        #limpando eventos
+        self.limparEventos()
+        #trocando de  transparencias
+        self.cenaAtual = PainelGameOver(self.audio,self.entrada,
+                                         self.renderizador)
     
     def limparEventos(self):
         self.even.pararDeEscutarTudo()
@@ -813,6 +866,7 @@ class Jogo():
         self.even.escutar("MenuPause",self.MenuPause)
         self.even.escutar("MenuJogoSalvo",self.MenuJogosSalvos)
         self.even.escutar("Hangar",self.MenuHangar)
+        self.even.escutar("GameOver",self.MenuGameOver)
         self.audio.escutas()
         self.renderizador.escutas()
     
