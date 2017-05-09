@@ -27,6 +27,8 @@ class IA(motor.Renderizavel):
         velAng:  velocidade angular de IA
         deltaAngTol: angulo de tolerancia para disparo
         string_som_disparo: nome do arquivo do som do disparo
+        _valor: é a recompensa por abater a IA
+        _reputacao: é a recompensa em pontos de experiencia por abater a IA
         """
         #Ponto de Tiro é com relação ao centro, devia ser inicializada
         if posTiro is not None:
@@ -61,7 +63,7 @@ class IA(motor.Renderizavel):
         self.ativarEscuta()
         
         self._valor = 10
-        
+        self._reputacao = 100
     
     def getValor(self):
         """
@@ -69,6 +71,11 @@ class IA(motor.Renderizavel):
         """
         return self._valor
     
+    def getReputacao(self):
+        """
+            Retorna quanto que a IA vale em pontos de experiencia no jogo
+        """
+        return self._reputacao
     
     def reduzPV(self,dano):
         """
@@ -268,7 +275,7 @@ class AviaoInimigo(IA, motor.Animacao):
         if self.vivo: # Se ficar atualizando, a explosão fica só no primeiro
             self.velo = 0
             self.setString("imgTeste/explosion17.png", 64, 64)
-            self.rodarAnimacao(4, 1)
+            self.rodarAnimacao(3, 1)
             self.even.lancar("tocarEfeito",self._string_som_explosao)
         self.vivo = False
         return self.Barra_Vida

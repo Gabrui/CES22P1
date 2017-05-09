@@ -137,6 +137,7 @@ class Simulador(motor.Camada):
                                 #Se IA esvier morta, remove do gameplay
                                 self.removeFilho(barra_vida)
                                 banco_dados.acrescimoSaldo(irmao.getValor())
+                                banco_dados.acrescimoXP(irmao.getReputacao())
                                 if isinstance(irmao,IA.AviaoInimigo):
                                     #contabiliza o abate de aviao inimigo
                                     banco_dados.contabilizarAbate("AviaoInimigo")
@@ -158,6 +159,7 @@ class Simulador(motor.Camada):
                                 self.removeFilho(barra_vida)
                                 #carteira do jogador recebe recompensa
                                 banco_dados.acrescimoSaldo(filhos.getValor())
+                                banco_dados.acrescimoXP(filhos.getReputacao())
                                 if isinstance(filhos,IA.AviaoInimigo):
                                     #contabiliza o abate de aviao inimigo
                                     banco_dados.contabilizarAbate("AviaoInimigo")
