@@ -584,12 +584,9 @@ class Painelgameplay(Cena):
         fundo3 = Figura("imgTeste/nuvem.png")
         
         #criando jogador
-        barra_vida_interna = Figura("imgTeste/barra_vida_interna.png",
-                                    pos =Ponto(10,10))
-        barra_vida_externa = Figura("imgTeste/barra_vida_externa.png")
-        Barra_Vida_Jogador = Vida(1000, Ponto(larguraTela-340,0))
-        Barra_Vida_Jogador.adicionaFilho(barra_vida_externa)
-        Barra_Vida_Jogador.adicionaFilho(barra_vida_interna)
+        Barra_Vida_Jogador = Vida(1000, Ponto(larguraTela-340,0),Ponto(10,10),
+                                  "imgTeste/barra_vida_interna.png",
+                                  "imgTeste/barra_vida_externa.png")
         projetilJogador = Projetil("imgTeste/BulletEnemies.png","imgTeste/MetalHit1.ogg",
                                    1,Ponto(0,0))
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
@@ -601,12 +598,9 @@ class Painelgameplay(Cena):
                      PV = Barra_Vida_Jogador)
         armaJogador.setDono(avi)
         #Criando aviao inimigo
-        barra_vida_interna_IA = Figura("imgTeste/barra_vida_interna_IA.png",
-                                       pos = Ponto(2,2))
-        barra_vida_externa_IA = Figura("imgTeste/barra_vida_externa_IA.png")
-        Barra_Vida_AviaoInimigo = Vida(100,Ponto(300,100))
-        Barra_Vida_AviaoInimigo.adicionaFilho(barra_vida_externa_IA)
-        Barra_Vida_AviaoInimigo.adicionaFilho( barra_vida_interna_IA)
+        Barra_Vida_AviaoInimigo = Vida(100,Ponto(300,100),Ponto(2,2),
+                                       "imgTeste/barra_vida_interna_IA.png",
+                                       "imgTeste/barra_vida_externa_IA.png")
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",100,
                                                 Ponto(0,0))
@@ -624,12 +618,9 @@ class Painelgameplay(Cena):
                                         None,None)
         armaAviaoInimigo.setDono(aviaoInimigo)
         #Criando outro aviao inimigo
-        barra_vida_interna_IA2 = Figura("imgTeste/barra_vida_interna_IA.png",
-                                        pos = Ponto(2,2))
-        barra_vida_externa_IA2 = Figura("imgTeste/barra_vida_externa_IA.png")
-        Barra_Vida_AviaoInimigo2 = Vida(100,Ponto(300,50))
-        Barra_Vida_AviaoInimigo2.adicionaFilho(barra_vida_externa_IA2)
-        Barra_Vida_AviaoInimigo2.adicionaFilho( barra_vida_interna_IA2)
+        Barra_Vida_AviaoInimigo2 = Vida(100,Ponto(300,50),Ponto(2,2),
+                                        "imgTeste/barra_vida_interna_IA.png",
+                                        "imgTeste/barra_vida_externa_IA.png")
         projetilArmaAviaoInimigo2 = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",100,
                                                 Ponto(0,0))
@@ -647,12 +638,9 @@ class Painelgameplay(Cena):
                                         None,None)
         armaAviaoInimigo2.setDono(aviaoInimigo2)
         #Criando Torre Inimiga
-        barra_vida_interna_IA3 = Figura("imgTeste/barra_vida_interna_IA.png",
-                                        pos = Ponto(2,2))
-        barra_vida_externa_IA3 = Figura("imgTeste/barra_vida_externa_IA.png")
-        Barra_Vida_TorreInimiga = Vida(1000,Ponto(800,580))
-        Barra_Vida_TorreInimiga.adicionaFilho(barra_vida_externa_IA3)
-        Barra_Vida_TorreInimiga.adicionaFilho(barra_vida_interna_IA3)
+        Barra_Vida_TorreInimiga = Vida(1000,Ponto(800,580),Ponto(2,2),
+                                       "imgTeste/barra_vida_interna_IA.png",
+                                       "imgTeste/barra_vida_externa_IA.png")
         projetilTorreInimiga = Projetil("imgTeste/Bullet_3.png",
                                         "imgTeste/MetalHit1.ogg",
                                         10,Ponto(0,0))
