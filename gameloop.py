@@ -862,8 +862,13 @@ class Jogo():
     def MenuOperacoes(self,chamada):
         self.limparEventos()
         #trocando de transparencias
+        if chamada == "MenuHangar":
+            self.audio.pararMusicaFundo()
+            musica_fundo = "imgTeste/01_-_Sketchy_Logic_-_Ride_Onward.ogg"
+        else:
+            musica_fundo = None
         self.cenaAtual = PainelMenuOperacoes(self.audio,self.entrada,
-                                         self.renderizador)
+                                         self.renderizador, musica_fundo)
     
     
     def MenuMissao1(self,chamada):
@@ -885,12 +890,13 @@ class Jogo():
         self.cenaAtual = PainelJogosSalvos(self.audio,self.entrada,
                                          self.renderizador)
     def MenuHangar(self, chamada):
-        
+        self.audio.pararMusicaFundo()
         #limpando eventos
         self.limparEventos()
         #trocando de  transparencias
+        musica_fundo = "imgTeste/05_-_Sketchy_Logic_-_Victory_and_Respite.ogg"
         self.cenaAtual = PainelHangar(self.audio,self.entrada,
-                                         self.renderizador)
+                                         self.renderizador,musica_fundo)
     def MenuGameOver(self, chamada):
         
         #limpando eventos
