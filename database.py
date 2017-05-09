@@ -152,6 +152,7 @@ class BancoDados():
         """
         self._objetivo[string_objetivo] = objetivo 
         self.string_objetivo = string_objetivo
+        self._progresso_objetivo[string_objetivo] = 0
         
         
     def verificarObjetivo(self):
@@ -172,8 +173,7 @@ class BancoDados():
         """
         self._progresso_objetivo[string_abatido] = \
         self._progresso_objetivo.get(string_abatido)+1
-        print(string_abatido)
-        print(self._progresso_objetivo[string_abatido])
+        
         
 #-----------------------------Fim da Classe Banco de Dados---------------------
 banco_dados = BancoDados()
