@@ -42,10 +42,20 @@ class Simulador(motor.Camada):
         for filho in self.filhos:
             if isinstance(filho, aviao.Jogador):
                 self.PosXCentroTela = filho.pos.getX()
+                print(self.PosXCentroTela)
                 self.even.lancar("PlayerLocation",(filho.pos.getX(),
                                                    filho.pos.getY(),
                                                    filho.xVel,filho.yVel))
         super().atualiza(dt)
+        
+    def adicionaHangar(self,filho):
+        """
+            Adiciona o hangar na lista de filhos, e pega a sua referencia 
+            objeto.
+        """
+        self.hangar = filho
+        
+        self.adicionaFilho(filho)
         
     
     def verificarColisao(self,dt):
@@ -111,7 +121,8 @@ class Simulador(motor.Camada):
                                   #      self.even.lancar("GameOver",True)
                                        
                         elif (isinstance(filhos,Projetil.Projetil) and\
-                              isinstance(irmao,IA.IA)):
+                              isinstance(irmao,IA.IA)) and\
+                              filhos.getDono() != irmao:
                            
                             #Se houver colisao entre projetil e IA
                             #reduz os pontos de vida da IA
@@ -136,7 +147,8 @@ class Simulador(motor.Camada):
                                     
                                 
                         elif(isinstance(filhos, IA.IA) and \
-                             isinstance(irmao,Projetil.Projetil)):
+                             isinstance(irmao,Projetil.Projetil)) and\
+                             irmao.getDono() != filhos:
                             
                                 #o mesmo que a anterior
                             filhos.reduzPV(irmao.getDano())
@@ -154,11 +166,23 @@ class Simulador(motor.Camada):
                                     #contabiliza a destruicao de uma torre
                                     banco_dados.contabilizarAbate("TorreInimiga")
                                     
+                        elif isinstance(filhos,aviao.Jogador) and \
+                             irmao == self.hangar:
+                            #Se for colisao entre jogador e hangar
+                            # mudar para menu do Hangar
+                                 self.even.lancar("Hangar","gameplay")
+                                 
+                        elif isinstance(irmao,aviao.Jogador) and \
+                             filhos == self.hangar:
+                            #Se for colisao entre jogador e hangar
+                            # mudar para menu do Hangar
+                                 self.even.lancar("Hangar","gameplay")
+                                 
             if isinstance(filhos, Projetil.Projetil):
                 if filhos.pos.getX()<self.PosXCentroTela-self.meialarguraTela or\
                    filhos.pos.getX() > self.PosXCentroTela + self.meialarguraTela\
                    or filhos.pos.getY() >= self.posChao:
-                   #Se for projetil ou IA, remove do gameplay
+                   #Se o projetil sair da tela, remove do gameplay
                    self.removeFilho(filhos)
             
             if filhos.pos.getY() >= self.posChao:
