@@ -39,7 +39,7 @@ class Projetil(motor.Figura):
         return self._dano
     
     
-    def getdono(self):
+    def getDono(self):
         return self.dono
     
     
