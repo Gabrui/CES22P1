@@ -1656,24 +1656,29 @@ class Camada(Renderizavel):
                 x, y = Aux.coordsInscrito( ang, filho.centro.getX(), 
                             filho.centro.getY(), filho.corte.getLargura(), 
                                              filho.corte.getAltura())
-                x = estado[2] - x
-                y = estado[3] - y
-                figs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
-                    estado[5], estado[6], estado[7], estado[8], estado[9],
-                    estado[10])
+            else:
+                x = filho.centro.getX()
+                y = filho.centro.getY()
+            x = estado[2] - x
+            y = estado[3] - y
+            figs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
+                estado[5], estado[6], estado[7], estado[8], estado[9],
+                estado[10])
         for i in range(len(texs)):
             estado = texs[i]
             filho = estado[10]
             ang = Angulo(estado[4])
             if ang.getAngulo() != 0:
                 x, y = Aux.coordsInscrito( ang, filho.centro.getX(), 
-                            filho.centro.getY(), filho.corte.getLargura(), 
-                                             filho.corte.getAltura())
-                x = estado[2] - x
-                y = estado[3] - y
-                texs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
-                    estado[5], estado[6], estado[7], estado[8], estado[9],
-                    estado[10])
+                            filho.centro.getY(), filho.size[0], filho.size[1])
+            else:
+                x = filho.centro.getX()
+                y = filho.centro.getY()
+            x = estado[2] - x
+            y = estado[3] - y
+            texs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
+                estado[5], estado[6], estado[7], estado[8], estado[9],
+                estado[10])
         return figtex
     
     
@@ -1779,13 +1784,11 @@ class Cena(Camada):
     def atualiza(self, dt):
         """Propaga o loop do jogo, sabendo o intervalo de tempo dt 
         transcorrido"""
+        super().atualiza(dt)
         self.entrada.atualiza()
-        
-        
         imgs, txts = self._transformaFinal(self._observaFilhos())
         retangs = self.renderizador.renderiza(imgs, txts)
         for ret in retangs:
             ret[0].retang.setDimensoes(ret[1], ret[2], ret[3], ret[4])
         self._atualizaRetangs()
-        super().atualiza(dt)
 

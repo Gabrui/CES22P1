@@ -9,8 +9,10 @@ Created on Sat Apr  1 13:49:41 2017
 import unittest
 
 
-from motor import Aux, Angulo, Ponto, Retangulo, Evento, Camada, Figura
+from motor import Aux, Angulo, Ponto, Retangulo, Evento, Camada, Figura, \
+    Renderizador, Audio, Entrada, Cena, Cor, Texto
 from math import sin, cos, atan2, sqrt, pi
+
 
 class AuxTeste(unittest.TestCase):
     
@@ -249,9 +251,9 @@ class AnguloTeste(unittest.TestCase):
 class CamadaTeste(unittest.TestCase):
     
     def setUp(self):
-        self.f1 = Figura("f1.png", Retangulo(Ponto(0,0), Ponto(100, 100)))
-        self.f2 = Figura("f2.png", Retangulo(Ponto(0,0), Ponto(100, 100)), 
-                    Ponto(21, 94))
+        self.f1 = Figura(imagem, Retangulo(Ponto(0,0), Ponto(100, 100)))
+        self.f2 = Figura(imagem, Retangulo(Ponto(0,0), Ponto(100, 100)), 
+                         Ponto(21, 94))
         self.c0 = Camada()
         self.c1 = Camada(Ponto(43, 27))
         self.c2 = Camada(Ponto(1002, 3842))
@@ -281,6 +283,33 @@ class CamadaTeste(unittest.TestCase):
         self.assertAlmostEqual(figs[1][3], 94*cos(a) + 21*sin(a))
         
 
+rend = Renderizador("Teste", 800, 600)
+audi = Audio()
+entr = Entrada()
+imagem = "imgTeste/sky.png"
+
+class CenaTeste(unittest.TestCase):
+    
+    def setUp(self):
+        self.cena = Cena(audi, entr, rend)
+    
+    
+    def testarFiguras(self):
+        pos = Ponto(200, 200)
+        centro = Ponto(0, 0)
+        f1 = Figura(imagem, Retangulo(Ponto(0,0), Ponto(100, 100)), pos, 
+                    rot = Angulo(130), centro = centro)
+        f2 = Figura(imagem, Retangulo(Ponto(0,0), Ponto(100, 100)), pos, 
+                    centro = Ponto(100,100))
+        texto = Texto("Teste", ("Sans", 20, False, False), 
+                      cor = Cor(1, 255, 255, 255, 1))
+        self.cena.adicionaFilho(f1)
+        self.cena.adicionaFilho(f2)
+        self.cena.adicionaFilho(texto)
+        self.cena.atualiza(1)
+        
+        
+    
 
 
     

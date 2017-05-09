@@ -13,7 +13,7 @@ distanciaManobra = 400 #valor constante para distancia minima para
 erro = 5 #erro angular aceitavel para atirar
 
 class IA(motor.Renderizavel):
-    def __init__(self,arma,Barra_Vida, pos, centro, posTiro, alvoPos,
+    def __init__(self, arma, Barra_Vida, pos, centro, posTiro, alvoPos,
                  alvoVel, deltaAngTol, string_som_fallShell = None):
         motor.Renderizavel.__init__(self, pos, centro)
         """
@@ -29,7 +29,10 @@ class IA(motor.Renderizavel):
         string_som_disparo: nome do arquivo do som do disparo
         """
         #Ponto de Tiro é com relação ao centro, devia ser inicializada
-        self.posTiro = posTiro
+        if posTiro is not None:
+            self.posTiro = posTiro
+        else:
+            self.posTiro = centro
         if alvoPos is None:
             alvoPos = motor.Ponto(0,0)
         if alvoVel is None:
@@ -40,6 +43,7 @@ class IA(motor.Renderizavel):
         self.Barra_Vida = Barra_Vida
         self.Barra_Vida.setDono(self)
 
+        self.velRotMax = 56
         self.velAng = 0
         self.deltaAngTol = deltaAngTol
         self.arma = arma
@@ -103,15 +107,14 @@ class IA(motor.Renderizavel):
         visada = motor.Angulo(math.atan2(self.pos.getY() - self.alvoPos.getY(),
                             self.alvoPos.getX() - self.pos.getX()), False)
         dif = self.rot.getDiferenca(visada).getAngulo()
-        self.velMax = 56
         
         # Cálculo da velocidade
-        if abs(dif) < self.velMax:
+        if abs(dif) < self.velRotMax:
             vel = dif
         elif dif > 0:
-            vel = self.velMax
+            vel = self.velRotMax
         else:
-            vel = -self.velMax
+            vel = -self.velRotMax
         if abs(dif) < self.deltaAngTol.getAngulo():
             self.dtAtirar +=dt
             if self.dtAtirar> self.dtAtirarMin:
@@ -296,37 +299,22 @@ class AviaoInimigo(IA, motor.Animacao):
 class TorreInimiga(IA, motor.Figura):
     
     def __init__(self,img,string_som_fallShell,
-                 arma,PV, pos, vel, alvoPos,
-                 alvoVel,
-                 deltaAngTol): 
-        centro = motor.Ponto(0, 46)
-        posTiro = motor.Ponto(95, 46)
-        IA.__init__(self,arma, PV, pos, centro, posTiro, alvoPos,
-                 alvoVel,
-                 deltaAngTol,string_som_fallShell)
-        motor.Figura.__init__(self,img, centro = centro)
+                 arma,PV, pos = None, alvoPos = None,
+                 alvoVel = None, deltaAngTol = None, 
+                 centro = None, posTiro = None): 
+        IA.__init__(self, arma, PV, pos, centro, posTiro, alvoPos,
+                    alvoVel, deltaAngTol, string_som_fallShell)
+        motor.Figura.__init__(self, img, pos = pos, centro = centro)
         """
         img:     É a string do nome do arquivo imagem da Torre inimiga
         string_som_disparo:   É a string do nome do arquivo audio do disparo
         alvoPos: (posXdoJogador,posYdoJogador)
         alvoVel: (velXdoJogador,velYdoJogador)
         arma:    Objeto do tipo Arma
-        pos:     tupla de posicao da Torre Inimiga
-        vel:     tupla de velocidade da Torre inimiga. No caso é sempre zero.
+        pos:     Ponto de posicao da Torre Inimiga
+        vel:     Ponto de velocidade da Torre inimiga. No caso é sempre zero.
         deltaAngTol: angulo de tolerancia para disparo
         """
-        if pos is None:
-            pos = motor.Ponto(0,0)
-        if vel is None:
-            vel=motor.Ponto(velPadrao,0)
-        if alvoPos is None:
-            alvoPos = motor.Ponto(0,0)
-        if alvoVel is None:
-            alvoVel = motor.Ponto(0,0)
-        if deltaAngTol is None:
-            deltaAngTol = motor.Angulo(10)
-        self.pos.setXY(pos.getX(),pos.getY())
-        
         self._valor = 1000
         
         

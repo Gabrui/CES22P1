@@ -649,13 +649,16 @@ class Painelgameplay(Cena):
         torreInimiga = TorreInimiga("imgTeste/Cano_Turret_simetrica.png",
                                     "imgTeste/Shells_falls.ogg",
                                     armaTorreInimiga,
-                                    Barra_Vida_TorreInimiga,Ponto(800,580),
-                                    None,None,
-                                    None,None)
+                                    Barra_Vida_TorreInimiga, 
+                                    pos = Ponto(800,580),
+                                    centro = Ponto(0, 46),
+                                    posTiro = Ponto(95, 46)
+                                    )
         armaTorreInimiga.setDono(torreInimiga)
         baseTorreInimiga = Figura("imgTeste/Base_Turret.png", 
                                   pos = Ponto(800, 580), 
-                                  centro = Ponto(34, 5))
+                                  centro = Ponto(33, 9)
+                                  )
         
         #criar Hangar
         hangar = Figura("imgTeste/airport.png", pos = Ponto(1800,580))
