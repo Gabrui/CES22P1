@@ -20,36 +20,56 @@ class arquivo():
         #abrir arquivos
         arquivo_saldo = open("imgTeste/"+nome_arquivo+"saldo","wb")
         arquivo_progresso = open("imgTeste/"+nome_arquivo+"progresso","wb")
+        arquivo_string_imagem_aviao = open("imgTeste/"+nome_arquivo+"img_aviao","wb")
+        arquivo_string_imagem_aviao_inv = open("imgTeste/"+nome_arquivo+
+                                               "img_aviao_inv","wb")
+        
         #pegar saldo da carteira
         saldo = banco_dados.getCarteira()
         #pegar progresso do jogo
         progresso = banco_dados.getProgresso()
+        #pegar a lista de skin de aviao do Jogador
+        _string_imagem_aviao = banco_dados.getStringAviao()[0]
+        _string_imagem_aviao_inv = banco_dados.getStringAviao()[1]
         #salvar saldo 
         pickle.dump(saldo,arquivo_saldo)
         #salvar progresso
         pickle.dump(progresso,arquivo_progresso)
+        #salvar lista de skin de aviao do Jogador
+        pickle.dump(_string_imagem_aviao, arquivo_string_imagem_aviao)
+        pickle.dump(_string_imagem_aviao_inv,arquivo_string_imagem_aviao_inv)
         #fechar arquivos
         arquivo_saldo.close()
         arquivo_progresso.close()
+        arquivo_string_imagem_aviao.close()
+        arquivo_string_imagem_aviao_inv.close()
         
         
     def ler(self, nome_arquivo):
         """
             Ler o arquivo salvo que tem nome dado pela variavel nome_arquivo,
-            e retornar o valor do saldo e a lista de progresso.
+            e retornar as informacoes lidas.
         """
         #abrir arquivos
         arquivo_saldo = open("imgTeste/"+nome_arquivo+"saldo","rb")
         arquivo_progresso = open("imgTeste/"+nome_arquivo+"progresso","rb")
+        arquivo_string_imagem_aviao = open("imgTeste/"+nome_arquivo+"img_aviao","rb")
+        arquivo_string_imagem_aviao_inv = open("imgTeste/"+nome_arquivo+
+                                               "img_aviao_inv","rb")
         #pegar saldo da carteira salvo
         saldo = pickle.load(arquivo_saldo)
-        #salvar progresso salvo
+        #pegar o progresso salvo
         progresso = pickle.load(arquivo_progresso)
+        #pegar a lista de skin de aviao do Jogador salvada.
+        _string_imagem_aviao = pickle.load(arquivo_string_imagem_aviao)
+        _string_imagem_aviao_inv = pickle.load(arquivo_string_imagem_aviao_inv)
         #fechar arquivos
         arquivo_saldo.close()
         arquivo_progresso.close()
+        arquivo_string_imagem_aviao.close()
+        arquivo_string_imagem_aviao_inv.close()
         #retornar valor do saldo e do progresso
-        return (progresso,saldo)
+        return (progresso,saldo, _string_imagem_aviao,_string_imagem_aviao_inv)
         
 
 
@@ -65,6 +85,12 @@ class BancoDados():
                        quantidade de operacoes concluidas e o segundo é a 
                        quantidade de missoes concluidas daquela operacao.
             carteira:  guarda a quantidade de pontos obtido pelo jogador.
+            _string_imagem_aviao: é uma lista de string de imagens.
+            _skinAtual: é um inteiro que indica uma posicao na lista de string
+                        imagens de aviao.
+            _objetivo: é um dicionario que guarda o nome do inimigo que deve 
+                        ser abatido e a quantidade deles que deve ser abatida.
+            _progresso_objetivo: dicionario que contabiliza os abates.
         """
         if progresso == None:
             progresso = [(1,0)]
@@ -79,28 +105,48 @@ class BancoDados():
         self._skinAtual = 0
     
     def MudarSkinAtual(self):
-        
+        """
+            mudar a string da imagem do aviao do Jogador.
+        """
         self._skinAtual += 1
         if self._skinAtual >= len(self._string_imagem_aviao):
             self._skinAtual = 0  
     
-    def setStringAviao(self,string_img):
-        
+    def addStringAviao(self,string_img):
+        """
+            adiciona uma string na lista.
+        """
         self._string_imagem_aviao.append(string_img[0])
         self._string_imagem_aviao_invertido.append(string_img[1])
         
     def getStringAviao(self):
-        
+        """
+            Pegar a lista de string de imagens de avioes do Jogador.
+            Metodo usado para salvar as listas.
+        """
         return (self._string_imagem_aviao,self._string_imagem_aviao_invertido)
     
     def getTamListaSkinAviao(self):
-        
+        """
+            Retorna o tamanho da lista de skins de aviao do jogador
+        """
         return len(self._string_imagem_aviao)
         
     def getSkinAtual(self):
-        
+        """
+            Passar a string imagem da skin atual do aviao do Jogador.
+        """
         return (self._string_imagem_aviao[self._skinAtual]
                 ,self._string_imagem_aviao_invertido[self._skinAtual])
+    
+    def setStringAviao(self,string_img):
+        """
+            Define novas listas de string imagem.
+            Metodo usado quando ler um arquivo salvo.
+            string_img: é uma tupla de listas de string
+        """
+        self._string_imagem_aviao = string_img[0]
+        self._string_imagem_aviao_invertido = string_img[1]
     
     def setCarteira(self,carteira):
         """
