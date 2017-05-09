@@ -499,14 +499,14 @@ class PainelJogosSalvos(Cena):
         
         #--------------------------Constantes----------------------------------
         
-        self._Posbackground = Ponto(4,43)
-        self._PosTextJogo1  = Ponto(10,50)
-        self._PosTextJogo2  = Ponto(10,55)
-        self._PosTextJogo3  = Ponto(10,60)
-        self._PosTextJogoSalvo = Ponto(10,80)
-        self._PosTextRetornar  = Ponto(10,90)
+        self._Posbackground = Ponto(220,43)
+        self._PosTextJogo1  = Ponto(430,150)
+        self._PosTextJogo2  = Ponto(430,230)
+        self._PosTextJogo3  = Ponto(430,310)
+        self._PosTextJogoSalvo = Ponto(385,60)
+        self._PosTextRetornar  = Ponto(520,500)
         
-        self._string_imagem_background = "imgTeste/c01_Background.png"
+        self._string_imagem_background = "imgTeste/c01_Background_vazio.png"
         self._string_imagem_TextJogo1  = "imgTeste/c02_Text_Jogo1.png"
         self._string_imagem_TextJogo2  = "imgTeste/c02_Text_Jogo2.png"
         self._string_imagem_TextJogo3  = "imgTeste/c02_Text_Jogo3.png"
@@ -551,6 +551,7 @@ class PainelJogosSalvos(Cena):
         dadosSalvos = ler_arquivo.ler(nome)
         banco_dados.setCarteira(dadosSalvos[1])
         banco_dados.setProgresso(dadosSalvos[0])
+        banco_dados.setStringAviao((dadosSalvos[2],dadosSalvos[3]))
         self.even.lancar("MenuPrincipal","MenuJogoSalvo")
         
 #------------------------------Fim da Classe Jogos Salvo-----------------------
