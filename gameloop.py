@@ -372,7 +372,7 @@ class PainelHangar(Cena):
         
         self._Posbackground = Ponto(0,17)
         self._PosTextVidaExtra = Ponto(220,129)
-        self._PosHealthPoint   = Ponto(184,181)
+        self._PosHealthPoint   = Ponto(150,151)
         self._PosTextBomba     = Ponto(220,226)
         self._PosMissile       = Ponto(145,245)
         self._PosTextAviaoAmigo = Ponto(263,321)
@@ -387,22 +387,24 @@ class PainelHangar(Cena):
         self._PosCoin3              = Ponto(262,372)
         self._PosCoin4              = Ponto(323,473)
         
-        self._string_imagem_background = "c01_HangarBackground.png"
-        self._string_imagem_TextVidaExtra = "c02_Text_VidaExtra.png"
-        self._string_imagem_HealthPoint = "c02_HealthPoint.png"
-        self._string_imagem_TextBomba = "c02_Text_Bomba.png"
-        self._string_imagem_Missile = "c02_Missile.png"
-        self._string_imagem_TextAviaoAmigo = "c02_Text_AviaoAmigo.png"
-        self._string_imagem_JunkerFriend = "c02_JunkerFriend.png"
-        self._string_imagem_TextAviaoMesserschmidt = "c02_Text_AviaoMesserschmidt.png"
-        self._string_imagem_AviaoMesserschmidt = "c02_AviaoMesserschmidt.png"
-        self._string_imagem_Locker1 = "c02_Locker.png"
-        self._string_imagem_Locker2 = "c02_Locker.png"
-        self._string_imagem_TextRetornar = "c02_Text_Retornar.png"
-        self._string_imagem_Coin1 ="c02_Coin.png"
-        self._string_imagem_Coin2 ="c02_Coin.png"
-        self._string_imagem_Coin3 ="c02_Coin.png"
-        self._string_imagem_Coin4 ="c02_Coin.png"
+        self._string_imagem_background = "imgTeste/c01_HangarBackground.png"
+        self._string_imagem_TextVidaExtra = "imgTeste/c02_Text_VidaExtra.png"
+        self._string_imagem_HealthPoint = "imgTeste/c02_HealthPoint.png"
+        self._string_imagem_TextBomba = "imgTeste/c02_Text_Bomba.png"
+        self._string_imagem_Missile = "imgTeste/c02_Missile.png"
+        self._string_imagem_TextAviaoAmigo = "imgTeste/c02_Text_AviaoAmigo.png"
+        self._string_imagem_JunkerFriend = "imgTeste/c02_JunkerFriend.png"
+        self._string_imagem_TextAviaoMesserschmidt = "imgTeste/c02_Text_AviaoMesserschmidt.png"
+        self._string_imagem_AviaoMesserschmidt = "imgTeste/c02_AviaoMesserschmidt.png"
+        self._string_imagem_Locker1 = "imgTeste/c02_Locker.png"
+        self._string_imagem_Locker2 = "imgTeste/c02_Locker.png"
+        self._string_imagem_TextRetornar = "imgTeste/c02_Text_Retornar.png"
+        self._string_imagem_Coin1 ="imgTeste/c02_Coin.png"
+        self._string_imagem_Coin2 ="imgTeste/c02_Coin.png"
+        self._string_imagem_Coin3 ="imgTeste/c02_Coin.png"
+        self._string_imagem_Coin4 ="imgTeste/c02_Coin.png"
+        
+        self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #---------------------------Fim das COnstantes-------------------------
         
         #criando imagens
@@ -427,17 +429,20 @@ class PainelHangar(Cena):
         img_Locker1            = Figura(self._string_imagem_Locker1,None,
                                         self._PosLocker1)
         img_Locker2            = Figura(self._string_imagem_Locker2,None,
-                                        self._string_imagem_Locker2)
-        img_TextRetornar       = Figura(self._string_imagem_TextRetornar, None,
-                                        self._PosTextRetornar)
+                                        self._PosLocker2)
         img_Coin1              = Figura(self._string_imagem_Coin1,None,
-                                        self._string_imagem_Coin1)
+                                        self._PosCoin1)
         img_Coin2              = Figura(self._string_imagem_Coin2,None,
-                                        self._string_imagem_Coin2)
+                                        self._PosCoin2)
         img_Coin3              = Figura(self._string_imagem_Coin3,None,
-                                        self._string_imagem_Coin3)
+                                        self._PosCoin3)
         img_Coin4              = Figura(self._string_imagem_Coin4,None,
-                                        self._string_imagem_Coin4)
+                                        self._PosCoin4)
+        botao_TextRetornar       = Botao("MenuOperacoes","MenuHangar",
+                                       self._string_imagem_TextRetornar,
+                                       self._string_imagem_TextRetornar,
+                                       self._string_som_buttonClick,
+                                        self._PosTextRetornar)
         #montando a cena
         self.adicionaFilho(img_background)
         self.adicionaFilho(img_TextVidaExtra)
@@ -450,7 +455,7 @@ class PainelHangar(Cena):
         self.adicionaFilho(img_AviaoMesserschmidt)
         self.adicionaFilho(img_Locker1)
         self.adicionaFilho(img_Locker2)
-        self.adicionaFilho(img_TextRetornar)
+        self.adicionaFilho(botao_TextRetornar)
         self.adicionaFilho(img_Coin1)
         self.adicionaFilho(img_Coin2)
         self.adicionaFilho(img_Coin3)
@@ -661,6 +666,9 @@ class Painelgameplay(Cena):
                                     None,None)
         armaTorreInimiga.setDono(torreInimiga)
         
+        #criar Hangar
+        hangar = Figura("imgTeste/airport.png", pos = Ponto(1800,580))
+        
         simulador = Simulador(alturaTela-50,larguraTela)
         simulador.adicionaFilho(avi)
         camera = Camera(larguraTela, alturaTela, avi, 0)
@@ -674,6 +682,7 @@ class Painelgameplay(Cena):
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo)
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo2)
         simulador.adicionaFilho(Barra_Vida_TorreInimiga)
+        simulador.adicionaHangar(hangar)
         self.adicionaFilho(Barra_Vida_Jogador)
         self.adicionaFilho(camera)
         self.even.escutar("K_p",self.pausar)
@@ -778,6 +787,14 @@ class Jogo():
         #trocando de  transparencias
         self.cenaAtual = PainelJogosSalvos(self.audio,self.entrada,
                                          self.renderizador)
+    def MenuHangar(self, chamada):
+        
+        #limpando eventos
+        self.limparEventos()
+        #trocando de  transparencias
+        self.cenaAtual = PainelHangar(self.audio,self.entrada,
+                                         self.renderizador)
+    
     
     def limparEventos(self):
         self.even.pararDeEscutarTudo()
@@ -789,6 +806,7 @@ class Jogo():
         self.even.escutar("MenuMissao1", self.MenuMissao1)
         self.even.escutar("MenuPause",self.MenuPause)
         self.even.escutar("MenuJogoSalvo",self.MenuJogosSalvos)
+        self.even.escutar("Hangar",self.MenuHangar)
         self.audio.escutas()
         self.renderizador.escutas()
     
