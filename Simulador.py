@@ -42,7 +42,6 @@ class Simulador(motor.Camada):
         for filho in self.filhos:
             if isinstance(filho, aviao.Jogador):
                 self.PosXCentroTela = filho.pos.getX()
-                print(self.PosXCentroTela)
                 self.even.lancar("PlayerLocation",(filho.pos.getX(),
                                                    filho.pos.getY(),
                                                    filho.xVel,filho.yVel))
@@ -168,14 +167,20 @@ class Simulador(motor.Camada):
                                     
                         elif isinstance(filhos,aviao.Jogador) and \
                              irmao == self.hangar:
+                            print(filhos.velo)
                             #Se for colisao entre jogador e hangar
-                            # mudar para menu do Hangar
+                            # e jogador tiver velocidade menor que 100
+                            if filhos.velo <= 100:
+                                # mudar para menu do Hangar
                                  self.even.lancar("Hangar","gameplay")
                                  
                         elif isinstance(irmao,aviao.Jogador) and \
                              filhos == self.hangar:
+                            print(irmao.velo)
                             #Se for colisao entre jogador e hangar
-                            # mudar para menu do Hangar
+                            # e jogador tiver velocidade menor que 100
+                            if irmao.velo <= 100:
+                                # mudar para menu do Hangar
                                  self.even.lancar("Hangar","gameplay")
                                  
             if isinstance(filhos, Projetil.Projetil):
@@ -195,11 +200,11 @@ class Simulador(motor.Camada):
                 elif isinstance(filhos, IA.AviaoInimigo):
                     #Se houver colisao entre aviaoInimigo e chao
                     #Chama o metodo de animacao da explosao
-                    filhos.explosao(dt)
+                    barra_vida = filhos.explosao(dt)
                     #carteira do jogador recebe recompensa
                     banco_dados.acrescimoSaldo(filhos.getValor())
-                    #retira da lista de filhos
-                    #self.removeFilho(filhos)
+                    #retira a barra de vida da lista de filhos
+                    self.removeFilho(barra_vida)
                     
                                
                                

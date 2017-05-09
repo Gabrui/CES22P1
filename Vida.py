@@ -12,7 +12,8 @@ class Vida(Camada):
     """
         Representa os pontos de vida
     """
-    def __init__(self, Max,pos,Dono = None):
+    def __init__(self, Max,pos,pos_barra_interna,
+                 string_imagem_interna,string_imagem_externa,Dono = None):
         """
         Max: Quantidade maxima de pontos de vida
         Dono: é o objeto de qual a Vida vai representar a sua barra de vida.
@@ -27,6 +28,12 @@ class Vida(Camada):
         self.Dono = Dono
         self.posX_barra_vida_jogador = pos.getX()
         self.posY_barra_vida_jogador = pos.getY()
+        
+        barra_vida_interna = Figura(string_imagem_interna, 
+                                    pos = pos_barra_interna)
+        barra_vida_externa = Figura(string_imagem_externa)
+        self.adicionaFilho(barra_vida_externa)
+        self.adicionaFilho(barra_vida_interna)
         
     def setDono(self, dono):
         """
