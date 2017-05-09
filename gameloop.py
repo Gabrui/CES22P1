@@ -452,7 +452,7 @@ class PainelHangar(Cena):
                                "AviaoMesserschmidt","Hangar",
                                self._string_imagem_AviaoMesserschmidt,
                                self._string_som_buttonClick,
-                               100,self._PosAviaoMesserschmidt)
+                               100,100,self._PosAviaoMesserschmidt)
         #montando a cena
         self.adicionaFilho(img_background)
         self.adicionaFilho(img_TextVidaExtra)
@@ -552,6 +552,7 @@ class PainelJogosSalvos(Cena):
         banco_dados.setCarteira(dadosSalvos[1])
         banco_dados.setProgresso(dadosSalvos[0])
         banco_dados.setStringAviao((dadosSalvos[2],dadosSalvos[3]))
+        banco_dados.setExperiencia(dadosSalvos[4])
         self.even.lancar("MenuPrincipal","MenuJogoSalvo")
         
 #------------------------------Fim da Classe Jogos Salvo-----------------------

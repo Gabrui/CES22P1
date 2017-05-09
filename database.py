@@ -23,7 +23,7 @@ class arquivo():
         arquivo_string_imagem_aviao = open("imgTeste/"+nome_arquivo+"img_aviao","wb")
         arquivo_string_imagem_aviao_inv = open("imgTeste/"+nome_arquivo+
                                                "img_aviao_inv","wb")
-        
+        arquivo_XP = open("imgTeste/"+nome_arquivo+"XP","wb")
         #pegar saldo da carteira
         saldo = banco_dados.getCarteira()
         #pegar progresso do jogo
@@ -31,6 +31,8 @@ class arquivo():
         #pegar a lista de skin de aviao do Jogador
         _string_imagem_aviao = banco_dados.getStringAviao()[0]
         _string_imagem_aviao_inv = banco_dados.getStringAviao()[1]
+        #pegar experiencia
+        XP = banco_dados.getXP()
         #salvar saldo 
         pickle.dump(saldo,arquivo_saldo)
         #salvar progresso
@@ -38,11 +40,14 @@ class arquivo():
         #salvar lista de skin de aviao do Jogador
         pickle.dump(_string_imagem_aviao, arquivo_string_imagem_aviao)
         pickle.dump(_string_imagem_aviao_inv,arquivo_string_imagem_aviao_inv)
+        #salvar experiencia
+        pickle.dump(XP,arquivo_XP)
         #fechar arquivos
         arquivo_saldo.close()
         arquivo_progresso.close()
         arquivo_string_imagem_aviao.close()
         arquivo_string_imagem_aviao_inv.close()
+        arquivo_XP.close()
         
         
     def ler(self, nome_arquivo):
@@ -56,6 +61,7 @@ class arquivo():
         arquivo_string_imagem_aviao = open("imgTeste/"+nome_arquivo+"img_aviao","rb")
         arquivo_string_imagem_aviao_inv = open("imgTeste/"+nome_arquivo+
                                                "img_aviao_inv","rb")
+        arquivo_XP = open("imgTeste/"+nome_arquivo+"XP","rb")
         #pegar saldo da carteira salvo
         saldo = pickle.load(arquivo_saldo)
         #pegar o progresso salvo
@@ -63,13 +69,16 @@ class arquivo():
         #pegar a lista de skin de aviao do Jogador salvada.
         _string_imagem_aviao = pickle.load(arquivo_string_imagem_aviao)
         _string_imagem_aviao_inv = pickle.load(arquivo_string_imagem_aviao_inv)
+        #ler experiencia
+        XP = pickle.load(arquivo_XP)
         #fechar arquivos
         arquivo_saldo.close()
         arquivo_progresso.close()
         arquivo_string_imagem_aviao.close()
         arquivo_string_imagem_aviao_inv.close()
+        arquivo_XP.close()
         #retornar valor do saldo e do progresso
-        return (progresso,saldo, _string_imagem_aviao,_string_imagem_aviao_inv)
+        return (progresso,saldo, _string_imagem_aviao,_string_imagem_aviao_inv,XP)
         
 
 
@@ -91,6 +100,8 @@ class BancoDados():
             _objetivo: é um dicionario que guarda o nome do inimigo que deve 
                         ser abatido e a quantidade deles que deve ser abatida.
             _progresso_objetivo: dicionario que contabiliza os abates.
+            _experiencia: guarda a quantidade de pontos de experiencia do 
+                          Jogador.
         """
         if progresso == None:
             progresso = [(1,0)]
@@ -103,6 +114,7 @@ class BancoDados():
         self._string_imagem_aviao = ["imgTeste/hellcat2.png"]
         self._string_imagem_aviao_invertido = ["imgTeste/hellcat-2.png"]
         self._skinAtual = 0
+        self._experiencia = 0
     
     def MudarSkinAtual(self):
         """
@@ -154,7 +166,13 @@ class BancoDados():
             Metodo usado quando ler um arquivo salvo.
         """
         self._carteira = carteira
-    
+        
+    def setExperiencia(self,experiencia):
+        """
+            Define um novo valor de pontos de experiencia. 
+            Metodo usado quando ler um arquivo salvo.
+        """
+        self._experiencia = experiencia
     
     def setProgresso(self,progresso):
         """
@@ -163,6 +181,11 @@ class BancoDados():
         """
         self._progresso = progresso
     
+    def getXP(self):
+        """
+            retorna o saldo de pontos de experiencia do jogador
+        """
+        return self._experiencia
     
     def getCarteira(self):
         """
@@ -184,6 +207,11 @@ class BancoDados():
         """
         self._carteira += acrescimo
         
+    def acrescimoXP(self, acrescimo):
+        """
+            acrescenta pontos de experiencia do jogador
+        """
+        self._experiencia += acrescimo
         
     def passouMissao(self,operacao):
         """
