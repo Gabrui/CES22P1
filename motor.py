@@ -1823,7 +1823,9 @@ class item (Botao):
             self.adicionaFilho(self._img_cadeado)
 
 class item_aviao(item):
-    
+    """
+        representa uma skin de aviao que pode ser vendido na loja (Hangar).
+    """
     def __init__(self,string_imagem_aviao,string_imagem_aviao_invertido,
                  nome_evento_compra,string_chamada,string_imagem2,
                  som_click,valor = None,pos = None,
@@ -1833,23 +1835,27 @@ class item_aviao(item):
                          string_imagem2, som_click,valor,pos,
                          centro, escala, rot, 
                          cor)
-        
+        #string da imagem da skin
         self._string_imagem_aviao = string_imagem_aviao
         self._string_imagem_aviao_invertido = string_imagem_aviao_invertido
-        
+        #indica se ja foi comprado ou nao
         self._foiComprado = False
         
     def compra(self,chamada):
-        
+        #metodo que realiza a compra deste item
+        #verifica pagamento
         caixa_aprovado = super().compra(chamada)
+        #pega lista de skins do Jogador
         tupla_lista = banco_dados.getStringAviao()
         self._foiComprado = False
+        #verifica se este item ja foi comprado
         for string in tupla_lista[0]:
             if string == self._string_imagem_aviao:
                 self._foiComprado = True
         if caixa_aprovado and not self._foiComprado:
-            
-            banco_dados.setStringAviao((self._string_imagem_aviao,
+            #pagamento concluido e nao foi comprado
+            #adicionar este item na lista de skin do Jogador
+            banco_dados.addStringAviao((self._string_imagem_aviao,
                                         self._string_imagem_aviao_invertido))
         
 class Cena(Camada):
