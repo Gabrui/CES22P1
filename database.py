@@ -74,7 +74,33 @@ class BancoDados():
         self._progresso_objetivo = {}
         self._progresso_objetivo["AviaoInimigo"] = 0
         self._progresso_objetivo["TorreInimiga"] = 0
+        self._string_imagem_aviao = ["imgTeste/hellcat2.png"]
+        self._string_imagem_aviao_invertido = ["imgTeste/hellcat-2.png"]
+        self._skinAtual = 0
     
+    def MudarSkinAtual(self):
+        
+        self._skinAtual += 1
+        if self._skinAtual >= len(self._string_imagem_aviao):
+            self._skinAtual = 0  
+    
+    def setStringAviao(self,string_img):
+        
+        self._string_imagem_aviao.append(string_img[0])
+        self._string_imagem_aviao_invertido.append(string_img[1])
+        
+    def getStringAviao(self):
+        
+        return (self._string_imagem_aviao,self._string_imagem_aviao_invertido)
+    
+    def getTamListaSkinAviao(self):
+        
+        return len(self._string_imagem_aviao)
+        
+    def getSkinAtual(self):
+        
+        return (self._string_imagem_aviao[self._skinAtual]
+                ,self._string_imagem_aviao_invertido[self._skinAtual])
     
     def setCarteira(self,carteira):
         """

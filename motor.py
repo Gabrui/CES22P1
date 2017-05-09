@@ -11,7 +11,7 @@ Created on Mon Mar 27 08:25:06 2017
 
 import pygame
 import math
-
+from database import banco_dados
 
 
 class Aux:
@@ -1278,7 +1278,8 @@ class Figura(Renderizavel):
         """
         return self._string_imagem
 
-
+    def ativarEscuta(self):
+        pass
 
 
 
@@ -1761,10 +1762,96 @@ class Botao(Camada):
             self.even.lancar("tocarEfeito", self.som_click)
             self.even.lancar(self._nome_evento, self.string_chamada)
     
+class item (Botao):
+    """
+        Representa os itens da loja.
+    """
+    def __init__(self,nome_evento_compra,string_chamada, string_imagem1,
+                 string_imagem2, som_click,valor = None,pos = None,
+                 centro = None, escala = None, rot = None, 
+                 cor = None):
+        """
+            inicializacao.
+            nome_evento_compra: é o nome do item
+            _valor: é o preco do item.
+            _cadeado: True está com cadeado. False nao está com cadeado
+            _img_cadeado: imagem do cadeado
+        """
+        super().__init__(nome_evento_compra,string_chamada, string_imagem1, 
+                         string_imagem2, som_click, pos,centro,escala,rot,cor)
+        if valor == None:
+            valor = 100
+        self._valor = valor
+        self._cadeado = True
+        #escutar evento de compra. 
+        self.even.escutar(nome_evento_compra,self.compra)
+        #Criar imagem do cadeado
+        self._img_cadeado = Figura("imgTeste/c02_Locker.png",
+                                   pos = Ponto(self.retang.getLargura()/2+20,-30))
+        #colocar para ser renderizado na Tela
+        self.adicionaFilho(self._img_cadeado)
+        
+    def verificarDisponibilidade(self):
+        """
+            verifica se este item esta disponivel para compra ou nao.
+        """
+        #pega o saldo da carteira do Jogador.
+        saldo = banco_dados.getCarteira()
+        #verifica condicao de disponibilidade da compra
+        if saldo >= self._valor:
+            return True
+        else:
+            return False
+    def compra(self,chamada):
+        """
+            realiza a compra do item.
+        """
+        saldo = banco_dados.getCarteira()
+        if saldo >= self._valor:
+            banco_dados.acrescimoSaldo(-self._valor)
+            return True
+        else:
+            return False
+        
+    def atualiza(self,dt):
+        
+        super().atualiza(dt)
+        
+        if self.verificarDisponibilidade() and self._cadeado:
+            self.removeFilho(self._img_cadeado)
+        elif not self.verificarDisponibilidade() and not self._cadeado:
+            self.adicionaFilho(self._img_cadeado)
 
-
-
-
+class item_aviao(item):
+    
+    def __init__(self,string_imagem_aviao,string_imagem_aviao_invertido,
+                 nome_evento_compra,string_chamada,string_imagem2,
+                 som_click,valor = None,pos = None,
+                 centro = None, escala = None, rot = None, 
+                 cor = None):
+        item.__init__(self,nome_evento_compra,string_chamada,string_imagem_aviao,
+                         string_imagem2, som_click,valor,pos,
+                         centro, escala, rot, 
+                         cor)
+        
+        self._string_imagem_aviao = string_imagem_aviao
+        self._string_imagem_aviao_invertido = string_imagem_aviao_invertido
+        
+        self._foiComprado = False
+        
+    def compra(self,chamada):
+        
+        caixa_aprovado = super().compra(chamada)
+        tupla_lista = banco_dados.getStringAviao()
+        self._foiComprado = False
+        for string in tupla_lista[0]:
+            if string == self._string_imagem_aviao:
+                self._foiComprado = True
+        if caixa_aprovado and not self._foiComprado:
+            
+            banco_dados.setStringAviao((self._string_imagem_aviao,
+                                        self._string_imagem_aviao_invertido))
+        
 class Cena(Camada):
     """Classe que representa a cena do jogo, no qual existem as camadas e 
     objetos renderizáveis. Ela é responsável pela propagação de eventos. Se 

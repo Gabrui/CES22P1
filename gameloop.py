@@ -6,7 +6,7 @@ Created on Sat Apr  1 19:29:56 2017
 """
 
 from motor import Audio, Renderizador, Entrada, Evento, Figura, Cena, \
-                  Retangulo, Ponto, Botao, Animacao
+                  Retangulo, Ponto, Botao, Animacao,item_aviao
 import time
 from cenario import FundoParalaxeInfinito, Camera
 from aviao import Jogador
@@ -378,7 +378,7 @@ class PainelHangar(Cena):
         self._PosTextAviaoAmigo = Ponto(263,321)
         self._PosJunkerFriend   = Ponto(132,345)
         self._PosTextAviaoMesserschmidt = Ponto(462,136)
-        self._PosAviaoMesserschmidt = Ponto(616,165)
+        self._PosAviaoMesserschmidt = Ponto(626,165)
         self._PosLocker1            = Ponto(647,255)
         self._PosLocker2            = Ponto(647,375)
         self._PosTextRetornar       = Ponto(749,553)
@@ -394,8 +394,11 @@ class PainelHangar(Cena):
         self._string_imagem_Missile = "imgTeste/c02_Missile.png"
         self._string_imagem_TextAviaoAmigo = "imgTeste/c02_Text_AviaoAmigo.png"
         self._string_imagem_JunkerFriend = "imgTeste/c02_JunkerFriend.png"
-        self._string_imagem_TextAviaoMesserschmidt = "imgTeste/c02_Text_AviaoMesserschmidt.png"
-        self._string_imagem_AviaoMesserschmidt = "imgTeste/c02_AviaoMesserschmidt.png"
+        self._string_imagem_TextAviaoMesserschmidt =\
+                                      "imgTeste/c02_Text_AviaoMesserschmidt.png"
+        self._string_imagem_AviaoMesserschmidt = "imgTeste/aviaoPiloto em x.png"
+        self._string_imagem_AviaoMesserschmidt_invertido =\
+                                      "imgTeste/aviaoPiloto em x_invertido.png"
         self._string_imagem_Locker1 = "imgTeste/c02_Locker.png"
         self._string_imagem_Locker2 = "imgTeste/c02_Locker.png"
         self._string_imagem_TextRetornar = "imgTeste/c02_Text_Retornar.png"
@@ -422,10 +425,9 @@ class PainelHangar(Cena):
                                     self._PosTextAviaoAmigo)
         img_JunkerFriend   = Figura(self._string_imagem_JunkerFriend,None,
                                     self._PosJunkerFriend)
-        img_TextAviaoMesserschmidt = Figura(self._string_imagem_TextAviaoMesserschmidt,
-                                            None,self._PosTextAviaoMesserschmidt)
-        img_AviaoMesserschmidt = Figura(self._string_imagem_AviaoMesserschmidt,
-                                        None,self._PosAviaoMesserschmidt)
+        img_TextAviaoMesserschmidt = \
+                             Figura(self._string_imagem_TextAviaoMesserschmidt,
+                                          None,self._PosTextAviaoMesserschmidt)
         img_Locker1            = Figura(self._string_imagem_Locker1,None,
                                         self._PosLocker1)
         img_Locker2            = Figura(self._string_imagem_Locker2,None,
@@ -443,6 +445,14 @@ class PainelHangar(Cena):
                                        self._string_imagem_TextRetornar,
                                        self._string_som_buttonClick,
                                         self._PosTextRetornar)
+        
+        item_AviaoMesserschmidt = \
+                             item_aviao(self._string_imagem_AviaoMesserschmidt,
+                              self._string_imagem_AviaoMesserschmidt_invertido,
+                               "AviaoMesserschmidt","Hangar",
+                               self._string_imagem_AviaoMesserschmidt,
+                               self._string_som_buttonClick,
+                               100,self._PosAviaoMesserschmidt)
         #montando a cena
         self.adicionaFilho(img_background)
         self.adicionaFilho(img_TextVidaExtra)
@@ -452,7 +462,7 @@ class PainelHangar(Cena):
         self.adicionaFilho(img_TextAviaoAmigo)
         self.adicionaFilho(img_JunkerFriend)
         self.adicionaFilho(img_TextAviaoMesserschmidt)
-        self.adicionaFilho(img_AviaoMesserschmidt)
+        self.adicionaFilho(item_AviaoMesserschmidt)
         self.adicionaFilho(img_Locker1)
         self.adicionaFilho(img_Locker2)
         self.adicionaFilho(botao_TextRetornar)
@@ -460,6 +470,24 @@ class PainelHangar(Cena):
         self.adicionaFilho(img_Coin2)
         self.adicionaFilho(img_Coin3)
         self.adicionaFilho(img_Coin4)
+        
+        self._dtMudar = 0
+        self._dtMin = 2
+        
+        self.even.escutar("K_m", self.mudarSkin)
+    
+    def mudarSkin(self,chamada):
+        
+        self._dtMudar +=1
+        tam = banco_dados.getTamListaSkinAviao()
+        
+        if tam > 1 and self._dtMudar > self._dtMin:
+            print("mudou skin")
+            self._dtMudar = 0
+            banco_dados.MudarSkinAtual()
+        elif tam <= 1:
+            print("Voce nao possui outros avioes!")
+        
 #----------------------Fim da Classe PainelHangar------------------------------
 
 class PainelJogosSalvos(Cena):
@@ -641,7 +669,9 @@ class Painelgameplay(Cena):
                                    "imgTeste/MetalHit1.ogg",
                                    1,Ponto(0,0))
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
-        avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
+        img_aviao_jogador = banco_dados.getSkinAtual()[0]
+        img_aviao_jogador2 =  banco_dados.getSkinAtual()[1]
+        avi = Jogador(img_aviao_jogador, img_aviao_jogador2, 
                      Ponto(100, 100), Ponto(28, 10),
                      [[8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
                      [5, 37000, 5000/3, 100], [5000, 150]], arma = armaJogador,
@@ -795,7 +825,7 @@ class Jogo():
     
     """Ainda estou pensando, podemos discutir esses métodos"""
     def gameplay(self,chamada):
-        self.audio.pararMusicaFundo()
+        
         self.limparEventos()
    
         if chamada == "MenuPause":
@@ -803,7 +833,7 @@ class Jogo():
            self.cenaAtual.ativarEscuta()
            
         else:
-            
+            self.audio.pararMusicaFundo()
             self.cenaAtual = Painelgameplay(self.audio,self.entrada,
                                             self.renderizador,self.larguraTela,
                                             self.alturaTela,
@@ -812,6 +842,7 @@ class Jogo():
     
     
     def MenuPrincipal(self,chamada):
+
         self.limparEventos()
         #trocando de transparencias
         self.cenaAtual = PainelMenuPrincipal(self.audio,self.entrada,

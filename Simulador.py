@@ -170,7 +170,7 @@ class Simulador(motor.Camada):
                             print(filhos.velo)
                             #Se for colisao entre jogador e hangar
                             # e jogador tiver velocidade menor que 100
-                            if filhos.velo <= 100:
+                            if filhos.velo <= 200:
                                 # mudar para menu do Hangar
                                  self.even.lancar("Hangar","gameplay")
                                  
@@ -179,7 +179,7 @@ class Simulador(motor.Camada):
                             print(irmao.velo)
                             #Se for colisao entre jogador e hangar
                             # e jogador tiver velocidade menor que 100
-                            if irmao.velo <= 100:
+                            if irmao.velo <= 200:
                                 # mudar para menu do Hangar
                                  self.even.lancar("Hangar","gameplay")
                                  
