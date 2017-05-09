@@ -195,11 +195,11 @@ class Simulador(motor.Camada):
                 elif isinstance(filhos, IA.AviaoInimigo):
                     #Se houver colisao entre aviaoInimigo e chao
                     #Chama o metodo de animacao da explosao
-                    filhos.explosao(dt)
+                    barra_vida = filhos.explosao(dt)
                     #carteira do jogador recebe recompensa
                     banco_dados.acrescimoSaldo(filhos.getValor())
-                    #retira da lista de filhos
-                    #self.removeFilho(filhos)
+                    #retira a barra de vida da lista de filhos
+                    self.removeFilho(barra_vida)
                     
                                
                                
