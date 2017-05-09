@@ -677,7 +677,21 @@ class Painelgameplay(Cena):
         simulador.adicionaHangar(hangar)
         self.adicionaFilho(Barra_Vida_Jogador)
         self.adicionaFilho(camera)
+        
+        banco_dados.setObjetivo("AviaoInimigo",1)
+        
         self.even.escutar("K_p",self.pausar)
+        
+    def atualiza(self,dt):
+        """
+            atualiza. E verifica se o objetivo foi completado
+        """
+        super().atualiza(dt)
+        if banco_dados.verificarObjetivo():
+            
+            texto_dialogo = Figura("imgTeste/caixa_dialogo_objetivo_concluido.png")
+            self.adicionaFilho(texto_dialogo)
+            
         
         
     def pausar(self,chamada):
@@ -813,7 +827,7 @@ class Jogo():
                 time.sleep(td - dt)
             if dt > t20:
                 dt = t20
-            dt /= 3
+           # dt /= 3
             self.cenaAtual.atualiza(dt)
 
             
