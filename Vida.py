@@ -80,28 +80,49 @@ class Vida(Camada):
         super().atualiza(dt)
         
     def ativarEscuta(self):
+        """
+            Nao ha escutas.
+        """
         pass
         
-class Velocimetro(Figura):
+class Velocimetro(Camada):
     
     """
     Representa o HUD Velocimetro.
     """
-    def __init__(self, Max,string_imagem = None,Dono = None):
+    def __init__(self, Max,pos,pos_ponteiro,
+                 string_imagem_ponteiro,string_imagem_fundo_escala,Dono = None):
         """
         Max: Quantidade maxima de velocidade
-        pos: é um ponto com a posicao inicial do Velocimetor
+        pos: é um ponto com a posicao inicial do Velocimetro
         string_imagem: é uma lista de string com o caminho para a imagem do 
                         Velocimetro.
         Dono: é o objeto de qual o Velocimetro vai representar a sua barra de 
               velocidade.
         VelAtual: é a velocidade que o dono possui atualmente
+        _fundo_escala: é a proporcao entre angulo em graus e a velocidade 
+                       maxima apresentada no velocimetro
+        _posAngular_VelMin: é a defasagem angular da posicao do zero 
+                            do velocimetro em relacao ao eixo x cartesiano.
+        _posAngular_img_ponteiro:  é a defasagem angular da posicao inicial 
+                            do ponteiro em relacao ao eixo x cartesiano.
         """
-        Figura.__init__(self,string_imagem[0])
-        self._MaxVida = Max
+        Camada.__init__(self, pos)
+        self._MaxVel = Max
         self.VelAtual = Max
         self.Dono = Dono
-        self.string_imagem = string_imagem
+        self.posX_ponteiro_jogador = pos.getX()
+        self.posY_ponteiro_jogador = pos.getY()
+        
+        self._fundo_escala = 85
+        self._posAngular_VelMin = 130
+        self._posAngular_img_ponteiro = 49
+        
+        ponteiro = Figura(string_imagem_ponteiro, 
+                          pos = pos_ponteiro, centro = Ponto(2,33))
+        fundo_escala = Figura(string_imagem_fundo_escala)
+        self.adicionaFilho(fundo_escala)
+        self.adicionaFilho(ponteiro)
         
     def setDono(self, dono):
         """
@@ -115,30 +136,52 @@ class Velocimetro(Figura):
        """
        return self.VelAtual
     
-    def atualizaVel(self, Dano):
+    def atualizaVel(self):
         """
             Atualiza a imagem do velocimetro
-            fracao_vel: é uma fração calculado a partir de quantas
-                         imagens há na lista de string de imagens.
-            bloco_vel: é uma parte da velocidade maxima calculado 
-                        a partir de quantas imagens há na lista de string de 
-                        imagens.
+            
+        proporcao: é a relacao entre o angulo de rotacao da figura 
+                        e a velocidade do aviao.
+        novo_rot:  é o novo angulo de rotacao da figura (ponteiro).
+        _fundo_escala: é a proporcao entre angulo em graus e a velocidade 
+                       maxima apresentada no velocimetro
+        _posAngular_VelMin: é a defasagem angular da posicao do zero 
+                            do velocimetro em relacao ao eixo x cartesiano.
+        _posAngular_img_ponteiro:  é a defasagem angular da posicao inicial 
+                            do ponteiro em relacao ao eixo x cartesiano.
         """
+        #Pegar velocidade atual
         self.VelAtual = self.Dono.velo
-        for i in range(1,len(self.string_imagem)):
-            fracao_vel = (len(self.string_imagem)-i)/len(self.string_imagem)
-            bloco_vel = self._MaxVida*fracao_vel
-            if self.VelAtual <= bloco_vel:
-                self.setString(self.string_imagem[i])
-      
+        #verificar se é negativa
+        if self.VelAtual < 0:
+            #se for negativa ou zero
+            #atribui zero
+            self.VelAtual = 0
+        #verificar se a velocidade é maior que a 
+        #maxima velocidade do fundo de escala
+        elif self.VelAtual >= self._MaxVel:
+            #atribui o valor maximo do fundo de escala
+            self.VelAtual = self._MaxVel
+        #calcular fundo de escala
+        self._proporcao = -self._fundo_escala/self._MaxVel
+        #calcular posicao angular do ponteiro
+        novo_rot = self.VelAtual*self._proporcao +self._posAngular_VelMin \
+                    - self._posAngular_img_ponteiro
+        #atualizar posicao angular do ponteiro
+        self.filhos[1].rot.setAngulo(novo_rot)
             
     def atualiza(self,dt):
+     
+        super().atualiza(dt)
+        self.atualizaVel()
+            
+    def ativarEscuta(self):
+        """
+            Nao ha escutas.
+        """
+        pass
         
-        if isinstance(self.Dono, Jogador):
-            posX = self.Dono.pos.getX() - 150 
-            posY = self.Dono.pos.getY() + 350
-            self.pos.setXY(posX,posY)
-
+        
 class Altimetro(Figura):
     
     """

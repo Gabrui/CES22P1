@@ -14,7 +14,7 @@ from Simulador import Simulador
 from IA import AviaoInimigo,TorreInimiga
 from Arma import Arma
 from Projetil import Projetil
-from Vida import Vida
+from Vida import Vida,Velocimetro
 from database import banco_dados, arquivo
 
 t20 = 50/1000
@@ -599,10 +599,11 @@ class PainelGameOver(Cena):
         img_Text_gameOver = Figura(self._string_imagem_textGameOVer,
                                    pos = self._PosTextGameOver)
         #Criar botoes
-        Botao_continuar = Botao("Play","MenuGameOver",self._string_imagem_continuar,
-                              self._string_imagem_continuar2,
-                              self._string_som_buttonClick,
-                              self._PosTextResumir)
+        Botao_continuar = Botao("Play","MenuGameOver",
+                                self._string_imagem_continuar,
+                                self._string_imagem_continuar2,
+                                self._string_som_buttonClick,
+                                self._PosTextResumir)
         Botao_sair = Botao("sair","MenuGameOver",self._string_imagem_textSair,
                               self._string_imagem_textSair2,
                               self._string_som_buttonClick,
@@ -612,7 +613,7 @@ class PainelGameOver(Cena):
         self.adicionaFilho(img_Text_gameOver)
         self.adicionaFilho(Botao_continuar)
         self.adicionaFilho(Botao_sair)
-#----------------Fim da Classe PainelGameOver----------------------------------------
+#----------------Fim da Classe PainelGameOver----------------------------------
 
 
 
@@ -632,7 +633,12 @@ class Painelgameplay(Cena):
         Barra_Vida_Jogador = Vida(1000, Ponto(larguraTela-340,0),Ponto(10,10),
                                   "imgTeste/barra_vida_interna.png",
                                   "imgTeste/barra_vida_externa.png")
-        projetilJogador = Projetil("imgTeste/BulletEnemies.png","imgTeste/MetalHit1.ogg",
+        Velocimetro_Jogador = Velocimetro(200,Ponto(0,alturaTela-50),
+                                          Ponto(40,50),
+                                          "imgTeste/c(X)_PonteiroFuel.png",
+                                          "imgTeste/c(X+1)_Fuel.png")
+        projetilJogador = Projetil("imgTeste/BulletEnemies.png",
+                                   "imgTeste/MetalHit1.ogg",
                                    1,Ponto(0,0))
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
         avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
@@ -641,6 +647,7 @@ class Painelgameplay(Cena):
                      [5, 37000, 5000/3, 100], [5000, 150]], arma = armaJogador,
                      string_som_fallShell="imgTeste/Shells_falls.ogg",
                      PV = Barra_Vida_Jogador)
+        Velocimetro_Jogador.setDono(avi)
         armaJogador.setDono(avi)
         #Criando aviao inimigo
         Barra_Vida_AviaoInimigo = Vida(100,Ponto(300,100),Ponto(2,2),
@@ -723,8 +730,9 @@ class Painelgameplay(Cena):
         simulador.adicionaFilho(Barra_Vida_AviaoInimigo2)
         simulador.adicionaFilho(Barra_Vida_TorreInimiga)
         simulador.adicionaHangar(hangar)
-        self.adicionaFilho(Barra_Vida_Jogador)
         self.adicionaFilho(camera)
+        self.adicionaFilho(Velocimetro_Jogador)
+        self.adicionaFilho(Barra_Vida_Jogador)
         
         banco_dados.setObjetivo("AviaoInimigo",1)
         
