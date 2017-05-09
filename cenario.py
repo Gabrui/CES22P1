@@ -102,7 +102,6 @@ class FundoParalaxeInfinito(Camada):
             figura = Figura(textura, corte, 
                     Ponto(i*self.largura+pos0.getX(), self.altura))
             self.adicionaFilho(figura)
-       # print(self.quant)
     
     
     def atualizaFundo(self, dx, dy):

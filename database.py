@@ -6,6 +6,7 @@ Created on Mon May  8 14:52:53 2017
 """
 import pickle
 
+
 class arquivo():
     """
         É a classe que trabalha com arquivos.
@@ -31,6 +32,7 @@ class arquivo():
         arquivo_saldo.close()
         arquivo_progresso.close()
         
+        
     def ler(self, nome_arquivo):
         """
             Ler o arquivo salvo que tem nome dado pela variavel nome_arquivo,
@@ -49,6 +51,10 @@ class arquivo():
         #retornar valor do saldo e do progresso
         return (progresso,saldo)
         
+
+
+
+
 class BancoDados():
     """
         É classe que guarda informacoes de progresso no jogo.
@@ -69,12 +75,14 @@ class BancoDados():
         self._progresso_objetivo["AviaoInimigo"] = 0
         self._progresso_objetivo["TorreInimiga"] = 0
     
+    
     def setCarteira(self,carteira):
         """
             Define uma nova carteira. 
             Metodo usado quando ler um arquivo salvo.
         """
         self._carteira = carteira
+    
     
     def setProgresso(self,progresso):
         """
@@ -83,22 +91,28 @@ class BancoDados():
         """
         self._progresso = progresso
     
+    
     def getCarteira(self):
         """
             retorna o saldo de pontos do jogador
         """
         return self._carteira
+    
+    
     def getProgresso(self):
         """
             retorna a lista de progresso
         """
         return self._progresso
+    
+    
     def acrescimoSaldo(self, acrescimo):
         """
             acrescenta pontos na carteira do jogador
         """
         self._carteira += acrescimo
-        print(self._carteira)
+        
+        
     def passouMissao(self,operacao):
         """
             Atualiza o progresso de missoes naquela operacao.
@@ -106,18 +120,24 @@ class BancoDados():
         tupla_progresso = self._progresso[operacao]
         tupla_passouMissao = (operacao,tupla_progresso[1]+1)
         self._progresso[operacao] = tupla_passouMissao
+        
+        
     def passouOperacao(self):
         """
             Atualiza o progresso das operacoes
         """
         ultimaOperacao = self.getProgressoOperacao
         self._progresso.append((ultimaOperacao+1,0))
+        
+        
     def getProgressoOperacao(self):
         """
             retorna o progresso das operacoes
         """
         ultimaOperacao = len(self._progresso)
         return ultimaOperacao
+    
+    
     def getProgressoMissao(self,Operacao):
         """
             retorna o progresso das missoes naquela operacao
@@ -125,12 +145,15 @@ class BancoDados():
         tupla_progresso = self._progresso[Operacao-1]
         return tupla_progresso[1]
     
+    
     def setObjetivo(self,string_objetivo,objetivo):
         """
             armazena qual é o objetivo
         """
         self._objetivo[string_objetivo] = objetivo 
         self.string_objetivo = string_objetivo
+        
+        
     def verificarObjetivo(self):
         """
             verifica se o objetivo foi completado
@@ -141,6 +164,8 @@ class BancoDados():
         else:
             completou_objetivo = False
         return completou_objetivo
+    
+    
     def contabilizarAbate(self,string_abatido):
         """
             contabiliza a quantidade de inimigos abatidos

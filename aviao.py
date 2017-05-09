@@ -51,15 +51,15 @@ class Aviao(Animacao):
 class Jogador(Aviao):
     
     """
-    #Funciona com 
-    # 1º: Condições aerodinâmicas macro: [arrastoMax, sustMax, veloMax, 
+    Funcionando com 
+     1º: Condições aerodinâmicas macro: [arrastoMax, sustMax, veloMax, 
     [gráficoDosCoeficientes] ]
-    # 2º: Empuxo: [empuxoMax, forcaMotorMax, arrFrontHMax, atritoMotor, 
+     2º: Empuxo: [empuxoMax, forcaMotorMax, arrFrontHMax, atritoMotor, 
     arrFrontHRat, hVeloMax, hMassa]
-    # 3º: Sistema Rotacional: [manobrabilidade, tElevadorMax, tEstabilizadorMax
+    3º: Sistema Rotacional: [manobrabilidade, tElevadorMax, tEstabilizadorMax
     , tArrastoRotMax]
-    # 4º: Inercia Macro: [massa, momentoInercia]
-    # ([8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
+     4º: Inercia Macro: [massa, momentoInercia]
+     ([8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
     [5, 50000, 5000/3, 100], [5000, 150])
     """
     def __init__(self, string_imagem, string_imagem_invertida, pos0, c0, 
@@ -80,7 +80,7 @@ class Jogador(Aviao):
         
         self.disparar = False
         self.dtAtirar = 1
-        self.dtAtirarMin = 2
+        self.dtAtirarMin = 0.5
         
         self.vivo = True
         
@@ -90,10 +90,14 @@ class Jogador(Aviao):
         
         self._string_som_explosao = "imgTeste/Explosion_6.ogg"
         
+        
     def reduzPV(self,dano):
         self.barra_vida.reduzPV(dano)
+        
+    
     def getPV(self):
         self.barra_vida.getPV()
+        
     
     def inicializaCalculus(self,aerMacro, empuxoMacro, rotMacro, inerciaMacro):
         #Constantes matemáticas
@@ -151,7 +155,7 @@ class Jogador(Aviao):
         self.angAtaq     = 0
         self.constRatAer = [0, 0]         #Primeiro arrasto depois sustentação.
         self.graficoAngAtaq = [[-180,0.5,-0.5],[-90,45,-1],[-30,4,-1],
-            [-22,2,-1],[-20,1.6,-4],[-17,1.2,-5],[-15,1,-4.5],[-6,0.3,-2], 
+            [-22,2,-1],[-20,1.6,-4],[-17,1.2,-5],[-15,1,-8],[-6,0.3,-3.5], 
             [0,0,0],[6,0.3,3.5],[18,1.2,10],[19,1.5,10],[20,1.8,4],
             [26,2.5,-0.5],[30,4,-0.9],[90,45,-1],[180,1,-0.5]]
         # = aerMacro[3]

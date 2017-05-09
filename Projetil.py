@@ -11,72 +11,65 @@ class Projetil(motor.Figura):
     """
      Representa a ideia abstrata de projetil
     """
-    def __init__(self,Imagem,Som,Dano,pos, veli = 400,Dono = None):
-        motor.Figura.__init__(self,Imagem,None,pos)
+    def __init__(self, imagem, som, dano, pos0, veli = 400, dono = None):
+        motor.Figura.__init__(self, imagem, pos = pos0)
         """
         Imagem: referencia a imagem do projetil
-        Som:    referencia o som do impacto do projetil
-        Dano:   Quantidade de dano causado
-        Dono:   Quem atirou
+        som:    referencia o som do impacto do projetil
+        dano:   Quantidade de dano causado
+        dono:   Quem atirou
         veli:   modulo da velocidade do projetil
         """
-        if pos is None:
-            pos = motor.Ponto(0,0)
-        
-        self.rot = motor.Angulo(0)
-        self._string_imagem = Imagem
-        self._Som = Som
-        self._Dano = Dano
-        self.Dono = Dono
-        self.Pos = pos
+        self._som = som
+        self._dano = dano
+        self.dono = dono
         self.veli = veli
         
+        
     def clonarProjetil(self):
-        return Projetil(self._string_imagem, self._Som, self._Dano, self.Pos, self.veli,self.Dono)
+        return Projetil(self._string_imagem, self._som, self._dano, self.pos,
+                        self.veli, self.dono)
+    
+    
     def getSom(self):
-        return self._Som
+        return self._som
+    
+    
     def getDano(self):
-        return self._Dano
-    def getDono(self):
-        return self.Dono
-    def definirDono(self,Dono):
-        self.Dono = Dono
-    def atualiza(self,dt):
+        return self._dano
+    
+    
+    def getdono(self):
+        return self.dono
+    
+    
+    def definirDono(self,dono):
+        self.dono = dono
+    
+    
+    def atualiza(self, dt):
         """
         Algoritmo da fisica de voo. Calcula posicao final
         """ 
         #Calula a velocidade X e Y
         velX = math.cos(self.rot.getAngulo(False))*self.veli
-        velY = math.sin(self.rot.getAngulo(False))*self.veli
-        #Truncamento
-        VelocidadeX = int(velX)
-        VelocidadeY = int(velY)
-        #Arredondamento
-        if velX - VelocidadeX >=0.5:
-            VelocidadeX = VelocidadeX+1
-        elif VelocidadeX - velX >= 0.5:
-            VelocidadeX = VelocidadeX-1
-        if velY - VelocidadeY >= 0.5:
-            VelocidadeY = VelocidadeY+1
-        elif VelocidadeY - velY >= 0.5:
-            VelocidadeY = VelocidadeY-1
-        #calcula nova posicao
-        posX = self.Pos.getX() + VelocidadeX
-        posY = self.Pos.getY() - VelocidadeY
+        velY = - math.sin(self.rot.getAngulo(False))*self.veli
+        posX = self.pos.getX() + velX * dt
+        posY = self.pos.getY() + velY * dt
         #atualiza posicao
-        self.Pos.setXY( posX, posY)
+        self.pos.setXY(posX, posY)
     
     
     def fisicaDeImpacto(self):
         """
         Algoritmo da fisica de impacto. 
         """
-        self.even.lancar("tocarEfeito",self._Som)
+        self.even.lancar("tocarEfeito",self._som)
     
     
-    def Disparo(self, posI,rot):
-        self.Pos.setXY( posI.getX(), posI.getY())
-        self.rot = motor.Angulo(rot)
+    def Disparo(self, posI, rotacao):
+        self.pos.setXY(posI.getX(), posI.getY())
+        self.rot.setAngulo(rotacao)
         
         
         

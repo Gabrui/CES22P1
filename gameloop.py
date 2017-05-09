@@ -586,12 +586,12 @@ class Painelgameplay(Cena):
         Barra_Vida_Jogador.adicionaFilho(barra_vida_externa)
         Barra_Vida_Jogador.adicionaFilho(barra_vida_interna)
         projetilJogador = Projetil("imgTeste/BulletEnemies.png","imgTeste/MetalHit1.ogg",
-                                   1,Ponto(0,0),10)
+                                   1,Ponto(0,0))
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
         avi = Jogador("imgTeste/hellcat2.png", "imgTeste/hellcat-2.png", 
                      Ponto(100, 100), Ponto(28, 10),
                      [[8000, 90000, 172],  [8000, 4000, 8000, 100, 0.3, 5400, 1],  
-                     [5, 50000, 5000/3, 100], [5000, 150]], arma = armaJogador,
+                     [5, 37000, 5000/3, 100], [5000, 150]], arma = armaJogador,
                      string_som_fallShell="imgTeste/Shells_falls.ogg",
                      PV = Barra_Vida_Jogador)
         armaJogador.setDono(avi)
@@ -604,7 +604,7 @@ class Painelgameplay(Cena):
         Barra_Vida_AviaoInimigo.adicionaFilho( barra_vida_interna_IA)
         projetilArmaAviaoInimigo = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",100,
-                                                Ponto(0,0),10)
+                                                Ponto(0,0))
         armaAviaoInimigo = Arma("imgTeste/MP5_SMG_auto.ogg",
                                     projetilArmaAviaoInimigo)
         aviaoInimigo = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
@@ -627,7 +627,7 @@ class Painelgameplay(Cena):
         Barra_Vida_AviaoInimigo2.adicionaFilho( barra_vida_interna_IA2)
         projetilArmaAviaoInimigo2 = Projetil("imgTeste/BulletEnemies.png",
                                                 "imgTeste/MetalHit1.ogg",100,
-                                                Ponto(0,0),10)
+                                                Ponto(0,0))
         armaAviaoInimigo2 = Arma("imgTeste/MP5_SMG_auto.ogg",
                                     projetilArmaAviaoInimigo2)
         aviaoInimigo2 = AviaoInimigo("imgTeste/aviaoInimigo em x.png",
@@ -799,8 +799,6 @@ class Jogo():
             tantigo = tnovo
             tnovo = time.clock()
             dt = tnovo - tantigo
-            if dt > 0.1:
-                print(dt)
             if dt < td:
                 time.sleep(td - dt)
             if dt > t20:

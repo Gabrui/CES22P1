@@ -57,6 +57,7 @@ class IA(motor.Renderizavel):
         self.ativarEscuta()
         
         self._valor = 10
+        
     
     def getValor(self):
         """
@@ -64,11 +65,14 @@ class IA(motor.Renderizavel):
         """
         return self._valor
     
+    
     def reduzPV(self,dano):
         """
             reduz a quantidade de pontos de vida da IA
         """
         self.Barra_Vida.reduzPV(dano)
+        
+        
     def getPV(self):
         """
             retorna a quantidade de vida da IA
@@ -81,6 +85,7 @@ class IA(motor.Renderizavel):
         #PlayerLocation: é o evento da posicao do player
         self.even.escutar("PlayerLocation", self.localizar)
         
+        
     def localizar(self, alvo):
         """
             Receber a posicao e a velocidade do Jogador.
@@ -90,6 +95,7 @@ class IA(motor.Renderizavel):
         self.alvoPos.setXY(alvo[0],alvo[1])
         self.alvoVel.setXY(alvo[2],alvo[3])
         
+    
     def mira(self, dt):
         """
             Ajusta a mira para acertar o jogador
@@ -113,6 +119,7 @@ class IA(motor.Renderizavel):
             
         # Runge-Kutta de primeira ordem :D
         self.rot.incrementa(vel*dt)    
+
 
     def shoot(self,dt):
         """
@@ -142,13 +149,15 @@ class IA(motor.Renderizavel):
         self.even.lancar("tocarEfeito",self._string_som_disparo)
         self.even.lancar("tocarEfeito",self._string_som_fallShell)
 
-class AviaoInimigo(IA,motor.Animacao):
-    
-    
+
+
+
+
+class AviaoInimigo(IA, motor.Animacao):
     def __init__(self,img1,img2, audio, arma, pos, PV, string_som_explosao,
                  string_som_fallShell, vel = None, alvoPos = None,
                  alvoVel = None, deltaAngTol = None): 
-        IA.__init__(self,arma, PV, pos, motor.Ponto(32, 20),motor.Ponto(40, -5)
+        IA.__init__(self,arma, PV, pos, motor.Ponto(32, 20),motor.Ponto(60, -5)
             , alvoPos, alvoVel, deltaAngTol, string_som_fallShell)
         motor.Animacao.__init__(self,img1,pos = pos)
 
@@ -185,8 +194,8 @@ class AviaoInimigo(IA,motor.Animacao):
         # self.even.lancar("tocarEfeito",self._audio)
         self.vivo = True
         
-        limiteEsquerdo = 600
-        limitedireito  = 600
+        limiteEsquerdo = 3000
+        limitedireito  = 3000
         self._iniciar_perseguicao = False
         self._posX_barrera_esquerda = pos.getX() - limiteEsquerdo
         self._posX_barrera_direita  = pos.getX() + limitedireito
@@ -196,8 +205,9 @@ class AviaoInimigo(IA,motor.Animacao):
        
         self._valor = 100
         
-    def realizarManobra180H(self):
         
+        
+    def realizarManobra180H(self):
         if not self.Manobra180V:
             #Troca a imagem
             self.setString(self.img2)
@@ -227,6 +237,7 @@ class AviaoInimigo(IA,motor.Animacao):
                self.Manobra180V = True
                self.realizarManobra180H()
    
+    
     def patrulhar(self,dt):
         """
             Aviao inimigo fica limitado a voar em uma determinada regiao
@@ -257,8 +268,8 @@ class AviaoInimigo(IA,motor.Animacao):
         self.vivo = False
         return self.Barra_Vida
         
+    
     def atualiza(self,dt):
-        
         motor.Animacao.atualiza(self, dt)
         if self.vivo:
             if self._iniciar_perseguicao:
@@ -277,7 +288,10 @@ class AviaoInimigo(IA,motor.Animacao):
                 self._iniciar_perseguicao = False
 
 
-class TorreInimiga(IA,motor.Figura):
+
+
+
+class TorreInimiga(IA, motor.Figura):
     
     def __init__(self,img,string_som_fallShell,
                  arma,PV, pos, vel, alvoPos,
@@ -297,7 +311,6 @@ class TorreInimiga(IA,motor.Figura):
         vel:     tupla de velocidade da Torre inimiga. No caso é sempre zero.
         deltaAngTol: angulo de tolerancia para disparo
         """
-        
         if pos is None:
             pos = motor.Ponto(0,0)
         if vel is None:
@@ -311,6 +324,7 @@ class TorreInimiga(IA,motor.Figura):
         self.pos.setXY(pos.getX(),pos.getY())
         
         self._valor = 1000
+        
         
     def atualiza(self,dt):
         self.mira(dt)
