@@ -22,8 +22,8 @@ class IA(motor.Renderizavel):
         alvoVel: Ponto(velXdoJogador,velYdoJogador)
         arma:    Objeto do tipo Arma
         pos:     Ponto de posicao do IA
-        centro:  Ponto do centro de rotação da IA
-        posTiro: Ponto de onde a bala é gerada, em relação ao centro
+        centro:  Ponto do centro de rotação da IA, em relação ao pos
+        posTiro: Ponto de onde a bala é gerada, em relação ao pos
         velAng:  velocidade angular de IA
         deltaAngTol: angulo de tolerancia para disparo
         string_som_disparo: nome do arquivo do som do disparo
@@ -126,7 +126,7 @@ class IA(motor.Renderizavel):
         lanca evento de disparo.
         """
         #zera o contador
-        self.dtAtirar =0
+        self.dtAtirar = 0
         #copia o projetil
         projetil = self.arma.getProjetil()
         #ajusta a posicao inicial do projetil
@@ -156,11 +156,13 @@ class IA(motor.Renderizavel):
 class AviaoInimigo(IA, motor.Animacao):
     def __init__(self,img1,img2, audio, arma, pos, PV, string_som_explosao,
                  string_som_fallShell, vel = None, alvoPos = None,
-                 alvoVel = None, deltaAngTol = None): 
-        IA.__init__(self,arma, PV, pos, motor.Ponto(32, 20),motor.Ponto(60, -5)
+                 alvoVel = None, deltaAngTol = None):
+        #Podiam ser passados como parâmetros
+        centro = motor.Ponto(32, 20)
+        posTiro = motor.Ponto(70, 15)
+        IA.__init__(self,arma, PV, pos, centro, posTiro
             , alvoPos, alvoVel, deltaAngTol, string_som_fallShell)
-        motor.Animacao.__init__(self,img1,pos = pos)
-
+        motor.Animacao.__init__(self, img1, pos = pos, centro = centro)
         """
         img:     É a string do nome do arquivo imagem do aviao
         audio:   É a string do nome do arquivo audio do aviao
@@ -297,10 +299,12 @@ class TorreInimiga(IA, motor.Figura):
                  arma,PV, pos, vel, alvoPos,
                  alvoVel,
                  deltaAngTol): 
-        IA.__init__(self,arma, PV, pos, motor.Ponto(), motor.Ponto(), alvoPos,
+        centro = motor.Ponto(0, 46)
+        posTiro = motor.Ponto(95, 46)
+        IA.__init__(self,arma, PV, pos, centro, posTiro, alvoPos,
                  alvoVel,
                  deltaAngTol,string_som_fallShell)
-        motor.Figura.__init__(self,img, centro = motor.Ponto(110,100))
+        motor.Figura.__init__(self,img, centro = centro)
         """
         img:     É a string do nome do arquivo imagem da Torre inimiga
         string_som_disparo:   É a string do nome do arquivo audio do disparo

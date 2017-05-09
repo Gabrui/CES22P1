@@ -658,13 +658,16 @@ class Painelgameplay(Cena):
                                         10,Ponto(0,0))
         armaTorreInimiga = Arma("imgTeste/Anti_Aircraft_Gun.ogg",
                                 projetilTorreInimiga)
-        torreInimiga = TorreInimiga("imgTeste/turret_1_default.png",
+        torreInimiga = TorreInimiga("imgTeste/Cano_Turret_simetrica.png",
                                     "imgTeste/Shells_falls.ogg",
                                     armaTorreInimiga,
                                     Barra_Vida_TorreInimiga,Ponto(800,580),
                                     None,None,
                                     None,None)
         armaTorreInimiga.setDono(torreInimiga)
+        baseTorreInimiga = Figura("imgTeste/Base_Turret.png", 
+                                  pos = Ponto(800, 580), 
+                                  centro = Ponto(34, 5))
         
         #criar Hangar
         hangar = Figura("imgTeste/airport.png", pos = Ponto(1800,580))
@@ -675,6 +678,7 @@ class Painelgameplay(Cena):
         camera.adicionaFilho(fundo0)
         camera.adicionaFilho(fundo1)
         camera.adicionaFilho(fundo3)
+        camera.adicionaFilho(baseTorreInimiga)
         camera.adicionaFilho(simulador)
         simulador.adicionaFilho(aviaoInimigo)
         simulador.adicionaFilho(torreInimiga)
@@ -821,6 +825,7 @@ class Jogo():
                 time.sleep(td - dt)
             if dt > t20:
                 dt = t20
+            dt /= 3
             self.cenaAtual.atualiza(dt)
 
             
