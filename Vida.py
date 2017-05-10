@@ -103,7 +103,7 @@ class Velocimetro(Camada):
         _fundo_escala: é a proporcao entre angulo em graus e a velocidade 
                        maxima apresentada no velocimetro
         _posAngular_VelMin: é a defasagem angular da posicao do zero 
-                            do velocimetro em relacao ao eixo x cartesiano.
+                            do velocímetro em relacao ao eixo x cartesiano.
         _posAngular_img_ponteiro:  é a defasagem angular da posicao inicial 
                             do ponteiro em relacao ao eixo x cartesiano.
         """
@@ -119,7 +119,7 @@ class Velocimetro(Camada):
         self._posAngular_img_ponteiro = 49
         
         ponteiro = Figura(string_imagem_ponteiro, 
-                          pos = pos_ponteiro, centro = Ponto(2,33))
+                          pos = pos_ponteiro, centro = Ponto(-2,33))
         fundo_escala = Figura(string_imagem_fundo_escala)
         self.adicionaFilho(fundo_escala)
         self.adicionaFilho(ponteiro)

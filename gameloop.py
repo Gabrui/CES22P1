@@ -669,7 +669,7 @@ class PainelHangar(Cena):
 
 class PainelJogoSalvo(Cena):
     """
-        É a classe que monta a cena do Menu Opcoes.
+        É a classe que monta a cena do Menu Jogo Salvo.
     """    
     def __init__(self, audio, entrada, renderizador, string_musica_fundo = None):
         Cena.__init__(self, audio, entrada, renderizador, string_musica_fundo)
@@ -1115,16 +1115,17 @@ class PainelGameOver(Cena):
         #-------------Constantes-----------------------------------------------
         #posicoes
         self._PosbackGround = Ponto(190,41)
-        self._PosTextResumir = Ponto(330,200)
+        self._PosTextResumir = Ponto(380,200)
         self._PosTextGameOver = Ponto(360,60)
-        self._PosTextSair = Ponto(330,400)
+        self._PosTextSair = Ponto(401,271)
         #imagens
         self._string_imagem_background = "imgTeste/c01_Background_vazio.png"
         self._string_imagem_continuar = "imgTeste/c01_botao_continuar.png"
         self._string_imagem_continuar2 = "imgTeste/c01_botao_continuar2.png"
-        self._string_imagem_textSair = "imgTeste/c04_Text_Sair.png"
-        self._string_imagem_textSair2 = "imgTeste/c03_Text_Sair.png"
+        self._string_imagem_textSair = "imgTeste/c02_Text_Abortar.png"
+        self._string_imagem_textSair2 = "imgTeste/c03_Text_Abortar.png"
         self._string_imagem_textGameOVer = "imgTeste/text_Game_over.png"
+        self._string_imagem_Fundo = "imgTeste/sky1_menor.png"
         #sons
         self._string_som_buttonClick = "imgTeste/button_click.ogg"
         #--------------Fim das constantes--------------------------------------
@@ -1134,6 +1135,7 @@ class PainelGameOver(Cena):
                                 pos = self._PosbackGround)
         img_Text_gameOver = Figura(self._string_imagem_textGameOVer,
                                    pos = self._PosTextGameOver)
+        img_fundo = Figura(self._string_imagem_Fundo)
         #Criar botoes
         Botao_continuar = Botao("Play","MenuGameOver",
                                 self._string_imagem_continuar,
@@ -1145,6 +1147,7 @@ class PainelGameOver(Cena):
                               self._string_som_buttonClick,
                               self._PosTextSair)
         #montar cena
+        self.adicionaFilho(img_fundo)
         self.adicionaFilho(img_background)
         self.adicionaFilho(img_Text_gameOver)
         self.adicionaFilho(Botao_continuar)
@@ -1157,7 +1160,74 @@ class Painelgameplay(Cena):
     
     def __init__(self,audio,entrada,renderizador,larguraTela,alturaTela,
                  string_musica_fundo=None):
+               
         Cena.__init__(self,audio,entrada,renderizador,string_musica_fundo)
+        
+        #----------------------Carregando HUDS---------------------------------
+        self._PosXPonteiroFuel        = 56
+        self._PosYPonteiroFuel        = 24
+        self._PosXCoin                = 124
+        self._PosYCoin                = 15
+        self._PosXFuel                = 17
+        self._PosYFuel                = 7
+        self._PosXHealthPoints        = 228
+        self._PosYHealthPoints        = 15
+        self._PosXTextCoin            = 170
+        self._PosYTextCoin            = 22
+        self._PosXTextHealthPoints    = 275
+        self._PosYTextHealthPoints    = 22
+        self._PosXTextMissao3         = 328
+        self._PosYTextMissao3         = 22
+        self._PosXBotaoPause          = 480
+        self._PosYBotaoPause          = 8
+        self._PosXBotaoSom            = 540
+        self._PosYBotaoSom            = 6
+        
+        self._string_imagem_PonteiroFuel = "imgTeste/c02_PonteiroFuel.png"
+        self._string_imagem_Coin = "imgTeste/c02_Coin.png"
+        self._string_imagem_Fuel = "imgTeste/c02_Fuel.png"
+        self._string_imagem_HealthPoint = "imgTeste/c02_HealthPoints.png"
+        self._string_imagem_TextCoin = "imgTeste/c02_Text_Coin.png"
+        self._string_imagem_TextHealth = "imgTeste/c02_Text_HealthPoints.png"
+        self._string_imagem_TextMissao3 ="imgTeste/c02_Text_Missao3.png"
+        self._string_imagem_BotaoSom = "imgTeste/c02_BotaoSom.png"
+        self._string_imagem_BotaoPause = "imgTeste/c02_BotaoPause.png"
+        
+        
+        img_PonteiroFuel = Figura(self._string_imagem_PonteiroFuel,None,
+                                  Ponto(self._PosXPonteiroFuel,
+                                        self._PosYPonteiroFuel))
+        img_Coin = Figura(self._string_imagem_Coin, None, 
+                          Ponto(self._PosXCoin,self._PosYCoin))
+        img_Fuel = Figura(self._string_imagem_Fuel,None,Ponto(self._PosXFuel,
+                                                              self._PosYFuel))
+        img_HealthPoints = Figura(self._string_imagem_HealthPoint,None, 
+                         Ponto(self._PosXHealthPoints,self._PosYHealthPoints))
+        img_TextCoin = Figura(self._string_imagem_TextCoin,None, 
+                              Ponto(self._PosXTextCoin,self._PosYTextCoin))
+        img_TextHealthPoint = Figura(self._string_imagem_TextHealth,None,
+                                     Ponto(self._PosXTextHealthPoints,
+                                           self._PosYTextHealthPoints))
+        img_TextMissao3 = Figura(self._string_imagem_TextMissao3,None,
+                                 Ponto(self._PosXTextMissao3,
+                                       self._PosYTextMissao3))
+        img_BotaoSom = Figura(self._string_imagem_BotaoSom,None,
+                              Ponto(self._PosXBotaoSom,
+                                    self._PosYBotaoSom))
+        img_BotaoPause = Figura(self._string_imagem_BotaoPause,None,
+                              Ponto(self._PosXBotaoPause,
+                                    self._PosYBotaoPause))
+        
+        self.adicionaFilho(img_PonteiroFuel)
+        self.adicionaFilho(img_Coin)
+        self.adicionaFilho(img_Fuel)
+        self.adicionaFilho(img_HealthPoints)
+        self.adicionaFilho(img_TextCoin)
+        self.adicionaFilho(img_TextHealthPoint)
+        self.adicionaFilho(img_BotaoSom)
+        self.adicionaFilho(img_BotaoPause)
+        self.adicionaFilho(img_TextMissao3)
+        #---------------------------Fim das HUDS-------------------------------
         
         fundo0 = FundoParalaxeInfinito(larguraTela,alturaTela, 
                          "imgTeste/estFundo.png",Ponto(-1, -0.4), Ponto(0, 80))
@@ -1169,10 +1239,10 @@ class Painelgameplay(Cena):
         Barra_Vida_Jogador = Vida(300, Ponto(larguraTela-340,0),Ponto(10,10),
                                   "imgTeste/barra_vida_interna.png",
                                   "imgTeste/barra_vida_externa.png")
-        Velocimetro_Jogador = Velocimetro(200,Ponto(0,alturaTela-50),
-                                          Ponto(40,50),
+        Velocimetro_Jogador = Velocimetro(200,Ponto(10,alturaTela-140),
+                                          Ponto(57,50),
                                           "imgTeste/c(X)_PonteiroFuel.png",
-                                          "imgTeste/c(X+1)_Fuel.png")
+                                          "imgTeste/velocimetroFinal.png")
         projetilJogador = Projetil("imgTeste/BulletEnemies.png",
                                    "imgTeste/MetalHit1.ogg",
                                    50, Ponto(0,0))
@@ -1251,7 +1321,7 @@ class Painelgameplay(Cena):
                                   )
         
         #criar Hangar
-        hangar = Figura("imgTeste/airport.png", pos = Ponto(1800,580))
+        hangar = Figura("imgTeste/hangarGamePlay.png", pos = Ponto(1800,530))
         
         simulador = Simulador(alturaTela-50,larguraTela)
         simulador.adicionaFilho(avi)
