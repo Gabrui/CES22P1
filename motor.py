@@ -1549,7 +1549,7 @@ class Camada(Renderizavel):
         if ang != 0:
             Cx = camadaFilha.centro.getX()
             Cy = camadaFilha.centro.getY()
-            alfa = math.atan2(Cy - estado[3],Cx - estado[2])
+            alfa = math.atan2(Cy - estado[3], -(Cx - estado[2]) )
             hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
                              (Cx - estado[2])*(Cx - estado[2]) )
             teta = Angulo.grausParaRadianos(ang)

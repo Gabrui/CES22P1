@@ -142,7 +142,7 @@ class IA(motor.Renderizavel):
         #ajusta a posicao inicial do projetil
         Cx = self.centro.getX()
         Cy = self.centro.getY()
-        alfa = math.atan2(Cy - self.posTiro.getY(),Cx - self.posTiro.getX())
+        alfa = math.atan2(Cy - self.posTiro.getY(),-Cx + self.posTiro.getX())
         hipo = math.sqrt((Cy - self.posTiro.getY())*(Cy - self.posTiro.getY())+ 
                          (Cx - self.posTiro.getX())*(Cx - self.posTiro.getX()))
         teta = self.rot.getAngulo(False)

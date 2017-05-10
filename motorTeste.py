@@ -279,8 +279,8 @@ class CamadaTeste(unittest.TestCase):
         a = self.c3.rot.getAngulo(False)
         self.assertAlmostEqual(figs[0][2], 0)
         self.assertAlmostEqual(figs[0][3], 0)
-        self.assertAlmostEqual(figs[1][2], 21*cos(a) - 94*sin(a))
-        self.assertAlmostEqual(figs[1][3], 94*cos(a) + 21*sin(a))
+        self.assertAlmostEqual(figs[1][2], 21*cos(a) + 94*sin(a))
+        self.assertAlmostEqual(figs[1][3], 94*cos(a) - 21*sin(a))
         
 
 rend = Renderizador("Teste", 800, 600)

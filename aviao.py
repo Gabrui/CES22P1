@@ -96,7 +96,7 @@ class Jogador(Aviao):
         
     
     def getPV(self):
-        self.barra_vida.getPV()
+        return self.barra_vida.getPV()
         
     
     def inicializaCalculus(self,aerMacro, empuxoMacro, rotMacro, inerciaMacro):

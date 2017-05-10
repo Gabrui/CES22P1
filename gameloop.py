@@ -1166,7 +1166,7 @@ class Painelgameplay(Cena):
         fundo3 = Figura("imgTeste/nuvem.png")
         
         #criando jogador
-        Barra_Vida_Jogador = Vida(1000, Ponto(larguraTela-340,0),Ponto(10,10),
+        Barra_Vida_Jogador = Vida(300, Ponto(larguraTela-340,0),Ponto(10,10),
                                   "imgTeste/barra_vida_interna.png",
                                   "imgTeste/barra_vida_externa.png")
         Velocimetro_Jogador = Velocimetro(200,Ponto(0,alturaTela-50),
@@ -1175,7 +1175,7 @@ class Painelgameplay(Cena):
                                           "imgTeste/c(X+1)_Fuel.png")
         projetilJogador = Projetil("imgTeste/BulletEnemies.png",
                                    "imgTeste/MetalHit1.ogg",
-                                   1,Ponto(0,0))
+                                   50, Ponto(0,0))
         armaJogador = Arma("imgTeste/M4A1_Single.ogg",projetilJogador)
         img_aviao_jogador = banco_dados.getSkinAtual()[0]
         img_aviao_jogador2 =  banco_dados.getSkinAtual()[1]
@@ -1233,7 +1233,7 @@ class Painelgameplay(Cena):
                                        "imgTeste/barra_vida_externa_IA.png")
         projetilTorreInimiga = Projetil("imgTeste/Bullet_3.png",
                                         "imgTeste/MetalHit1.ogg",
-                                        10,Ponto(0,0))
+                                        30,Ponto(0,0))
         armaTorreInimiga = Arma("imgTeste/Anti_Aircraft_Gun.ogg",
                                 projetilTorreInimiga)
         torreInimiga = TorreInimiga("imgTeste/Cano_Turret_simetrica.png",
@@ -1444,6 +1444,7 @@ class Jogo():
         self.even.escutar("MenuOpcoes", self.MenuOpcoes)
         self.even.escutar("MenuCreditos", self.MenuCreditos)
         self.even.escutar("MenuJogoSalvo",self.MenuJogoSalvo)
+        self.even.escutar("MenuGameOver", self.MenuGameOver)
         self.audio.escutas()
         self.renderizador.escutas()
     

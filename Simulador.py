@@ -99,25 +99,25 @@ class Simulador(motor.Camada):
                               isinstance(irmao, aviao.Aviao)):
                               #Se houver colisao entre Jogador e projetil,
                               #reduz os pontos de vida do Jogador
-                              #irmao[10].reduzPV(filhos[10].getDano())
+                              irmao.reduzPV(filhos.getDano())
                               #chama animacao de fisica de impacto do projetil
                               filhos.fisicaDeImpacto()
                                #remove o projetil do gameplay
                               self.removeFilho(filhos)
                               #verifica se o Jogador esta vivo
-                              #if irmao[10].getPV() <= 0:
-                              #    if isinstance(irmao,aviao.Jogador):
+                              if irmao.getPV() <= 0:
+                                  if isinstance(irmao,aviao.Jogador):
                                   #se nao tiver vivo, chama tela de G.O.
-                              #      self.even.lancar("GameOver",True)
+                                    self.even.lancar("MenuGameOver",True)
                         elif(isinstance(filhos, aviao.Aviao) and \
                              isinstance(irmao,Projetil.Projetil)):
                                #o mesmo que a anterior
                                # filhos[10].reduzPV(filhos[10].getDano())
                               irmao.fisicaDeImpacto()
                               self.removeFilho(irmao)
-                                #if filhos[10].getPV() <= 0:
-                                #    if isinstance(filhos,aviao.Jogador):
-                                  #      self.even.lancar("GameOver",True)
+                              if filhos.getPV() <= 0:
+                                  if isinstance(filhos,aviao.Jogador):
+                                      self.even.lancar("MenuGameOver",True)
                                        
                         elif (isinstance(filhos,Projetil.Projetil) and\
                               isinstance(irmao,IA.IA)) and\
@@ -198,7 +198,7 @@ class Simulador(motor.Camada):
                     #Se for Jogador, chama tela de G.O.
                     filhos.explosao()
                     #filhos.yVel *= -1
-                    self.even.lancar("GameOver", True)
+                    self.even.lancar("MenuGameOver", True)
                 elif isinstance(filhos, IA.AviaoInimigo):
                     #Se houver colisao entre aviaoInimigo e chao
                     #Chama o metodo de animacao da explosao
