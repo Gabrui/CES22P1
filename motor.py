@@ -1553,7 +1553,7 @@ class Camada(Renderizavel):
             hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
                              (Cx - estado[2])*(Cx - estado[2]) )
             teta = Angulo.grausParaRadianos(ang)
-            posX = camadaFilha.pos.getX() - hipo*math.cos(alfa + teta) + Cx
+            posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta) + Cx
             posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta) + Cy
         else:
             posX = camadaFilha.pos.getX() + estado[2]

@@ -146,7 +146,7 @@ class IA(motor.Renderizavel):
         hipo = math.sqrt((Cy - self.posTiro.getY())*(Cy - self.posTiro.getY())+ 
                          (Cx - self.posTiro.getX())*(Cx - self.posTiro.getX()))
         teta = self.rot.getAngulo(False)
-        posX = self.pos.getX() - hipo*math.cos(alfa + teta)
+        posX = self.pos.getX() + hipo*math.cos(alfa + teta)
         posY = self.pos.getY() - hipo*math.sin(alfa + teta)
         posInicialProjetil = motor.Ponto(posX, posY)
         #coloca a posicao inicial no projetil
