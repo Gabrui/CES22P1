@@ -1,20 +1,11 @@
 var searchData=
 [
-  ['sair',['sair',['../classmotor_1_1Entrada.html#a9447540247021b190f5fe28b10469337',1,'motor::Entrada']]],
-  ['setangulo',['setAngulo',['../classmotor_1_1Angulo.html#abaa26f9de505e788c364ee550460f1ea',1,'motor::Angulo']]],
-  ['setdimensoes',['setDimensoes',['../classmotor_1_1Retangulo.html#a1cc5f23bdf1700ea0b3409a7e6100cc3',1,'motor::Retangulo']]],
-  ['setdono',['setDono',['../classVida_1_1Vida.html#a369d8b415496d17527646458f8f70167',1,'Vida.Vida.setDono()'],['../classVida_1_1Velocimetro.html#a75ac174d4b674f9060e686aac49ec4c3',1,'Vida.Velocimetro.setDono()'],['../classVida_1_1Altimetro.html#a10bae257d683c6db29ccedce49f312a5',1,'Vida.Altimetro.setDono()']]],
-  ['setmusicafundo',['setMusicaFundo',['../classmotor_1_1Audio.html#a0c7f52c3838906677fa2b561645f1aaf',1,'motor::Audio']]],
-  ['setnumcorte',['setNumCorte',['../classmotor_1_1Animacao.html#a86024bead0c4beeebfd5eaaf1a34f381',1,'motor::Animacao']]],
-  ['setopacidade',['setOpacidade',['../classmotor_1_1Cor.html#a6988ababd23b37763e54fb2e9ad3f330',1,'motor::Cor']]],
-  ['setretangulo',['setRetangulo',['../classclassPonto_09classRetangulo_1_1Retangulo.html#a34580e8157e625c38b773efd936bf541',1,'classPonto+classRetangulo.Retangulo.setRetangulo()'],['../classmotor_1_1Retangulo.html#ab3bbccf15f41f7755974dd013eb6c33b',1,'motor.Retangulo.setRetangulo()']]],
-  ['setretanguloquecontem',['setRetanguloQueContem',['../classclassPonto_09classRetangulo_1_1Retangulo.html#af36a43baabe3a77211e25fde0f50dafe',1,'classPonto+classRetangulo.Retangulo.setRetanguloQueContem()'],['../classmotor_1_1Retangulo.html#a15cd145d3718b8c17a3208dbd54937cf',1,'motor.Retangulo.setRetanguloQueContem()']]],
-  ['setrgba',['setRGBA',['../classmotor_1_1Cor.html#a4ab7f3d44ef9842f931c42dfadad8aef',1,'motor::Cor']]],
-  ['setstring',['setString',['../classmotor_1_1Figura.html#a92812cce910b26d6fc1d7d4b80f87540',1,'motor.Figura.setString()'],['../classmotor_1_1Animacao.html#a95c060a3a9378709d1ef0fe608c1f761',1,'motor.Animacao.setString()'],['../classmotor_1_1Texto.html#a3a5068cebddfc856fed6048a737dce40',1,'motor.Texto.setString()']]],
-  ['setvolumemusicafundo',['setVolumeMusicaFundo',['../classmotor_1_1Audio.html#a1a276b99abc4c53301bf6dbecd1287b2',1,'motor::Audio']]],
-  ['setx',['setX',['../classmotor_1_1Ponto.html#a0fa9f4a1e48759d81d626f743504f521',1,'motor::Ponto']]],
-  ['setxy',['setXY',['../classmotor_1_1Ponto.html#a20de0d17a7d6069275625c0f303df566',1,'motor::Ponto']]],
-  ['sety',['setY',['../classmotor_1_1Ponto.html#a894fe6d5f400d70e57a74d80401bf5ce',1,'motor::Ponto']]],
-  ['shoot',['shoot',['../classaviao_1_1Aviao.html#a7c1d1e6d7dd66f5a090c4a4b828888e0',1,'aviao.Aviao.shoot()'],['../classIA_1_1IA.html#a18b28eb9860ebf8beb3c80e68a73e2bd',1,'IA.IA.shoot()']]],
-  ['soma',['soma',['../classclassPonto_09classRetangulo_1_1Ponto.html#acf49b3ddb0cba4dfabae8cc3299ae919',1,'classPonto+classRetangulo.Ponto.soma()'],['../classmotor_1_1Ponto.html#ad3b9d24378b99fd7d76175bd27b97d4c',1,'motor.Ponto.soma()']]]
+  ['radianosparagraus',['radianosParaGraus',['../classmotor_1_1Angulo.html#a72f759e2c09caaf403520d249f9d7170',1,'motor::Angulo']]],
+  ['reduzpv',['reduzPV',['../classIA_1_1IA.html#a3522fc7d6812e9b9449eab27ba5a9420',1,'IA.IA.reduzPV()'],['../classVida_1_1Vida.html#a4d87748b5285798e2e6912ac9ff45269',1,'Vida.Vida.reduzPV()']]],
+  ['removefilho',['removeFilho',['../classmotor_1_1Camada.html#aac314041057653c61a4fa5b1baf47e24',1,'motor::Camada']]],
+  ['removetuplas1elem',['removeTuplas1Elem',['../classmotor_1_1Aux.html#a796c085cf527ba254200f8aeeb64eb78',1,'motor::Aux']]],
+  ['renderiza',['renderiza',['../classmotor_1_1Renderizador.html#af233baab032ea2dc72f3fce5f293115a',1,'motor::Renderizador']]],
+  ['retornamultescalar',['retornaMultEscalar',['../classmotor_1_1Ponto.html#a1a0072401531d35614bf01fad1d23d3d',1,'motor::Ponto']]],
+  ['retornasoma',['retornaSoma',['../classclassPonto_09classRetangulo_1_1Ponto.html#aab7c2d1b7699b0f1d940dece9a0d0f15',1,'classPonto+classRetangulo.Ponto.retornaSoma()'],['../classmotor_1_1Ponto.html#ac65d19338b6af759426296e06ac9750d',1,'motor.Ponto.retornaSoma()']]],
+  ['rodaranimacao',['rodarAnimacao',['../classmotor_1_1Animacao.html#ae783977e766ab26a89433a3bb762991d',1,'motor::Animacao']]]
 ];

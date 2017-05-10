@@ -1,7 +1,7 @@
 var searchData=
 [
   ['radianosparagraus',['radianosParaGraus',['../classmotor_1_1Angulo.html#a72f759e2c09caaf403520d249f9d7170',1,'motor::Angulo']]],
-  ['reduzpv',['reduzPV',['../classVida_1_1Vida.html#a4d87748b5285798e2e6912ac9ff45269',1,'Vida::Vida']]],
+  ['reduzpv',['reduzPV',['../classIA_1_1IA.html#a3522fc7d6812e9b9449eab27ba5a9420',1,'IA.IA.reduzPV()'],['../classVida_1_1Vida.html#a4d87748b5285798e2e6912ac9ff45269',1,'Vida.Vida.reduzPV()']]],
   ['removefilho',['removeFilho',['../classmotor_1_1Camada.html#aac314041057653c61a4fa5b1baf47e24',1,'motor::Camada']]],
   ['removetuplas1elem',['removeTuplas1Elem',['../classmotor_1_1Aux.html#a796c085cf527ba254200f8aeeb64eb78',1,'motor::Aux']]],
   ['renderiza',['renderiza',['../classmotor_1_1Renderizador.html#af233baab032ea2dc72f3fce5f293115a',1,'motor::Renderizador']]],

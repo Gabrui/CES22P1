@@ -7,4 +7,8 @@ digraph "motor.Botao"
   Node2 [label="motor.Camada",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmotor_1_1Camada.html",tooltip="Representa uma camada na árvore renderização. "];
   Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="motor.Renderizavel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmotor_1_1Renderizavel.html",tooltip="Classe abstrata que contém os atributos básicos de um objeto renderizável. "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="motor.item",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmotor_1_1item.html",tooltip="Representa os itens da loja. "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="motor.item_aviao",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmotor_1_1item__aviao.html",tooltip="representa uma skin de aviao que pode ser vendido na loja (Hangar). "];
 }

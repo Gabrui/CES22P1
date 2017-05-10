@@ -5,6 +5,7 @@ var searchData=
   ['anguloteste',['AnguloTeste',['../classmotorTeste_1_1AnguloTeste.html',1,'motorTeste']]],
   ['animacao',['Animacao',['../classmotor_1_1Animacao.html',1,'motor']]],
   ['arma',['Arma',['../classArma_1_1Arma.html',1,'Arma']]],
+  ['arquivo',['arquivo',['../classdatabase_1_1arquivo.html',1,'database']]],
   ['audio',['Audio',['../classmotor_1_1Audio.html',1,'motor']]],
   ['aux',['Aux',['../classmotor_1_1Aux.html',1,'motor']]],
   ['auxteste',['AuxTeste',['../classmotorTeste_1_1AuxTeste.html',1,'motorTeste']]],

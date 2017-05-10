@@ -5,5 +5,6 @@ var searchData=
   ['camera',['Camera',['../classcenario_1_1Camera.html',1,'cenario']]],
   ['cena',['Cena',['../classmotor_1_1Cena.html',1,'motor']]],
   ['cenario',['Cenario',['../classcenario_1_1Cenario.html',1,'cenario']]],
+  ['cenateste',['CenaTeste',['../classmotorTeste_1_1CenaTeste.html',1,'motorTeste']]],
   ['cor',['Cor',['../classmotor_1_1Cor.html',1,'motor']]]
 ];
