@@ -63,7 +63,7 @@ class PainelMenuPrincipal(Cena):
         #----------------Fim das Constantes do Meneu Principal----------------
         
         #Criando Botoes do Menu
-        botaoNovoJogo = Botao("Tutorial","MenuPrincipal",
+        botaoNovoJogo = Botao("MenuNovoJogo","MenuPrincipal",
                               self._string_imagem1_botaoNovoJogo,
                               self._string_imagem2_botaoNovoJogo,
                               self._string_som_buttonClick,
