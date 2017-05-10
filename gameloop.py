@@ -731,7 +731,7 @@ class PainelJogoSalvo(Cena):
                               self._string_som_buttonClick,
                               Ponto(self._PosXBotaoJogo3,
                                     self._PosYBotaoJogo3))
-        botao_TextRetornar = Botao("ler","MenuJogoSalvo",
+        botao_TextRetornar = Botao("MenuPrincipal","MenuJogoSalvo",
                                    self._string_imagem_TextRetornar,
                                    self._string_imagem_TextRetornar,
                                    self._string_som_buttonClick,

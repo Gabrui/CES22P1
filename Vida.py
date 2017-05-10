@@ -114,8 +114,8 @@ class Velocimetro(Camada):
         self.posX_ponteiro_jogador = pos.getX()
         self.posY_ponteiro_jogador = pos.getY()
         
-        self._fundo_escala = 85
-        self._posAngular_VelMin = 130
+        self._fundo_escala = 240
+        self._posAngular_VelMin = 90
         self._posAngular_img_ponteiro = 49
         
         ponteiro = Figura(string_imagem_ponteiro, 
