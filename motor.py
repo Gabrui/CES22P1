@@ -1722,7 +1722,7 @@ class Botao(Camada):
         """
         super().__init__(pos, centro, escala, rot, cor)
         self.even.escutar("M_pos", self._verEmCima)
-        self.even.escutar("M_click", self._verClique)
+        self.even.escutar("M_fclick", self._verClique)
         self.string_imagem1 = string_imagem1
         self.string_imagem2 = string_imagem2
         self.imagem = Figura(string_imagem1)
