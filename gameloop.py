@@ -1276,15 +1276,18 @@ class Painelgameplay(Cena):
         
         self.even.escutar("K_p",self.pausar)
         
+        self._caixa_dialogo = False
+        
     def atualiza(self,dt):
         """
             atualiza. E verifica se o objetivo foi completado
         """
         super().atualiza(dt)
-        if banco_dados.verificarObjetivo():
+        if banco_dados.verificarObjetivo() and not self._caixa_dialogo:
             
             texto_dialogo = Figura("imgTeste/caixa_dialogo_objetivo_concluido.png")
             self.adicionaFilho(texto_dialogo)
+            self._caixa_dialogo = True
             
         
         
