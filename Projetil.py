@@ -11,7 +11,9 @@ class Projetil(motor.Figura):
     """
      Representa a ideia abstrata de projetil
     """
-    def __init__(self, imagem, som, dano, pos0, veli = 400, dono = None):
+
+    def __init__(self, imagem: object, som: object, dano: object, pos0: object, veli: object = 400,
+                 dono: object = None) -> object:
         motor.Figura.__init__(self, imagem, pos = pos0)
         """
         Imagem: referencia a imagem do projetil

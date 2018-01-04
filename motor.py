@@ -19,6 +19,7 @@ class Aux:
     @class Aux
     Classes com funções auxiliares para mexer com listas etc...
     """
+
     @staticmethod
     def removeTuplas1Elem(lista, elem):
         """
@@ -32,8 +33,7 @@ class Aux:
             if lista[i][0] == elem:
                 del lista[i]
             i += 1
-    
-    
+
     @staticmethod
     def existeTupla1Elem(lista, elem):
         """
@@ -48,8 +48,7 @@ class Aux:
             if tupla[0] == elem:
                 return True
         return False
-    
-    
+
     @staticmethod
     def coordsInscrito(angulo, Cx, Cy, largura, altura):
         """
@@ -67,30 +66,27 @@ class Aux:
         @returns {tuple} (x, y) Posição do ponto transformado com relação ao \
             ponto superior esquerdo do retângulo que o circunscreve
         """
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        # raise NotImplementedError("Você deveria ter programado aqui!")
         if angulo.getQuadrante() == 1:
-            return (Cx*math.cos(angulo.getAngulo(False))
-                    + Cy*math.sin(angulo.getAngulo(False)),
-                    Cy*math.cos(angulo.getAngulo(False)) 
-                    + (largura - Cx)*math.sin(angulo.getAngulo(False)))
+            return (Cx * math.cos(angulo.getAngulo(False))
+                    + Cy * math.sin(angulo.getAngulo(False)),
+                    Cy * math.cos(angulo.getAngulo(False))
+                    + (largura - Cx) * math.sin(angulo.getAngulo(False)))
         elif angulo.getQuadrante() == 2:
-            return (-(largura - Cx)*math.cos(angulo.getAngulo(False))
-                    + Cy*math.sin(angulo.getAngulo(False)),
-                    -(altura - Cy)*math.cos(angulo.getAngulo(False))
-                    + (largura - Cx)*math.sin(angulo.getAngulo(False)))
+            return (-(largura - Cx) * math.cos(angulo.getAngulo(False))
+                    + Cy * math.sin(angulo.getAngulo(False)),
+                    - (altura - Cy) * math.cos(angulo.getAngulo(False))
+                    + (largura - Cx) * math.sin(angulo.getAngulo(False)))
         elif angulo.getQuadrante() == 3:
-            return(-(largura - Cx)*math.cos(angulo.getAngulo(False))
-                   - (altura - Cy)*math.sin(angulo.getAngulo(False)),
-                   - (altura - Cy)*math.cos(angulo.getAngulo(False)) 
-                   - Cx*math.sin(angulo.getAngulo(False)))
+            return (-(largura - Cx) * math.cos(angulo.getAngulo(False))
+                    - (altura - Cy) * math.sin(angulo.getAngulo(False)),
+                    - (altura - Cy) * math.cos(angulo.getAngulo(False))
+                    - Cx * math.sin(angulo.getAngulo(False)))
         elif angulo.getQuadrante() == 4:
-            return (Cx*math.cos(angulo.getAngulo(False)) 
-                    - (altura - Cy)*math.sin(angulo.getAngulo(False)),
-                      Cy*math.cos(angulo.getAngulo(False)) 
-                      - Cx*math.sin(angulo.getAngulo(False)))
-        
-
-
+            return (Cx * math.cos(angulo.getAngulo(False))
+                    - (altura - Cy) * math.sin(angulo.getAngulo(False)),
+                    Cy * math.cos(angulo.getAngulo(False))
+                    - Cx * math.sin(angulo.getAngulo(False)))
 
 
 class Singleton:
@@ -98,6 +94,7 @@ class Singleton:
     @class Singleton
     Decorador para criação de Slingletons
     """
+
     def __init__(self, classe):
         """
         @function __init__
@@ -106,9 +103,8 @@ class Singleton:
         """
         self.classe = classe
         self.objeto = None
-    
-    
-    def __call__(self,*args, **kwargs):
+
+    def __call__(self, *args, **kwargs):
         """
         @function __call__
         Função mágica, chamada quando qualquer método é chamada, em  \
@@ -118,29 +114,26 @@ class Singleton:
         @returns {object} Instância da classe
         """
         if self.objeto == None:
-            self.objeto = self.classe(*args,**kwargs)
+            self.objeto = self.classe(*args, **kwargs)
         return self.objeto
-
-
-
 
 
 @Singleton
 class Evento:
     """
     @class Evento
-    É uma classe Singleton como de costume. 
+    É uma classe Singleton como de costume.
     A performance foi muito prejudicada por várias instâncias de evento e o
     modelo de propagação arquitetado anteriormente
     """
+
     def __init__(self):
         """
         @fuction __init__
         Inicialização do gerenciador de eventos
         """
-        self._escutaveis = {} # Podem ser vistos como aparáveis
-    
-    
+        self._escutaveis = {}  # Podem ser vistos como aparáveis
+
     def escutar(self, string_evento, callback):
         """
         @function escutar
@@ -156,9 +149,8 @@ class Evento:
             self._escutaveis[string_evento] = [callback]
         elif callback not in self._escutaveis[string_evento]:
             self._escutaveis[string_evento].append(callback)
-    
-    
-    def pararDeEscutar(self, string_evento, callback = None):
+
+    def pararDeEscutar(self, string_evento, callback=None):
         """
         @function pararDeEscutar
         Para de escutar determinado evento
@@ -170,16 +162,14 @@ class Evento:
             del self._escutaveis[string_evento]
         else:
             self._escutaveis[string_evento].remove(callback)
-    
-    
+
     def pararDeEscutarTudo(self):
         """
         @function pararDeEscutarTudo
         Apaga todas as escutas, de forma a zerar o gerenciador de eventos
         """
         self._escutaveis.clear()
-    
-    
+
     def lancar(self, string_evento, objeto_do_evento):
         """
         @function lancar
@@ -197,15 +187,13 @@ class Evento:
                 callback(objeto_do_evento)
 
 
-
-
-
 class Ponto:
     """
     @class Ponto
     Classe que representa um ponto 2d do tipo (x, y)
     """
-    def __init__ (self, x = 0, y = 0):
+
+    def __init__(self, x=0, y=0):
         """
         @function __init__
         Inicializa o ponto
@@ -214,8 +202,7 @@ class Ponto:
         """
         self._x = x
         self._y = y
-    
-    
+
     def setXY(self, x, y):
         """
         @function setXY
@@ -225,8 +212,7 @@ class Ponto:
         """
         self._x = x
         self._y = y
-    
-    
+
     def setX(self, x):
         """
         @function setX
@@ -234,8 +220,7 @@ class Ponto:
         @param {float} x Posição x do ponto
         """
         self._x = x
-    
-    
+
     def setY(self, y):
         """
         @function setY
@@ -243,8 +228,7 @@ class Ponto:
         @param {float} y Posição y do ponto
         """
         self._y = y
-    
-    
+
     def getX(self):
         """
         @function getX
@@ -252,8 +236,7 @@ class Ponto:
         @returns {float} Posição x do ponto
         """
         return self._x
-    
-    
+
     def getY(self):
         """
         @function getY
@@ -261,8 +244,7 @@ class Ponto:
         @returns {float} Posição y do ponto
         """
         return self._y
-    
-    
+
     def getXY(self):
         """
         @function getXY
@@ -270,18 +252,16 @@ class Ponto:
         @returns {tuple} Tupla com as posições x e y do ponto
         """
         return (self._x, self._y)
-    
-    
+
     def distancia2(self, ponto):
         """
         @function distancia2
         Retorna a distância entre este ponto e outro, ao quadrado
         @returns {float} Distância dos dois pontos ao quadrado
         """
-        return ((self._x-ponto._x)*(self._x-ponto._x) + 
-                (self._y-ponto._y)*(self._y-ponto._y) )
-    
-    
+        return ((self._x - ponto._x) * (self._x - ponto._x) +
+                (self._y - ponto._y) * (self._y - ponto._y))
+
     def distancia(self, ponto):
         """
         @function distancia
@@ -289,8 +269,7 @@ class Ponto:
         @returns {float} Distância dos dois pontos
         """
         return math.sqrt(self.distancia2(ponto))
-    
-    
+
     def __mul__(self, escalar):
         """
         @function __mul__
@@ -300,8 +279,7 @@ class Ponto:
         @returns {Ponto} Novo ponto resultado da operação
         """
         return Ponto(self._x * escalar._x, self._y * escalar._y)
-    
-    
+
     def retornaMultEscalar(self, escalar):
         """
         @function retornaMultEscalar
@@ -311,8 +289,7 @@ class Ponto:
         @returns {Ponto} Novo ponto resultado da operação
         """
         return Ponto(self._x * escalar._x, self._y * escalar._y)
-    
-    
+
     def __iadd__(self, ponto):
         """
         @function __iadd__
@@ -323,8 +300,7 @@ class Ponto:
         self._x = self._x + ponto._x
         self._y = self._y + ponto._y
         return self
-    
-    
+
     def soma(self, ponto):
         """
         @function soma
@@ -333,8 +309,7 @@ class Ponto:
         """
         self._x = self._x + ponto._x
         self._y = self._y + ponto._y
-    
-    
+
     def __add__(self, ponto):
         """
         @function __add__
@@ -344,8 +319,7 @@ class Ponto:
         @returns {Ponto} Novo ponto resultado da operação
         """
         return Ponto(self._x + ponto._x, self._y + ponto._y)
-    
-    
+
     def retornaSoma(self, ponto):
         """
         @function retornaSoma
@@ -354,9 +328,8 @@ class Ponto:
         @param {Ponto} Ponto a ser somado
         @returns {Ponto} Novo ponto resultado da operação
         """
-        return Ponto(self._x + ponto._x, self._y + ponto._y)     
-    
-    
+        return Ponto(self._x + ponto._x, self._y + ponto._y)
+
     def clonar(self):
         """
         @function clonar
@@ -366,19 +339,17 @@ class Ponto:
         return Ponto(self._x, self._y)
 
 
-
-
-
 class Retangulo:
     """
     Classe que representa um retângulo horizontal
     """
-    def __init__(self, ponto1 = None, ponto2 = None, largura = 0, altura = 0):
+
+    def __init__(self, ponto1=None, ponto2=None, largura=0, altura=0):
         """
         @function __init__
         Inicializa o retângulo com dois pontos ou com um ponto e uma largura \
             e uma altura. O retângulo é horizontal e não pode ser rotacionado.\
-            O retângulo utiliza as coordenadas cartesianas com x positivo \ 
+            O retângulo utiliza as coordenadas cartesianas com x positivo \
             para direita e y positivo para baixo.
         @param {Ponto} ponto1 Representa um vértice do retângulo. Ele é usado \
             como ponto superior esquerdo se não houver
@@ -394,7 +365,6 @@ class Retangulo:
             self._p2 = ponto2
         else:
             self._p2 = self._p1.retornaSoma(Ponto(largura, altura))
-    
 
     def getLargura(self):
         """
@@ -403,26 +373,24 @@ class Retangulo:
             independentemente da posição dos pontos
         @returns {float} Largura do retângulo
         """
-        larg = self._p1.getX()-self._p2.getX()
-        if larg>0:
+        larg = self._p1.getX() - self._p2.getX()
+        if larg > 0:
             return larg
         else:
             return -larg
-    
-    
+
     def getAltura(self):
         """
         @function getAltura
         Retorna o valor da altura do retângulo, um valor SEMPRE positivo
         @returns {float} Altura do retângulo
         """
-        alt = self._p1.getY()-self._p2.getY()
-        if alt>0:
+        alt = self._p1.getY() - self._p2.getY()
+        if alt > 0:
             return alt
         else:
             return -alt
-    
-    
+
     def getTopo(self):
         """
         @function getTopo
@@ -432,8 +400,7 @@ class Retangulo:
         if self._p1.getY() < self._p2.getY():
             return self._p1.getY()
         return self._p2.getY()
-    
-    
+
     def getFundo(self):
         """
         @function getFundo
@@ -443,8 +410,7 @@ class Retangulo:
         if self._p1.getY() > self._p2.getY():
             return self._p1.getY()
         return self._p2.getY()
-    
-    
+
     def getEsquerda(self):
         """
         @function getEsquerda
@@ -454,8 +420,7 @@ class Retangulo:
         if self._p1.getX() < self._p2.getX():
             return self._p1.getX()
         return self._p2.getX()
-    
-    
+
     def getDireita(self):
         """
         @function getDireita
@@ -466,7 +431,6 @@ class Retangulo:
             return self._p1.getX()
         return self._p2.getX()
 
-    
     def getTopoEsquerdo(self):
         """
         @function getTopoEsquerdo
@@ -483,38 +447,34 @@ class Retangulo:
                 return self._p2.clonar()
             else:
                 return Ponto(self._p2.getX(), self._p1.getY())
-    
-    
+
     def getTopoDireito(self):
         """
         @function getTopoDireito
         Retorna um ponto que representa o ponto superior direito
         @returns {Ponto} Novo ponto que representa o ponto superior direito
         """
-        return Ponto(self.getTopoEsquerdo()._x + self.getLargura(), \
+        return Ponto(self.getTopoEsquerdo()._x + self.getLargura(),
                      self.getTopoEsquerdo()._y)
-    
-    
+
     def getFundoEsquerdo(self):
         """
         @function getFundoEsquerdo
         Retorna um ponto que representa o ponto inferior esquerdo
         @returns {Ponto} Novo ponto que representa o ponto inferior esquerdo
         """
-        return Ponto(self.getTopoEsquerdo()._x, self.getTopoEsquerdo()._y + \
+        return Ponto(self.getTopoEsquerdo()._x, self.getTopoEsquerdo()._y +
                      self.getAltura())
-    
-    
+
     def getFundoDireito(self):
         """
         @function getFundoDireito
         Retorna um ponto que representa o ponto inferior direito
         @returns {Ponto} Novo ponto que representa o ponto inferior direito
         """
-        return Ponto(self.getTopoDireito()._x, self.getTopoDireito()._y + \
+        return Ponto(self.getTopoDireito()._x, self.getTopoDireito()._y +
                      self.getAltura())
-    
-    
+
     def setRetangulo(self, ponto1, ponto2):
         """
         @function setRetangulo
@@ -525,8 +485,7 @@ class Retangulo:
         """
         self._p1 = ponto1
         self._p2 = ponto2
-    
-    
+
     def setRetanguloQueContem(self, lista_retangulos):
         """
         @function setRetanguloQueContem
@@ -548,8 +507,7 @@ class Retangulo:
             if y_fundo < retangulo.getFundoDireito().getY():
                 y_fundo = retangulo.getFundoDireito().getY()
         self.setRetangulo(Ponto(x_esquerda, y_topo), Ponto(x_direita, y_fundo))
-            
-    
+
     def estaDentro(self, ponto):
         """
         @function estaDentro
@@ -559,14 +517,13 @@ class Retangulo:
         @returns {bool} Se o ponto está dentro ou não
         """
         if ponto.getX() > self.getTopoEsquerdo().getX() and ponto.getY() > \
-        self.getTopoEsquerdo().getY() and \
-        ponto.getY() < self.getFundoDireito().getY() and\
-        ponto.getX()< self.getFundoDireito().getX():
+                self.getTopoEsquerdo().getY() and \
+                ponto.getY() < self.getFundoDireito().getY() and \
+                ponto.getX() < self.getFundoDireito().getX():
             return True
         else:
             return False
-    
-    
+
     def setDimensoes(self, posX, posY, largura, altura):
         """
         @function setDimensoes
@@ -580,14 +537,12 @@ class Retangulo:
         self._p2 = self._p1.retornaSoma(Ponto(largura, altura))
 
 
-
-
-
 class Angulo:
     """
-    Classe que cuida dos ângulos, armazenados em graus, que devem estar 
+    Classe que cuida dos ângulos, armazenados em graus, que devem estar
     entre 180 (inclusive) e -180
     """
+
     @staticmethod
     def grausParaRadianos(angulo):
         """
@@ -597,8 +552,7 @@ class Angulo:
         @returns {float} O ângulo em radianos
         """
         return math.radians(angulo)
-    
-    
+
     @staticmethod
     def radianosParaGraus(angulo):
         """
@@ -608,8 +562,7 @@ class Angulo:
         @returns {float} O ângulo em graus
         """
         return math.degrees(angulo)
-    
-    
+
     def _validaAngulo(self):
         """
         @function _validaAngulo
@@ -619,9 +572,8 @@ class Angulo:
             self._angulo += 360
         while self._angulo > 180:
             self._angulo -= 360
-    
-    
-    def __init__ (self, angulo, emGraus = True):
+
+    def __init__(self, angulo, emGraus=True):
         """
         @function __init__
         Inicializa o ângulo, se não estiver em graus suponho radianos
@@ -629,13 +581,12 @@ class Angulo:
         @param {bool} emGraus Se está em graus
         """
         if emGraus:
-            self._angulo =  angulo
-        else: #Suponho que esteja em radianos
+            self._angulo = angulo
+        else:  # Suponho que esteja em radianos
             self._angulo = Angulo.radianosParaGraus(angulo)
         self._validaAngulo()
-    
-    
-    def getAngulo(self, emGraus = True):
+
+    def getAngulo(self, emGraus=True):
         """
         @function getAngulo
         Retorna o ângulo em graus ou radianos
@@ -645,9 +596,8 @@ class Angulo:
         if emGraus:
             return self._angulo
         return Angulo.grausParaRadianos(self._angulo)
-    
-    
-    def setAngulo(self, angulo, emGraus = True):
+
+    def setAngulo(self, angulo, emGraus=True):
         """
         @function setAngulo
         Modifica o valor do angulo
@@ -655,13 +605,12 @@ class Angulo:
             opcional, o padrão é verdadeiro
         """
         if emGraus:
-            self._angulo =  angulo
-        else: #Suponho que caso contrário esteja em radianos
+            self._angulo = angulo
+        else:  # Suponho que caso contrário esteja em radianos
             self._angulo = Angulo.radianosParaGraus(angulo)
         self._validaAngulo()
-        
-    
-    def incrementa(self, angulo, emGraus = True):
+
+    def incrementa(self, angulo, emGraus=True):
         """
         @function incrementa
         Incrementa um valor de angulo ao atual, isto é, a si próprio
@@ -672,8 +621,7 @@ class Angulo:
             self.setAngulo(self._angulo + angulo)
         else:
             self.setAngulo(self._angulo + Angulo.radianosParaGraus(angulo))
-    
-    
+
     def __add__(self, outro):
         """
         @function __add__
@@ -682,25 +630,23 @@ class Angulo:
         @returns {Angulo} Resultado da soma
         """
         return Angulo(self._angulo + outro._angulo)
-    
-    
+
     def getQuadrante(self):
         """
         @function getQuadrante
         Retorna o quadrante do ângulo
         @returns {int} Quadrante do ângulo
         """
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+        # raise NotImplementedError("Você deveria ter programado aqui!")
         if 0 <= self._angulo < 90:
             return 1
-        elif 90 <= self._angulo< 180:
+        elif 90 <= self._angulo < 180:
             return 2
         elif -180 <= self._angulo < -90:
             return 3
         elif -90 <= self._angulo < 0:
             return 4
-    
-    
+
     def getDiferenca(self, outro):
         """
         @function getDiferenca
@@ -712,14 +658,12 @@ class Angulo:
         return Angulo(outro.getAngulo() - self.getAngulo())
 
 
-
-
-
 class Cor:
     """
-    Classe que representa a opacidade e a tintura aplicada a um 
+    Classe que representa a opacidade e a tintura aplicada a um
     renderizável
     """
+
     def _validaAlpha(self, alpha):
         """
         @function _validaAlpha
@@ -733,8 +677,7 @@ class Cor:
         elif alpha < 0:
             alpha = 0
         return alpha
-    
-            
+
     def _validaRGB(self, RGB):
         """
         @function _validaRGB
@@ -749,8 +692,7 @@ class Cor:
         elif RGB < 0:
             RGB = 0
         return RGB
-    
-    
+
     def __init__(self, opacidade, R, G, B, A):
         """
         @function __init__
@@ -766,8 +708,7 @@ class Cor:
         self.G = self._validaRGB(G)
         self.B = self._validaRGB(B)
         self.A = self._validaAlpha(A)
-    
-    
+
     def setRGBA(self, R, G, B, A):
         """
         @function setRGBA
@@ -781,8 +722,7 @@ class Cor:
         self.G = self._validaRGB(G)
         self.B = self._validaRGB(B)
         self.A = self._validaAlpha(A)
-    
-    
+
     def setOpacidade(self, opacidade):
         """
         @function setOpacidade
@@ -792,21 +732,18 @@ class Cor:
         self.opacidade = self._validaAlpha(opacidade)
 
 
-
-
-
 class Renderizador:
     """
     @class Renderizador
     Classe que faz a interface com a pygames de funções relacionadas à \
     renderização
     """
-    #Variável de Classe que contém todas as imagem já carregadas pelo pygames
+    # Variável de Classe que contém todas as imagem já carregadas pelo pygames
     _listaImagens = {}
     _listaFontes = {}
-    
-    def __init__(self, nome_tela, largura, altura, corFundo = (0, 0, 0), 
-                 icone_tela = ""):
+
+    def __init__(self, nome_tela, largura, altura, corFundo=(0, 0, 0),
+                 icone_tela=""):
         """
         @function __init__
         Só deve existir apenas um renderizador
@@ -824,8 +761,7 @@ class Renderizador:
         self.corFundo = corFundo
         self.even = Evento()
         self.escutas()
-    
-    
+
     def escutas(self):
         """
         @function escutas
@@ -833,8 +769,7 @@ class Renderizador:
         """
         self.even.escutar("imagem_nova", self.inicializaImagem)
         self.even.escutar("texto_novo", self.inicializaTexto)
-    
-    
+
     def inicializaImagem(self, figura):
         """
         @function inicializaImagem
@@ -848,20 +783,18 @@ class Renderizador:
         else:
             lar, alt = img.get_size()
         if figura.corte is None:
-            figura.corte = Retangulo(Ponto(0, 0), largura = lar, altura = alt)
-            
-    
+            figura.corte = Retangulo(Ponto(0, 0), largura=lar, altura=alt)
+
     def inicializaTexto(self, texto):
         """
         @function inicializaTexto
         Função responsável por atribuir os valores para o tamanho do texto
         @param {Texto} texto Um objeto do tipo Texto a ser inicializado
         """
-        largura,altura = self.getSizeTexto(texto.getString(),
-                                                        texto.tupla_fonte)
-        texto.size = (largura,altura)
-    
-    
+        largura, altura = self.getSizeTexto(texto.getString(),
+                                            texto.tupla_fonte)
+        texto.size = (largura, altura)
+
     def _bancoImagens(self, string_imagem):
         """
         @function _bancoImagens
@@ -870,8 +803,7 @@ class Renderizador:
         @returns {pygame.Surface} Um objeto de superfície do pygames
         """
         return self._listaImagens.get(string_imagem)
-    
-    
+
     def _carregaImagem(self, string_imagem):
         """
         @function _carregaImagem
@@ -885,8 +817,7 @@ class Renderizador:
         imagem = pygame.image.load(caminho)
         self._listaImagens[string_imagem] = imagem
         return imagem.get_size()
-    
-    
+
     def _carregaFonte(self, tupla_fonte):
         """
         @function _carregaFonte
@@ -903,8 +834,7 @@ class Renderizador:
         italic = tupla_fonte[3]
         fonte = pygame.font.SysFont(name, size, bold, italic)
         self._listaFontes[tupla_fonte] = fonte
-        
-        
+
     def getSizeTexto(self, string_texto, tupla_fonte):
         """
         @function getSizeTexto
@@ -916,12 +846,11 @@ class Renderizador:
         fonte = self._bancoFontes(tupla_fonte)
         return fonte.size(string_texto)
 
-
     def _bancoFontes(self, tupla_fonte):
         """
         @function _bancoFontes
         Carrega a fonte na memória
-        @param {tuple} tupla_fonte Define o estado 
+        @param {tuple} tupla_fonte Define o estado
         @returns {pygame.font} Objeto de fonte do pygame
         """
         fonte = self._listaFontes.get(tupla_fonte)
@@ -929,8 +858,7 @@ class Renderizador:
             self._carregaFonte(tupla_fonte)
             fonte = self._listaFontes.get(tupla_fonte)
         return fonte
-    
-    
+
     def renderiza(self, imagens, textos):
         """
         @function renderiza
@@ -940,13 +868,13 @@ class Renderizador:
             retangulos com as dimensões reais e posição na tela.
         @param {list} imagens Lista de tuplas de imagens, definidas da \
             seguinte forma:
-            (string_imagem, tupla_corte, posX, posY, rotação, opacidade, 
+            (string_imagem, tupla_corte, posX, posY, rotação, opacidade,
              R, G, B, A, self)
             Onde a tupla_corte é (posX, posY, largura, altura) referentes ao \
             retangulo de corte da imagem
         @param {list} textos Lista de tuplas de textos, definidas da seguinte \
             forma:
-            (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
+            (string_texto, tupla_fonte, posX, posY, rotação, opacidade,
              R, G, B, A, self)
             Onde a tupla_fonte é definida da seguinte forma:
                 tupla_fonte = (string_fonte,int tamanho \
@@ -963,42 +891,40 @@ class Renderizador:
             # Verifica se o corte é a própria imagem
             if i[1] == (0, 0, tam[0], tam[1]):
                 recorte = imagem
-            else: # Se não for, realiza o corte
+            else:  # Se não for, realiza o corte
                 recorte = imagem.subsurface(i[1])
             # Verifica se a rotação da imagem é nula
             if i[4] == 0:
                 imagemRotate = recorte
-            else: # Se houver rotação, realiza a transformação
-                imagemRotate = pygame.transform.rotate(recorte,i[4])
+            else:  # Se houver rotação, realiza a transformação
+                imagemRotate = pygame.transform.rotate(recorte, i[4])
             # Verifica a opacidade, se for diferente de 1, calcula
-            if i[5] != 1 :
+            if i[5] != 1:
                 imagemRotate.set_alpha(i[5])
-            self.tela.blit(imagemRotate,(i[2], i[3]))
+            self.tela.blit(imagemRotate, (i[2], i[3]))
             larg, alt = imagemRotate.get_size()
             retangs.append((i[10], i[2], i[3], larg, alt))
-            
+
         for i in textos:
             font = self._bancoFontes(i[1])
-            textSurface = font.render(i[0], True, (i[6],i[7],i[8]))
+            textSurface = font.render(i[0], True, (i[6], i[7], i[8]))
             textSurface.set_alpha(i[5])
-            textSurfaceRotate = pygame.transform.rotate(textSurface,i[4])
-            self.tela.blit(textSurfaceRotate, ([i[2],i[3]]))
+            textSurfaceRotate = pygame.transform.rotate(textSurface, i[4])
+            self.tela.blit(textSurfaceRotate, ([i[2], i[3]]))
             larg, alt = textSurfaceRotate.get_size()
             retangs.append((i[10], i[2], i[3], larg, alt))
-            
+
         pygame.display.flip()
         return retangs
-
-
-
 
 
 class Entrada:
     """
     @class Entrada
-    Classe que faz interface com o pygames e registra todos os eventos de 
+    Classe que faz interface com o pygames e registra todos os eventos de
     entrada, seja de mouse ou teclado
     """
+
     def __init__(self):
         """
         @function __init__
@@ -1006,8 +932,7 @@ class Entrada:
         """
         self.even = Evento()
         self.clickAntigo = False
-    
-    
+
     def _verTeclado(self):
         """
         @function _verTeclado
@@ -1017,20 +942,19 @@ class Entrada:
         for ide, val in enumerate(pygame.key.get_pressed()):
             if val == True:
                 vazio = False
-                self.even.lancar("K_"+pygame.key.name(ide), 
-                                 "K_"+pygame.key.name(ide))
+                self.even.lancar("K_" + pygame.key.name(ide),
+                                 "K_" + pygame.key.name(ide))
         if vazio:
             self.even.lancar("K_vazio", "K_vazio")
         if not pygame.key.get_focused():
             self.even.lancar("K_desfocado", "K_desfocado")
-    
-    
+
     def _verMouse(self):
         """
         @function _verMouse
         Observa a posição do ponteiro e se clica, lancando os eventos
         """
-        click = pygame.mouse.get_pressed() 
+        click = pygame.mouse.get_pressed()
         mouse = pygame.mouse.get_pos()
         if click[0]:
             if self.clickAntigo == False:
@@ -1040,8 +964,7 @@ class Entrada:
             self.even.lancar("M_clickD", Ponto(mouse[0], mouse[1]))
         self.even.lancar("M_pos", Ponto(mouse[0], mouse[1]))
         self.clickAntigo = click[0]
-            
-    
+
     def atualiza(self):
         """
         @function atualiza
@@ -1049,12 +972,11 @@ class Entrada:
         """
         self._verTeclado()
         self._verMouse()
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.sair()
-                
-    
+
     def sair(self):
         """
         @function sair
@@ -1064,18 +986,15 @@ class Entrada:
         quit()
 
 
-
-
-
 class Audio:
     """
     @class Audio
     Faz a interface com o audio do pygames
     """
-    #Variável de classe dos arquivos carregados pelo pygames
+    # Variável de classe dos arquivos carregados pelo pygames
     _arquivos = {}
-    
-    def __init__ (self):
+
+    def __init__(self):
         """
         @function __init__
         Inicializa o Audio, só deve haver uma instância do audio
@@ -1083,16 +1002,14 @@ class Audio:
         self.musicaFundo = None
         self.even = Evento()
         self.escutas()
-    
-    
+
     def escutas(self):
         """
         @function escutas
         Inicializa as escutas do audio
         """
         self.even.escutar("tocarEfeito", self.tocarEfeito)
-        
-    
+
     def _carregarAudio(self, string_musica):
         """
         @function _carregarAudio
@@ -1106,8 +1023,7 @@ class Audio:
         musica = pygame.mixer.Sound(caminho)
         self._arquivos[string_musica] = musica
         return musica
-    
-    
+
     def _bancoAudio(self, string_musica):
         """
         @function _bancoAudio
@@ -1120,20 +1036,20 @@ class Audio:
         if musica is None:
             musica = self._carregarAudio(string_musica)
         return musica
-    
-    
-    def setMusicaFundo(self, string_musica, volume = 0.5):
+
+    def setMusicaFundo(self, string_musica, volume=0.5):
         """
         @function setMusicaFundo
         Determina a música de fundo a ser tocada
         @param {string} string_musica Caminho do arquivo de música
         @param {float} volume O volume da música a ser tocada
         """
+        # Parar música que estava tocando
+        self.pararMusicaFundo()
         self.musicaFundo = self._bancoAudio(string_musica)
         self.musicaFundo.set_volume(volume)
         self.musicaFundo.play(-1)
-    
-    
+
     def setVolumeMusicaFundo(self, volume):
         """
         @function setVolumeMusicaFundo
@@ -1141,8 +1057,7 @@ class Audio:
         @param {float} volume O volume da música a ser tocada
         """
         self.musicaFundo.set_volume(volume)
-    
-    
+
     def tocarEfeito(self, string_efeito):
         """
         @function tocarEfeito
@@ -1151,16 +1066,15 @@ class Audio:
         """
         self.efeito = self._bancoAudio(string_efeito)
         self.efeito.play()
-    
-    
+
     def pararMusicaFundo(self):
         """
         @function pararMusicaFundo
         Para a música de fundo
         """
-        self.musicaFundo.stop()
-        
-        
+        if self.musicaFundo is not None:
+            self.musicaFundo.stop()
+
     def verificarMusicaFundo(self):
         """
         @function verificarMusicaFundo
@@ -1170,21 +1084,19 @@ class Audio:
         return self.musicaFundo.get_busy()
 
 
-
-
-
 class Renderizavel:
     """
     @class Renderizavel
-    Classe abstrata que contém os atributos básicos de um objeto 
+    Classe abstrata que contém os atributos básicos de um objeto
     renderizável
     """
-    def __init__(self, pos = None, centro = None, escala = None,
-                 rot = None, cor = None):
+
+    def __init__(self, pos=None, centro=None, escala=None,
+                 rot=None, cor=None):
         """
         @function __init__
         Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o \
-            seu centro de rotação 'centro', relativo a si próprio, sua escala \ 
+            seu centro de rotação 'centro', relativo a si próprio, sua escala \
             de tamanho, seu ângulo de rotação e sua coloração
         @param {Ponto} pos Posição do renderizável com relação ao seu pai
         @param {Ponto} centro Posição do seu centro de rotação com relação a \
@@ -1217,8 +1129,7 @@ class Renderizavel:
         """É um Retangulo que contém (circunscreve) todo o seu conteúdo, e só \
         é atualizado na renderização"""
         self.retang = Retangulo(Ponto(0, 0), Ponto(0, 0))
-        
-    
+
     def atualiza(self, dt):
         """
         @function atualiza
@@ -1227,8 +1138,8 @@ class Renderizavel:
         """
         pass
 
-
-
+    def ativarEscuta(self):
+        pass
 
 
 class Figura(Renderizavel):
@@ -1236,7 +1147,8 @@ class Figura(Renderizavel):
     @class Figura
     Representa uma imagem na árvore de renderização
     """
-    def setString(self, string_imagem, corte = None):
+
+    def setString(self, string_imagem, corte=None):
         """
         @function setString
         Redefine a string imagem dessa figura, lançando um evento
@@ -1247,10 +1159,9 @@ class Figura(Renderizavel):
         self._string_imagem = string_imagem
         self.corte = corte
         self.even.lancar("imagem_nova", self)
-    
-    
-    def __init__(self, string_imagem, corte = None, pos = None, centro = None, 
-                 escala = None, rot = None, cor = None):
+
+    def __init__(self, string_imagem, corte=None, pos=None, centro=None,
+                 escala=None, rot=None, cor=None):
         """
         @function __init__
         A string_imagem representa o caminho da imagem e é seu \
@@ -1268,8 +1179,7 @@ class Figura(Renderizavel):
         """
         super().__init__(pos, centro, escala, rot, cor)
         Figura.setString(self, string_imagem, corte)
-    
-    
+
     def getString(self):
         """
         @function getString
@@ -1278,17 +1188,14 @@ class Figura(Renderizavel):
         """
         return self._string_imagem
 
-    def ativarEscuta(self):
-        pass
-
-
 
 class Animacao(Figura):
     """
     @class Animacao
     Classe base para uma animação de spritesheet (folha de animações)
     """
-    def setString(self, string_imagem, largu = 0, altu = 0, corte = None):
+
+    def setString(self, string_imagem, largu=0, altu=0, corte=None):
         """
         @function setString
         Redefine a string imagem dessa figura, isto é, redefinindo a sua \
@@ -1311,19 +1218,18 @@ class Animacao(Figura):
             altu = self._alturaSS
         self._largu = largu
         self._altu = altu
-        self._colunas = self._larguraSS//self._largu
-        self._linhas = self._alturaSS//self._altu
+        self._colunas = self._larguraSS // self._largu
+        self._linhas = self._alturaSS // self._altu
         self._numTotal = self._colunas * self._linhas
         self._numCorte = 0
         self._vezes = 0
         self._dtAnim = 0
         self._T = 1
         self.setNumCorte(0)
-    
-    
-    def __init__(self, string_imagem, largu = 0, altu = 0, corte = None, 
-                 pos = None, centro = None, escala = None, rot = None, 
-                 cor = None):
+
+    def __init__(self, string_imagem, largu=0, altu=0, corte=None,
+                 pos=None, centro=None, escala=None, rot=None,
+                 cor=None):
         """
         @function __init__
         Suponho cortes regulares, igualmentes distribuidos
@@ -1356,8 +1262,7 @@ class Animacao(Figura):
         self._dtAnim = 0
         self._T = 0
         self.setString(string_imagem, largu, altu, corte)
-    
-    
+
     def setNumCorte(self, num):
         """
         @function setNumCorte
@@ -1369,10 +1274,9 @@ class Animacao(Figura):
         self._numCorte = num
         linha = num // self._colunas
         coluna = num % self._colunas
-        ponto = (self._ponto0 + Ponto(coluna*self._largu, linha*self._altu))
+        ponto = (self._ponto0 + Ponto(coluna * self._largu, linha * self._altu))
         self.corte.setRetangulo(ponto, ponto + Ponto(self._largu, self._altu))
-        
-    
+
     def getNumCorte(self):
         """
         @function getNumCorte
@@ -1380,9 +1284,8 @@ class Animacao(Figura):
         @returns {int} Número de corte atual
         """
         return self._numCorte
-    
-    
-    def rodarAnimacao(self, tempo_de_cada_vez, vezes = 1):
+
+    def rodarAnimacao(self, tempo_de_cada_vez, vezes=1):
         """
         @function rodarAnimacao
         Função responsável por fazer a animação rodar, começando do 0 até o \
@@ -1395,8 +1298,7 @@ class Animacao(Figura):
         self._numCorte = 0
         self._vezes = vezes
         self._T = tempo_de_cada_vez
-        
-    
+
     def atualiza(self, dt):
         """
         @function atualiza
@@ -1406,13 +1308,11 @@ class Animacao(Figura):
         @param {float} dt Tempo desde a última execução
         """
         if self._vezes > 0:
-            self.setNumCorte(int(self._dtAnim*self._numTotal/self._T))
+            self.setNumCorte(int(self._dtAnim * self._numTotal / self._T))
             self._dtAnim += dt
             while self._dtAnim >= self._T:
                 self._vezes -= 1
                 self._dtAnim -= self._T
-
-
 
 
 class Texto(Renderizavel):
@@ -1420,8 +1320,9 @@ class Texto(Renderizavel):
     @class Texto
     Representa um texto na aŕvore de renderização
     """
-    def __init__(self, string_texto, tupla_fonte, pos = None, centro = None, 
-                 escala = None, rot = None, cor = None):
+
+    def __init__(self, string_texto, tupla_fonte, pos=None, centro=None,
+                 escala=None, rot=None, cor=None):
         """
         @function __init__
         É um texto, com significado e estilo
@@ -1441,8 +1342,7 @@ class Texto(Renderizavel):
         self.tupla_fonte = tupla_fonte
         self.setString(string_texto)
         self.size = (0, 0)
-        
-        
+
     def setString(self, string_texto):
         """
         @function setString
@@ -1450,9 +1350,8 @@ class Texto(Renderizavel):
         @param {string} string_texto Novo texto a ser renderizado
         """
         self._string_texto = string_texto
-        self.even.lancar("texto_novo", self) 
-        
-        
+        self.even.lancar("texto_novo", self)
+
     def getString(self):
         """
         @function getString
@@ -1462,16 +1361,14 @@ class Texto(Renderizavel):
         return self._string_texto
 
 
-
-
-
 class Camada(Renderizavel):
     """
     @class Camada
     Representa uma camada na árvore renderização
     """
-    def __init__(self, pos = None, centro = None, escala = None, rot = None, 
-                 cor = None):
+
+    def __init__(self, pos=None, centro=None, escala=None, rot=None,
+                 cor=None):
         """
         @function __init__
         Possui a posição 'pos' que é uma coordenada relativa ao seu pai, o \
@@ -1486,8 +1383,7 @@ class Camada(Renderizavel):
         """
         super().__init__(pos, centro, escala, rot, cor)
         self.filhos = []
-    
-    
+
     def adicionaFilho(self, filho):
         """
         @function adicionaFilho
@@ -1498,8 +1394,7 @@ class Camada(Renderizavel):
             outra Camada, uma Figura, um Texto por exemplo
         """
         self.filhos.append(filho)
-    
-    
+
     def removeFilho(self, filho):
         """
         @function removeFilho
@@ -1508,17 +1403,17 @@ class Camada(Renderizavel):
         """
         if filho in self.filhos:
             self.filhos.remove(filho)
-        
-        
+
+    # UNUSED
+    ''' 
     def isFilho(self, filho):
         """
         @function isFilho
         Verifica se um dado objeto é filho da camada
         @returns {bool} Retorna verdadeiro se for filho
         """
-        return (filho in self.filhos)
-    
-    
+        return (filho in self.filhos) '''
+
     def atualiza(self, dt):
         """
         @function atualiza
@@ -1528,8 +1423,7 @@ class Camada(Renderizavel):
         """
         for filho in self.filhos:
             filho.atualiza(dt)
-    
-    
+
     def _transformaFigura(self, camadaFilha, estado):
         """
         @function _transformaFigura
@@ -1549,20 +1443,18 @@ class Camada(Renderizavel):
         if ang != 0:
             Cx = camadaFilha.centro.getX()
             Cy = camadaFilha.centro.getY()
-            alfa = math.atan2(Cy - estado[3], -(Cx - estado[2]) )
-            hipo = math.sqrt((Cy - estado[3])*(Cy - estado[3]) + 
-                             (Cx - estado[2])*(Cx - estado[2]) )
+            alfa = math.atan2(Cy - estado[3], -(Cx - estado[2]))
+            hipo = math.sqrt((Cy - estado[3]) * (Cy - estado[3]) +
+                             (Cx - estado[2]) * (Cx - estado[2]))
             teta = Angulo.grausParaRadianos(ang)
-            posX = camadaFilha.pos.getX() + hipo*math.cos(alfa + teta) + Cx
-            posY = camadaFilha.pos.getY() - hipo*math.sin(alfa + teta) + Cy
+            posX = camadaFilha.pos.getX() + hipo * math.cos(alfa + teta) + Cx
+            posY = camadaFilha.pos.getY() - hipo * math.sin(alfa + teta) + Cy
         else:
             posX = camadaFilha.pos.getX() + estado[2]
             posY = camadaFilha.pos.getY() + estado[3]
-        return (estado[0],estado[1], posX, posY, estado[4] + ang, estado[5],
-                estado[6], estado[7],estado[8],estado[9],estado[10])
-        
-    
-    
+        return (estado[0], estado[1], posX, posY, estado[4] + ang, estado[5],
+                estado[6], estado[7], estado[8], estado[9], estado[10])
+
     def _transformaTexto(self, camadaFilha, estado):
         """
         @function _transformaTexto
@@ -1579,8 +1471,7 @@ class Camada(Renderizavel):
         @returns {tuple} O novo estado nas coordenadas desta camada
         """
         return self._transformaFigura(camadaFilha, estado)
-    
-    
+
     def _observaFilhos(self):
         """
         @function _observaFilhos
@@ -1618,11 +1509,11 @@ class Camada(Renderizavel):
                 o self é a referência à própria imagem que gerou a tupla"""
                 x = filho.pos.getX()
                 y = filho.pos.getY()
-                figuras.append((filho.getString(), 
-                 (filho.corte.getEsquerda(), filho.corte.getTopo(),
-                  filho.corte.getLargura(), filho.corte.getAltura()),
-                  x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
-                  filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A, filho))
+                figuras.append((filho.getString(),
+                                (filho.corte.getEsquerda(), filho.corte.getTopo(),
+                                 filho.corte.getLargura(), filho.corte.getAltura()),
+                                x, y, filho.rot.getAngulo(), filho.cor.opacidade,
+                                filho.cor.R, filho.cor.G, filho.cor.B, filho.cor.A, filho))
             elif isinstance(filho, Texto):
                 """tupla do texto: 
                 (string_texto, tupla_fonte, posX, posY, rotação, opacidade, 
@@ -1631,13 +1522,12 @@ class Camada(Renderizavel):
                 x = filho.pos.getX()
                 y = filho.pos.getY()
                 textos.append((filho.getString(), filho.tupla_fonte,
-                              x, y, filho.rot.getAngulo(), filho.cor.opacidade, 
-                              filho.cor.R, filho.cor.G, 
-                              filho.cor.B, filho.cor.A, filho))
-        #raise NotImplementedError("Você deveria ter programado aqui!")
+                               x, y, filho.rot.getAngulo(), filho.cor.opacidade,
+                               filho.cor.R, filho.cor.G,
+                               filho.cor.B, filho.cor.A, filho))
+        # raise NotImplementedError("Você deveria ter programado aqui!")
         return (figuras, textos)
-    
-    
+
     def _transformaFinal(self, figtex):
         """
         @function _transformaFinal
@@ -1654,35 +1544,34 @@ class Camada(Renderizavel):
             filho = estado[10]
             ang = Angulo(estado[4])
             if ang.getAngulo() != 0:
-                x, y = Aux.coordsInscrito( ang, filho.centro.getX(), 
-                            filho.centro.getY(), filho.corte.getLargura(), 
-                                             filho.corte.getAltura())
+                x, y = Aux.coordsInscrito(ang, filho.centro.getX(),
+                                          filho.centro.getY(), filho.corte.getLargura(),
+                                          filho.corte.getAltura())
             else:
                 x = filho.centro.getX()
                 y = filho.centro.getY()
             x = estado[2] - x
             y = estado[3] - y
-            figs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
-                estado[5], estado[6], estado[7], estado[8], estado[9],
-                estado[10])
+            figs[i] = (estado[0], estado[1], x, y, ang.getAngulo(),
+                       estado[5], estado[6], estado[7], estado[8], estado[9],
+                       estado[10])
         for i in range(len(texs)):
             estado = texs[i]
             filho = estado[10]
             ang = Angulo(estado[4])
             if ang.getAngulo() != 0:
-                x, y = Aux.coordsInscrito( ang, filho.centro.getX(), 
-                            filho.centro.getY(), filho.size[0], filho.size[1])
+                x, y = Aux.coordsInscrito(ang, filho.centro.getX(),
+                                          filho.centro.getY(), filho.size[0], filho.size[1])
             else:
                 x = filho.centro.getX()
                 y = filho.centro.getY()
             x = estado[2] - x
             y = estado[3] - y
-            texs[i] = (estado[0], estado[1], x, y, ang.getAngulo(), 
-                estado[5], estado[6], estado[7], estado[8], estado[9],
-                estado[10])
+            texs[i] = (estado[0], estado[1], x, y, ang.getAngulo(),
+                       estado[5], estado[6], estado[7], estado[8], estado[9],
+                       estado[10])
         return figtex
-    
-    
+
     def _atualizaRetangs(self):
         """
         @function _atualizaRetangs
@@ -1694,12 +1583,9 @@ class Camada(Renderizavel):
         for filho in self.filhos:
             if isinstance(filho, Camada):
                 filho._atualizaRetangs()
-                
+
         retangs = [filho.retang for filho in self.filhos]
         self.retang.setRetanguloQueContem(retangs)
-
-
-
 
 
 class Botao(Camada):
@@ -1708,9 +1594,10 @@ class Botao(Camada):
     Representa um botão clicável que contém uma imagem de fundo e texto \
     A imagem do Botao já possui fundo e texto.
     """
-    def __init__(self,nome_evento,string_chamada, string_imagem1, string_imagem2, som_click,
-                 pos = None, centro = None, escala = None, rot = None, 
-                 cor = None):
+
+    def __init__(self, nome_evento, string_chamada, string_imagem1, string_imagem2, som_click,
+                 pos=None, centro=None, escala=None, rot=None,
+                 cor=None):
         """
         Cria.
         nome_evento: é uma string com o nome do evento que o botao deve gerar
@@ -1730,13 +1617,12 @@ class Botao(Camada):
         self._nome_evento = nome_evento
         self.string_chamada = string_chamada
         self.som_click = som_click
-    
-    
+
     def _verEmCima(self, mousePos):
         """Recebe um objeto mousePos do tipo ponto e verifica se o mousePos 
         está dentro do seu retângulo de renderização, tomando as ações
         necessárias, como mudar a cor ou imagem de fundo"""
-        
+
         if self.imagem.retang.estaDentro(mousePos):
             """
             Se está dentro, o botao brilha
@@ -1749,27 +1635,27 @@ class Botao(Camada):
             """
             self.imagem.setString(self.string_imagem1)
             self.imagem.cor.setOpacidade(0.8)
-            
-    
+
     def _verClique(self, mousePos):
         """Análogo ao _verEmCima, só que é com o clique agora, o bizu é lançar
         eventos relacionado ao clique, como 'pausar', 'irParaMenuTal' """
-        
         if self.imagem.retang.estaDentro(mousePos):
             """
             Se está dentro, o botao lança o nome do seu evento. 
             """
             self.even.lancar("tocarEfeito", self.som_click)
             self.even.lancar(self._nome_evento, self.string_chamada)
-    
-class item (Botao):
+
+
+class Item(Botao):
     """
         Representa os itens da loja.
     """
-    def __init__(self,nome_evento_compra,string_chamada, string_imagem1,
-                 string_imagem2, som_click,valor = None,XP = None,pos = None,
-                 centro = None, escala = None, rot = None, 
-                 cor = None):
+
+    def __init__(self, nome_evento_compra, string_chamada, string_imagem1,
+                 string_imagem2, som_click, valor=None, XP=None, pos=None,
+                 centro=None, escala=None, rot=None,
+                 cor=None):
         """
             inicializacao.
             nome_evento_compra: é o nome do item
@@ -1778,8 +1664,8 @@ class item (Botao):
             _img_cadeado: imagem do cadeado
             _XP: é preco do item em pontos de experiencia.
         """
-        super().__init__(nome_evento_compra,string_chamada, string_imagem1, 
-                         string_imagem2, som_click, pos,centro,escala,rot,cor)
+        super().__init__(nome_evento_compra, string_chamada, string_imagem1,
+                         string_imagem2, som_click, pos, centro, escala, rot, cor)
         if valor == None:
             valor = 100
         if XP == None:
@@ -1787,26 +1673,27 @@ class item (Botao):
         self._XP = XP
         self._valor = valor
         self._cadeado = True
-        #escutar evento de compra. 
-        self.even.escutar(nome_evento_compra,self.compra)
-        #Criar imagem do cadeado
+        # escutar evento de compra.
+        self.even.escutar(nome_evento_compra, self.compra)
+        # Criar imagem do cadeado
         self._img_cadeado = Figura("imgTeste/c02_Locker.png",
-                                   pos = Ponto(self.retang.getLargura()/2+20,-30))
-        #colocar para ser renderizado na Tela
+                                   pos=Ponto(self.retang.getLargura() / 2 + 20, -30))
+        # colocar para ser renderizado na Tela
         self.adicionaFilho(self._img_cadeado)
-        
+
     def verificarDisponibilidade(self):
         """
             verifica se este item esta disponivel para compra ou nao.
         """
-        #pega o saldo da carteira do Jogador.
+        # pega o saldo da carteira do Jogador.
         reputacao = banco_dados.getXP()
-        #verifica condicao de disponibilidade da compra
+        # verifica condicao de disponibilidade da compra
         if reputacao >= self._valor:
             return True
         else:
             return False
-    def compra(self,chamada):
+
+    def compra(self, chamada):
         """
             realiza a compra do item.
         """
@@ -1816,58 +1703,61 @@ class item (Botao):
             return True
         else:
             return False
-        
-    def atualiza(self,dt):
-        
+
+    def atualiza(self, dt):
+
         super().atualiza(dt)
-        
+
         if self.verificarDisponibilidade() and self._cadeado:
             self.removeFilho(self._img_cadeado)
         elif not self.verificarDisponibilidade() and not self._cadeado:
             self.adicionaFilho(self._img_cadeado)
 
-class item_aviao(item):
+
+class Item_aviao(Item):
     """
         representa uma skin de aviao que pode ser vendido na loja (Hangar).
     """
-    def __init__(self,string_imagem_aviao,string_imagem_aviao_invertido,
-                 nome_evento_compra,string_chamada,string_imagem2,
-                 som_click,valor = None,pos = None,
-                 centro = None, escala = None, rot = None, 
-                 cor = None):
-        item.__init__(self,nome_evento_compra,string_chamada,string_imagem_aviao,
-                         string_imagem2, som_click,valor,pos,
-                         centro, escala, rot, 
-                         cor)
-        #string da imagem da skin
+
+    def __init__(self, string_imagem_aviao, string_imagem_aviao_invertido,
+                 nome_evento_compra, string_chamada, string_imagem2,
+                 som_click, valor=None, pos=None,
+                 centro=None, escala=None, rot=None,
+                 cor=None):
+        Item.__init__(self, nome_evento_compra, string_chamada, string_imagem_aviao,
+                      string_imagem2, som_click, valor, pos,
+                      centro, escala, rot,
+                      cor)
+        # string da imagem da skin
         self._string_imagem_aviao = string_imagem_aviao
         self._string_imagem_aviao_invertido = string_imagem_aviao_invertido
-        #indica se ja foi comprado ou nao
+        # indica se ja foi comprado ou nao
         self._foiComprado = False
-        
-    def compra(self,chamada):
-        #metodo que realiza a compra deste item
-        #verifica pagamento
+
+    def compra(self, chamada):
+        # metodo que realiza a compra deste item
+        # verifica pagamento
         caixa_aprovado = super().compra(chamada)
-        #pega lista de skins do Jogador
+        # pega lista de skins do Jogador
         tupla_lista = banco_dados.getStringAviao()
         self._foiComprado = False
-        #verifica se este item ja foi comprado
+        # verifica se este item ja foi comprado
         for string in tupla_lista[0]:
             if string == self._string_imagem_aviao:
                 self._foiComprado = True
         if caixa_aprovado and not self._foiComprado:
-            #pagamento concluido e nao foi comprado
-            #adicionar este item na lista de skin do Jogador
+            # pagamento concluido e nao foi comprado
+            # adicionar este item na lista de skin do Jogador
             banco_dados.addStringAviao((self._string_imagem_aviao,
                                         self._string_imagem_aviao_invertido))
-        
+
+
 class Cena(Camada):
     """Classe que representa a cena do jogo, no qual existem as camadas e 
     objetos renderizáveis. Ela é responsável pela propagação de eventos. Se 
     comunica com a Entrada, com o Audio e com o Renderizador. """
-    
-    def __init__ (self, audio, entrada, renderizador, str_musica_fundo = None):
+
+    def __init__(self, audio, entrada, renderizador, str_musica_fundo=None):
         """Precisa-se da referência aos objetos de Audio, Entrada e 
         Renderizador"""
         super().__init__()
@@ -1876,16 +1766,23 @@ class Cena(Camada):
             self.audio.setMusicaFundo(str_musica_fundo)
         self.entrada = entrada
         self.renderizador = renderizador
-    
-    
+
     def atualiza(self, dt):
         """Propaga o loop do jogo, sabendo o intervalo de tempo dt 
         transcorrido"""
-        super().atualiza(dt)
         self.entrada.atualiza()
+        # Parece ter mais sentido processar inputs ANTES de atualizar(dt). Afinal, os inputs
+        # foram realizados enquanto os objetos estavam nas posições originais deles
+        # (posições pré-atualização)
+        super().atualiza(dt)
         imgs, txts = self._transformaFinal(self._observaFilhos())
+        # Estranho ! Os objetos representados pelas imagens não têm capacidade de determinar
+        # seus próprios retangs. Faz sentido um método "register" que retorne informação
+        # sobre o retang para cada Renderizavel.
+        # Além disso, os próprios Renderizavel (s) não percebem que seus retângulos
+        # foram alterados...
         retangs = self.renderizador.renderiza(imgs, txts)
         for ret in retangs:
             ret[0].retang.setDimensoes(ret[1], ret[2], ret[3], ret[4])
+        # Para "full bounds" de objs do tipo Camada
         self._atualizaRetangs()
-
